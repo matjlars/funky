@@ -1,0 +1,3 @@
+# run this script to start the server with the janky file loaded properly, and with the correct doc root.
+
+php -S localhost:3000 -t public_html janky/janky.php
