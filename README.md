@@ -79,6 +79,7 @@ for example:
 
 4) Make your controller function load the view, so your controller should look like this:
   
+  
   class blog{
     public function index(){
 	  // specify view arguments:
