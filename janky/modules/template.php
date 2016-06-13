@@ -5,14 +5,9 @@
 // This works well for both loading a view from a controller or just using it at the top of a static page.
 class template extends j_module
 {
-	public $data = array();
-	public $view = 'page';
+	private $data = array();
+	private $view = 'page';
 	private $head = '';
-	
-	public function __construct()
-	{
-		ob_start();
-	}
 	
 	public function __set($key,$value)
 	{
@@ -31,7 +26,12 @@ class template extends j_module
 		$this->head .= $text;
 	}
 	
-	public function __destruct()
+	public function start($view='')
+	{
+		$this->view = $view;
+		ob_start();
+	}
+	public function render()
 	{
 		if(empty($this->view))
 		{
@@ -43,7 +43,7 @@ class template extends j_module
 			$content = ob_get_clean();
 			$content = str_replace('</head>',$this->head.'</head>',$content,$count);
 			$this->data['content'] = $content;
-			j()->view('templates/'.$this->view, $this->data);
+			j()->load->view('templates/'.$this->view, $this->data);
 		}
 	}
 }

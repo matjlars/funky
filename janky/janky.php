@@ -71,5 +71,8 @@ function j()
 	return j_janky::$j;
 }
 
-// this will cause the built in php server to keep going
-return false;
+
+// do the request:
+j()->request->start();
+j()->router->route();
+j()->request->stop();

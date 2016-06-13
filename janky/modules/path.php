@@ -35,7 +35,7 @@ class path extends j_module
 	{
 		return $this->url.ltrim($_SERVER['REQUEST_URI'],'/');
 	}
-	
+
 	// returns the full canonical url to the given path (relative to i.e. 'http://www.mistermashu.com/')
 	public function url($path='')
 	{

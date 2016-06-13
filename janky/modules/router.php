@@ -22,15 +22,35 @@ class router extends j_module
 	// this function tests for pages that exist at files (like index.php for the homepage or any other page)
 	public function routepage()
 	{
-		$request_uri = $_SERVER['REQUEST_URI'];
-		$script_name = $_SERVER['SCRIPT_NAME'];
-		if($request_uri == '/') $request_uri = '/index'; // make raw URLs work
+		$path = $_SERVER['DOCUMENT_ROOT'].$_SERVER['REQUEST_URI'];
 		
-		if($request_uri == $script_name || $request_uri.'.php' == $script_name)
-		{
-			return true; // we're in the file right now
+		// append 'index.php' on the end if it ends in /
+		if(substr($path, -1) == '/'){
+			$path .= 'index.php';
 		}
-		return false; // we're not in the file
+		
+		// see if it's correct already (already has .php)
+		if(is_file($path)){
+			include $path;
+			return true;
+		}
+		
+		// see if it just needs the .php
+		$path2 = $path.'.php';
+		if(is_file($path2)){
+			include $path2;
+			return true;
+		}
+		
+		// see if it needs a /index.php
+		$path2 = $path.'/index.php';
+		if(is_file($path2)){
+			include $path2;
+			return true;
+		}
+
+		// couldn't find this file, so let route() know we failed.
+		return false;
 	}
 	
 	// this function tests for if this site has a controller, and if it does, it makes sure a method is also specified.
@@ -86,8 +106,8 @@ class router extends j_module
 	// this functions routes to the 404 page.
 	public function route404()
 	{
-		header('HTTP/1.0 404 Not Found');
-		j()->view('errors/404');
+		header('HTTP/1.0 404 Not Found', true, 404);
+		j()->load->view('errors/404');
 		exit;
 	}
 }
