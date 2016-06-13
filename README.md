@@ -78,8 +78,8 @@ for example:
   <p><?=$message?></p>
 
 4) Make your controller function load the view, so your controller should look like this:
-  
-  
+
+```php
   class blog{
     public function index(){
 	  // specify view arguments:
@@ -91,6 +91,7 @@ for example:
 	  j()->view('blog/index', $args);
 	}
   }
+```
 
 5) Note how the message key in the array passed to the view gets converted to a local variable within the view.
 6) Also note how the load view function is **j()->view**.  This means that it is using the **view** module.
