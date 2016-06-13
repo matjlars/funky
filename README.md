@@ -109,4 +109,4 @@ class blog{
 Contributors
 ============
 
-[http://mistermashu.com](Matt Larson)
+[Matt Larson](http://mistermashu.com)
