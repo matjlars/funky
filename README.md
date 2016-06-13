@@ -74,12 +74,14 @@ for example:
 
 3) Make a view instead of echoing like a pleb. Make a new file for your blog index page (DOCROOT/../views/blog/index.php)
 
+```PHP
   <h1>that one blog</h1>
   <p><?=$message?></p>
+```
 
 4) Make your controller function load the view, so your controller should look like this:
 
-```php
+```PHP
   class blog{
     public function index(){
 	  // specify view arguments:
