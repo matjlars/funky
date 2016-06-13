@@ -70,9 +70,3 @@ function j()
 {
 	return j_janky::$j;
 }
-
-
-// do the request:
-j()->request->start();
-j()->router->route();
-j()->request->stop();

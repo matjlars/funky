@@ -11,3 +11,9 @@ if(substr($_SERVER['SCRIPT_NAME'], -4) != '.php'){
 // in this context, it's a php request, so load janky and continue:
 // load the janky framework
 require 'janky.php';
+
+
+// do the request:
+j()->request->start();
+j()->router->route();
+j()->request->stop();
