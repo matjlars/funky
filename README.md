@@ -21,15 +21,19 @@ The general idea of Janky is that your "global functions" are all separated out 
 
 A simple module would be like this:
 
-  class greeter{
-    function greet(){
-	  echo 'hello janky!!!';
+```php
+class greeter{
+	function greet(){
+		echo 'hello janky!!!';
 	}
-  }
+}
+```
 
 then, to call that function from *anywhere* (yes, anywhere. within raw php pages, models, views, controllers, module functions, *actually anywhere*), you simply type:
 
-  j()->greeter->greet();
+```php
+j()->greeter->greet();
+```
 
 This causes the janky framework to automatically load the greeter class, instantiate it as an object and save that reference, so the second time you use j()->greeter, it is actually the same object.
 This is literally all the Janky framework does (which is a good thing, that means it's *very* lightweight), and from there, it's all about the great modules that only get loaded if you use them.
