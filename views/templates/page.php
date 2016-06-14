@@ -7,7 +7,7 @@
 </head>
 <body>
 	<header>
-		<h1>Web Site</h1>
+		<h1>Janky</h1>
 	</header>
 	<main><?=$content?></main>
 </body>
