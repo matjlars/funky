@@ -32,33 +32,44 @@ class load extends j_module
 	// Returns an object of type $name controller
 	public function controller($name)
 	{
-		$controllerpath = j()->path->php('janky/controllers/'.$name.'.php');
-		$custompath = j()->path->php('controllers/'.$name.'.php');
+		// figure out the controller name, independent of any path it came with:
+		$controllername = $name;
+		$lastslash = strrpos($name, '/');
+		if($lastslash !== false)
+		{
+			$controllername = substr($name, $lastslash+1);
+		}
 		
+		// figure out the global and site-specific paths:
+		$globalpath = j()->path->php('janky/controllers/'.$name.'.php');
+		$controllerpath = j()->path->php('controllers/'.$name.'.php');
+		
+		// this will contain the class name to instantiate at the end:
 		$class = '';
 		
-		// first see if there's a site-wide module:
-		if(is_file($controllerpath))
+		// first see if there's a global controller:
+		if(is_file($globalpath))
 		{
-			require_once $controllerpath;
-			$class = $name;
+			require_once $globalpath;
+			$class = $controllername;
 			
 			// if it didn't define this class, err out to let the dev know the file is wrong:
 			if(!in_array($class, get_declared_classes()))
 			{
-				j()->debug->error('Your controller class in '.$controllerpath.' must be named "'.$class.'"');
+				j()->debug->error('Your controller class in '.$globalpath.' must be named "'.$class.'"');
 			}
 		}
 		
 		// now see if there's a custom one for this particular web site:
-		if(is_file($custompath))
+		if(is_file($controllerpath))
 		{
-			require_once $custompath;
-			$class = 'my_'.$name;
+			require_once $controllerpath;
+			$class = 'my_'.$controllername;
 			
+			// err out if there was supposed to be a class in that file but there wasn't:
 			if(!in_array($class, get_declared_classes()))
 			{
-				j()->debug->error('You must create a controller class called "'.$class.'" in '.$custompath.'. It can extend "'.$name.'" to extend additional functionality, or "j_controller" to start from scratch.');
+				j()->debug->error('You must create a controller class called "'.$class.'" in this file: '.$controllerpath.'.');
 			}
 		}
 		
@@ -75,25 +86,15 @@ class load extends j_module
 	// requires the model file(s) and returns TRUE if successful or FALSE if unsuccessful
 	public function model($name)
 	{
-		$success = false;
-		
-		// Check for global model file:
-		$modelpath = j()->path->php('janky/models/'.$name.'.php');
-		if(file_exists($modelpath))
-		{
-			$success = true;
-			require_once $modelpath;
-		}
-		
 		// Check for site-specific model file:
 		$modelpath = j()->path->php('models/'.$name.'.php');
 		if(file_exists($modelpath))
 		{
-			$success = true;
 			require_once $modelpath;
+			return true;
 		}
 		
-		return $success;
+		return false;
 	}
 	
 	// requires the module file and a potential extended one, instantiates one and returns it:

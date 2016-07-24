@@ -59,48 +59,71 @@ class router extends j_module
 	public function routecontroller()
 	{
 		// if it's a controller we have on this site, load that, with the method and parameters.
-		$uriparts = explode('/',$_SERVER['REQUEST_URI']);
+		$uriparts = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'));
 		
-		// make sure we have a controller
-		if(empty($uriparts[1])) $this->route404();
-		$controllername = $uriparts[1];
+		// first, keep going with subdirectories until there isn't a subdirectory that matches:
+		$i = 0; // this is which uripart we are currently concerned with
+		$controllerfilepath = j()->path->php('controllers/');
+		$controllername = '';
+		while(isset($uriparts[$i]) && is_dir($controllerfilepath.$controllername.$uriparts[$i]))
+		{
+			$controllername .= $uriparts[$i].'/';
+			$i++;
+		}
+		
+		// get the controller name
+		if(empty($uriparts[$i]))
+		{
+			$controllername .= 'index';
+		}
+		else // we have a name for a controller!
+		{
+			$controllername .= $uriparts[$i];
+		}
+		$controllerfilepath .= $controllername.'.php';
+		$i++; // moving on to the method..
 		
 		// get method name:
-		if(empty($uriparts[2]))
+		if(empty($uriparts[$i]))
 		{
 			$methodname = 'index'; // default method name
 		}
 		else
 		{
-			$methodname = $uriparts[2];
+			$methodname = $uriparts[$i];
 		}
+		$i++; // moving on to parameters:
 		
 		// get all parameters:
 		$params = array();
-		for($i = 3; true; $i++)
+		$parami = 0;
+		while(isset($uriparts[$i]))
 		{
-			if(!isset($uriparts[$i])) break;
-			$params[$i-3] = $uriparts[$i];
+			$params[$parami] = $uriparts[$i];
+			$i++; // move to next param in uri
+			$parami++; // move to next param in $params array
 		}
 		
-		// make sure this site has this controller
-		$controllerfile = j()->path->php('controllers/'.$controllername.'.php');
-		if(is_file($controllerfile))
+		// at this point, we've expended all of our uri parts.
+		if(file_exists($controllerfilepath))
 		{
-			// see if it has the method:
+			// load the controller:
 			$controller = j()->load->controller($controllername);
+			
+			// make sure it has the method:
 			if(method_exists($controller, $methodname))
 			{
 				call_user_func_array(array($controller,$methodname),$params);
 				return true;
 			}
-			else
+			else // the method doesn't exist in this controller:
 			{
-				$this->route404(); // method doesn't exist. 404.
+				j()->debug->error('in j()->router->routecontroller(): no method "'.$method.'" in the controller '.$controllername);
+				return false;
 			}
 		}
 		
-		return false;
+		return false; // no controller
 	}
 	
 	// this functions routes to the 404 page.
