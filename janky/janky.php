@@ -23,11 +23,11 @@ class j_janky
 		// Register an autoload function used for models:
 		/* CAN ONLY DO THIS ONCE WE'RE RUNNING PHP 5 or WHATEVER.. DELETE THE __autoload() FUNCTION BELOW IF THIS ENDS UP WORKING..
 		spl_autoload_register(function($model){
-			site()->load->model($model);
+			j()->load->model($model);
 		});
 		*/
 		
-		// determine site() path to load a few
+		// determine j() path to load a few
 		$modulespath = dirname(__FILE__).'/modules';
 		
 		// Load the path module so our loader knows where to load stuff from
@@ -39,7 +39,7 @@ class j_janky
 		$this->modules['load'] = new load();
 	}
 	
-	// auto-load and access site modules:
+	// auto-load and access modules:
 	public function __get($key)
 	{
 		if(!isset($this->modules[$key]))
@@ -56,7 +56,7 @@ function __autoload($model)
 {
 	if(!j()->load->model($model))
 	{
-		site()->debug->error('Class '.$model.' not found.');
+		j()->debug->error('Class '.$model.' not found.');
 	}
 }
 
