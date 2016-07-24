@@ -88,7 +88,7 @@ class router extends j_module
 		if(is_file($controllerfile))
 		{
 			// see if it has the method:
-			$controller = site()->load->controller($controllername);
+			$controller = j()->load->controller($controllername);
 			if(method_exists($controller, $methodname))
 			{
 				call_user_func_array(array($controller,$methodname),$params);
