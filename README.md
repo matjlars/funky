@@ -13,7 +13,7 @@ Usage
 Here is a list of basic concepts of the Janky framework.
 
 
-Modules
+Services
 -------
 
 The general idea of Janky is that your "global functions" are all separated out into *services*.

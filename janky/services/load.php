@@ -121,7 +121,7 @@ class load extends j_service
 		
 		if(empty($class))
 		{
-			j()->debug->error('Module '.$name.' not found in global or site-specific context.');
+			j()->debug->error('Service '.$name.' not found in global or site-specific context.');
 		}
 		else
 		{
