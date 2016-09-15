@@ -1,5 +1,5 @@
 <?php
-class ssl extends j_module
+class ssl extends j_service
 {
 	// returns TRUE if SSL (HTTPS) is currently being used
 	// returns FALSE if it isn't.

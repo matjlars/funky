@@ -1,5 +1,5 @@
 <?php
-class request
+class request extends j_service
 {
 	public function start()
 	{

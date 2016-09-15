@@ -1,8 +1,8 @@
 <?php
-// you can't override this module because of how it's loaded in the site constructor.. sorry.
+// you can't override this service because of how it's loaded in the site constructor.. sorry.
 // Let MisterMashu (mistermashu@gmail.com) know if you want him to figure out a way to do that.
-// basically, this class is good for loading in models, views, controllers, and modules in such a way where you can have global files and site-specific files and it handles it well.
-class load extends j_module
+// basically, this class is good for loading in models, views, controllers, and services in such a way where you can have global files and site-specific files and it handles it well.
+class load extends j_service
 {
 	public function view($name,$data=array())
 	{
@@ -97,18 +97,18 @@ class load extends j_module
 		return false;
 	}
 	
-	// requires the module file and a potential extended one, instantiates one and returns it:
-	public function module($name)
+	// requires the service file and a potential extended one, instantiates one and returns it:
+	public function service($name)
 	{
-		$modulepath = j()->path->php('janky/modules/'.$name.'.php');
-		$custompath = j()->path->php('modules/'.$name.'.php');
+		$servicepath = j()->path->php('janky/services/'.$name.'.php');
+		$custompath = j()->path->php('services/'.$name.'.php');
 		
 		$class = '';
 		
-		// first see if there's a site-wide module:
-		if(is_file($modulepath))
+		// first see if there's a site-wide service:
+		if(is_file($servicepath))
 		{
-			require_once $modulepath;
+			require_once $servicepath;
 			$class = $name;
 		}
 		
@@ -121,7 +121,7 @@ class load extends j_module
 		
 		if(empty($class))
 		{
-			j()->debug->error('Module '.$name.' not found in global or site-specific context.');
+			j()->debug->error('Service '.$name.' not found in global or site-specific context.');
 		}
 		else
 		{

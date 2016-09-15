@@ -1,7 +1,7 @@
 <?php
 
-// This module is for getting information regarding server paths as well as URLs.
-class path extends j_module
+// This service is for getting information regarding server paths as well as URLs.
+class path extends j_service
 {
 	private $url; // the full url for this site, (i.e. http://example.com/)
 	private $docroot; // the absolute path to the folder in which hostable files are kept (index.php, css files, js files, images, etc.)
@@ -22,7 +22,7 @@ class path extends j_module
 		}
 		else
 		{
-			j()->debug->error('unable to determine document root in path module.');
+			j()->debug->error('unable to determine document root in path service.');
 			exit(1);
 		}
 		
@@ -63,7 +63,7 @@ class path extends j_module
 		return $this->php.$path;
 	}
 	
-	/* again, this assumes too much. feel free to make a function like this in your path module
+	/* again, this assumes too much. feel free to make a function like this in your path service
 	// returns the canonical URL to the Green Gear Designs resources folder, appending the given $path
 	public function cdn($path='')
 	{

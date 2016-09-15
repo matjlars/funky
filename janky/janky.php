@@ -7,14 +7,14 @@
 // load a few required core files:
 require 'core/j_model.php';
 require 'core/j_controller.php';
-require 'core/j_module.php';
+require 'core/j_service.php';
 
 
-// this is the whole janky framework (besides all the awesome modules)
+// this is the whole janky framework (besides all the awesome services)
 class j_janky
 {
 	public static $j;
-	private $modules = array();
+	private $services= array();
 	
 	public function __construct()
 	{
@@ -28,25 +28,25 @@ class j_janky
 		*/
 		
 		// determine j() path to load a few
-		$modulespath = dirname(__FILE__).'/modules';
+		$servicespath = dirname(__FILE__).'/services';
 		
-		// Load the path module so our loader knows where to load stuff from
-		require_once $modulespath.'/path.php';
-		$this->modules['path'] = new path();
+		// Load the path service so our loader knows where to load stuff from
+		require_once $servicespath.'/path.php';
+		$this->services['path'] = new path();
 		
 		// Load the loader so we don't try to load the loader to load the loader later (only chuck norris can do that)
-		require_once $modulespath.'/load.php';
-		$this->modules['load'] = new load();
+		require_once $servicespath.'/load.php';
+		$this->services['load'] = new load();
 	}
 	
-	// auto-load and access modules:
+	// auto-load and access services:
 	public function __get($key)
 	{
-		if(!isset($this->modules[$key]))
+		if(!isset($this->services[$key]))
 		{
-			$this->modules[$key] = $this->load->module($key);
+			$this->services[$key] = $this->load->service($key);
 		}
-		return $this->modules[$key];
+		return $this->services[$key];
 	}
 }
 

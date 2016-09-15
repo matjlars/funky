@@ -1,5 +1,5 @@
 <?php
-class debug extends j_module
+class debug extends j_service
 {
 	public function dump($data)
 	{
