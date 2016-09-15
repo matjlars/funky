@@ -16,10 +16,10 @@ Here is a list of basic concepts of the Janky framework.
 Modules
 -------
 
-The general idea of Janky is that your "global functions" are all separated out into *modules*.
-*modules* allow you you organize your imperitive functions and override any logic of the whole framework on a per-site basis.
+The general idea of Janky is that your "global functions" are all separated out into *services*.
+*services* allow you you organize your imperitive functions and override any logic of the whole framework on a per-site basis.
 
-A simple module would be like this:
+A simple service would be like this:
 
 ```php
 class greeter{
@@ -29,14 +29,14 @@ class greeter{
 }
 ```
 
-then, to call that function from *anywhere* (yes, anywhere. within raw php pages, models, views, controllers, module functions, *actually anywhere*), you simply type:
+then, to call that function from *anywhere* (yes, anywhere. within raw php pages, models, views, controllers, service functions, *actually anywhere*), you simply type:
 
 ```php
 j()->greeter->greet();
 ```
 
 This causes the janky framework to automatically load the greeter class, instantiate it as an object and save that reference, so the second time you use j()->greeter, it is actually the same object.
-This is literally all the Janky framework does (which is a good thing, that means it's *very* lightweight), and from there, it's all about the great modules that only get loaded if you use them.
+This is literally all the Janky framework does (which is a good thing, that means it's *very* lightweight), and from there, it's all about the great services that only get loaded if you use them.
 
 
 Models, Views, and Controllers
@@ -46,7 +46,7 @@ Since MVC is great, there are some great ways of organizing larger projects usin
 
 First: controllers.
 1) In order to use controllers, you need the .htaccess file that janky comes with in order to redirect all requests to the top level index.php page.
-2) On that page (top level index.php), you must call the router module's route function.
+2) On that page (top level index.php), you must call the router service's route function.
 
 ```php
 j()->router->route();
@@ -65,7 +65,7 @@ The simplest way is to make a controller that only one site can use:
 MVC Example / Tutorial:
 -----------
 
-Let's make a simple blog. This will solidify using Janky modules, as well as how to use MVC ideas.
+Let's make a simple blog. This will solidify using Janky services, as well as how to use MVC ideas.
 
 1) Make a new file for you blog controller (DOCROOT/../controllers/blog.php)
 2) Make a basic class called `blog` (NOTE: it is important that the class name matches the file name)
@@ -104,7 +104,7 @@ class blog{
 ```
 
 5) Note how the message key in the array passed to the view gets converted to a local variable within the view.
-6) Also note how the load view function is **j()->view**.  This means that it is using the **view** module.
+6) Also note how the load view function is **j()->view**.  This means that it is using the **view** service.
 
 Contributors
 ============

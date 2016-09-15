@@ -1,9 +1,9 @@
 <?php
 
-// This is an extremely usefule module that handles templating really well.
+// This is an extremely usefule service that handles templating really well.
 // Basically, you just say "j()->template->view = 'page';" at the top, then do any output, and it'll stick everything you output in a variable called "content" and pass it to your template.
 // This works well for both loading a view from a controller or just using it at the top of a static page.
-class template extends j_module
+class template extends j_service
 {
 	private $data = array();
 	private $view = 'page';

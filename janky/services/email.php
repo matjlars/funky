@@ -2,7 +2,7 @@
 // This was originally from the CodeIgniter framework, but I stripped it out to work in the Janky framework.
 // For documentation, google "codeigniter email"
 
-class email extends j_module{
+class email extends j_service{
 
 	var	$useragent		= "Green Gear Designs Web Application";
 	var	$mailpath		= "/usr/sbin/sendmail";	// Sendmail path

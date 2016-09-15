@@ -1,5 +1,5 @@
 <?php
-class adminadmin extends j_modules
+class adminadmin extends j_services
 {
 	public function isloggedin()
 	{
