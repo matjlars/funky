@@ -1,1 +1,8 @@
+# This makes it possible to hide the .php extension in the URL
+RewriteEngine on 
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteCond %{REQUEST_FILENAME}\.php -f 
+RewriteRule ^(.*)$ $1.php
+
+# this must be done in every directory in order for janky to work
 php_value auto_prepend_file ../janky/janky.php
