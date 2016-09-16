@@ -1,1 +1,1 @@
-php_value auto_prepend_file %{DOC_ROOT}/../janky.php
+php_value auto_prepend_file ../janky/janky.php

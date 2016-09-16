@@ -1,9 +1,5 @@
 <?php
 
-// this file needs to be included before every request in order to have access to j()
-
-
-
 // load a few required core files:
 require 'core/j_model.php';
 require 'core/j_controller.php';
