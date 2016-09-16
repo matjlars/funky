@@ -45,6 +45,10 @@ class path extends j_service
 	// redirects to the given $path
 	public function redirect($path='')
 	{
+		// sanitize it a bit:
+		$path = ltrim($path, '/');
+		
+		// send the redirect header:
 		header('Location: '.$this->url.$path);
 		die();
 	}
