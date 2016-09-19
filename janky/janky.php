@@ -1,5 +1,9 @@
 <?php
 
+// turn on error reporting:
+error_reporting(E_ALL);
+
+
 // load a few required core files:
 require 'core/j_model.php';
 require 'core/j_controller.php';
@@ -14,8 +18,6 @@ class j_janky
 	
 	public function __construct()
 	{
-		session_start();
-		
 		// Register an autoload function used for models:
 		/* CAN ONLY DO THIS ONCE WE'RE RUNNING PHP 5 or WHATEVER.. DELETE THE __autoload() FUNCTION BELOW IF THIS ENDS UP WORKING..
 		spl_autoload_register(function($model){
