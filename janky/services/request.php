@@ -7,11 +7,12 @@ class request extends j_service
 	}
 	public function perform()
 	{
-		j()->router->router();
+		j()->router->route();
 	}
 	public function stop()
 	{
 		j()->template->render();
+		exit;
 	}
 	public function isxhr()
 	{

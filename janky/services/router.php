@@ -15,7 +15,7 @@ class router extends j_service
 	{
 		// test if it's a page:
 		if($this->routepage()) return;
-		if($this->routecontroller()) exit; // exit to avoid printing the page it was redirected to
+		if($this->routecontroller()) return;
 		$this->route404();
 	}
 	

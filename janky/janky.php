@@ -66,3 +66,9 @@ function j()
 {
 	return j_janky::$j;
 }
+
+
+// now start the request:
+j()->request->start();
+j()->request->perform();
+j()->request->stop();
