@@ -5,27 +5,23 @@ class session extends j_service
 	{
 		session_start();
 	}
-	public function get($key)
+	public function __get($key)
 	{
 		return $_SESSION[$key];
 	}
-	public function set($key, $value)
+	public function __set($key, $value)
 	{
 		$_SESSION[$key] = $value;
 	}
-	public function isset($key)
+	public function __isset($key)
 	{
 		return isset($_SESSION[$key]);
-	}
-	public function empty($key)
-	{
-		return empty($_SESSION[$key]);
 	}
 	public function clear()
 	{
 		session_unset();
 	}
-	public function unset($key)
+	public function __unset($key)
 	{
 		unset($_SESSION[$key]);
 	}
