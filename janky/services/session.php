@@ -1,28 +1,32 @@
 <?php
 class session extends j_service
 {
-	private $started = false;
-	
+	public function __construct()
+	{
+		session_start();
+	}
 	public function get($key)
 	{
-		$this->start();
 		return $_SESSION[$key];
 	}
 	public function set($key, $value)
 	{
-		$this->start();
 		$_SESSION[$key] = $value;
+	}
+	public function isset($key)
+	{
+		return isset($_SESSION[$key]);
+	}
+	public function empty($key)
+	{
+		return empty($_SESSION[$key]);
 	}
 	public function clear()
 	{
-		// clear all session vars:
 		session_unset();
 	}
-	public function start()
+	public function unset($key)
 	{
-		if($this->started === false){
-			session_start();
-			$this->started = true;
-		}
+		unset($_SESSION[$key]);
 	}
 }
