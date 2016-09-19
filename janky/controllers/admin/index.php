@@ -48,7 +48,7 @@ class index extends j_controller
 	}
 	public function logout()
 	{
-		session_unset();
+		j()->session->clear();
 		j()->path->redirect('admin/index/login');
 	}
 }

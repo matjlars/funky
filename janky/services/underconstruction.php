@@ -11,7 +11,7 @@ class underconstruction extends j_service
 		{
 			if($_POST['password'] == j()->config->underconstructionpassword)
 			{
-				$_SESSION['underconstructionloggedin'] = 1;
+				j()->session->underconstruction_loggedin = 1;
 				return;
 			}
 		}
@@ -26,12 +26,12 @@ class underconstruction extends j_service
 			<input type="submit" name="submit" value="Log In"/>
 		</form>
 		<?
-		exit 0;
+		exit(0);
 	}
 	
 	public function isloggedin()
 	{
-		if(empty($_SESSION['underconstructionloggedin'])) return false;
+		if(empty(j()->session->underconstruction_loggedin)) return false;
 		return true;
 	}
 }
