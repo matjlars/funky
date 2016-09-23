@@ -1,22 +1,22 @@
 General
 =======
 
-Janky is a PHP framework that makes making anything is PHP much easier.
+Funky is a PHP framework that makes making anything is PHP much easier.
 
-This is the scale, where words represent everything you can do with the Janky framework:
-|raw---basic----simple----pretty neat-----complicated----complex----advanced-----janky|
+This is the scale, where words represent everything you can do with the Funky framework:
+|raw---basic----simple----pretty neat-----complicated----complex----advanced-----funky|
 
 
 Usage
 =====
 
-Here is a list of basic concepts of the Janky framework.
+Here is a list of basic concepts of the Funky framework.
 
 
 Services
 -------
 
-The general idea of Janky is that your "global functions" are all separated out into *services*.
+The general idea of Funky is that your "global functions" are all separated out into *services*.
 *services* allow you you organize your imperitive functions and override any logic of the whole framework on a per-site basis.
 
 A simple service would be like this:
@@ -24,7 +24,7 @@ A simple service would be like this:
 ```php
 class greeter{
 	function greet(){
-		echo 'hello janky!!!';
+		echo 'hello funky!!!';
 	}
 }
 ```
@@ -35,17 +35,17 @@ then, to call that function from *anywhere* (yes, anywhere. within raw php pages
 j()->greeter->greet();
 ```
 
-This causes the janky framework to automatically load the greeter class, instantiate it as an object and save that reference, so the second time you use j()->greeter, it is actually the same object.
-This is literally all the Janky framework does (which is a good thing, that means it's *very* lightweight), and from there, it's all about the great services that only get loaded if you use them.
+This causes the funky framework to automatically load the greeter class, instantiate it as an object and save that reference, so the second time you use j()->greeter, it is actually the same object.
+This is literally all the Funky framework does (which is a good thing, that means it's *very* lightweight), and from there, it's all about the great services that only get loaded if you use them.
 
 
 Models, Views, and Controllers
 --------------------------
 
-Since MVC is great, there are some great ways of organizing larger projects using MVC in Janky.
+Since MVC is great, there are some great ways of organizing larger projects using MVC in Funky.
 
 First: controllers.
-1) In order to use controllers, you need the .htaccess file that janky comes with in order to redirect all requests to the top level index.php page.
+1) In order to use controllers, you need the .htaccess file that funky comes with in order to redirect all requests to the top level index.php page.
 2) On that page (top level index.php), you must call the router service's route function.
 
 ```php
@@ -65,7 +65,7 @@ The simplest way is to make a controller that only one site can use:
 MVC Example / Tutorial:
 -----------
 
-Let's make a simple blog. This will solidify using Janky services, as well as how to use MVC ideas.
+Let's make a simple blog. This will solidify using Funky services, as well as how to use MVC ideas.
 
 1) Make a new file for you blog controller (DOCROOT/../controllers/blog.php)
 2) Make a basic class called `blog` (NOTE: it is important that the class name matches the file name)

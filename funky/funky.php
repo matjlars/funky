@@ -10,8 +10,8 @@ require 'core/j_controller.php';
 require 'core/j_service.php';
 
 
-// this is the whole janky framework (besides all the awesome services)
-class j_janky
+// this is the whole funky framework (besides all the awesome services)
+class j_funky
 {
 	public static $j;
 	private $services= array();
@@ -59,14 +59,14 @@ function __autoload($model)
 }
 
 
-// instantiate j_janky
-j_janky::$j = new j_janky();
+// instantiate j_funky
+j_funky::$j = new j_funky();
 
 
-// define the global function that allows you to easily access the j_janky singleton object
+// define the global function that allows you to easily access the j_funky singleton object
 function j()
 {
-	return j_janky::$j;
+	return j_funky::$j;
 }
 
 

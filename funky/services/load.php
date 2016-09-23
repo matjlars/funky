@@ -17,8 +17,8 @@ class load extends j_service
 			return true;
 		}
 		
-		// Check for a global view (in DOC_ROOT/../janky/views/)
-		$globalviewpath = j()->path->php('janky/views/'.$name.'.php');
+		// Check for a global view (in DOC_ROOT/../funky/views/)
+		$globalviewpath = j()->path->php('funky/views/'.$name.'.php');
 		if(file_exists($globalviewpath))
 		{
 			include $globalviewpath;
@@ -41,7 +41,7 @@ class load extends j_service
 		}
 		
 		// figure out the global and site-specific paths:
-		$globalpath = j()->path->php('janky/controllers/'.$name.'.php');
+		$globalpath = j()->path->php('funky/controllers/'.$name.'.php');
 		$controllerpath = j()->path->php('controllers/'.$name.'.php');
 		
 		// this will contain the class name to instantiate at the end:
@@ -100,7 +100,7 @@ class load extends j_service
 	// requires the service file and a potential extended one, instantiates one and returns it:
 	public function service($name)
 	{
-		$servicepath = j()->path->php('janky/services/'.$name.'.php');
+		$servicepath = j()->path->php('funky/services/'.$name.'.php');
 		$custompath = j()->path->php('services/'.$name.'.php');
 		
 		$class = '';
