@@ -5,35 +5,25 @@ error_reporting(E_ALL);
 
 
 // load a few required core files:
-require 'core/j_model.php';
-require 'core/j_controller.php';
-require 'core/j_service.php';
+require 'core/f_model.php';
 
 
 // this is the whole funky framework (besides all the awesome services)
-class j_funky
+class f_funky
 {
-	public static $j;
 	private $services= array();
 	
 	public function __construct()
 	{
-		// Register an autoload function used for models:
-		/* CAN ONLY DO THIS ONCE WE'RE RUNNING PHP 5 or WHATEVER.. DELETE THE __autoload() FUNCTION BELOW IF THIS ENDS UP WORKING..
-		spl_autoload_register(function($model){
-			j()->load->model($model);
-		});
-		*/
-		
-		// determine j() path to load a few
-		$servicespath = dirname(__FILE__).'/services';
+		// determine f() path to load a few
+		$servicespath = dirname(__FILE__).'/services/';
 		
 		// Load the path service so our loader knows where to load stuff from
-		require_once $servicespath.'/path.php';
+		require_once $servicespath.'path.php';
 		$this->services['path'] = new path();
 		
 		// Load the loader so we don't try to load the loader to load the loader later (only chuck norris can do that)
-		require_once $servicespath.'/load.php';
+		require_once $servicespath.'load.php';
 		$this->services['load'] = new load();
 	}
 	
@@ -43,6 +33,9 @@ class j_funky
 		if(!isset($this->services[$key]))
 		{
 			$this->services[$key] = $this->load->service($key);
+			if($this->services[$key] == null){
+				throw new Exception('No such service '.$key);
+			}
 		}
 		return $this->services[$key];
 	}
@@ -52,25 +45,23 @@ class j_funky
 // This way, you can just use the model classes without needing to include/require/load them.
 function __autoload($model)
 {
-	if(!j()->load->model($model))
+	if(!f()->load->model($model))
 	{
-		j()->debug->error('Class '.$model.' not found.');
+		f()->debug->error('Class '.$model.' not found.');
 	}
 }
 
 
-// instantiate j_funky
-j_funky::$j = new j_funky();
-
-
-// define the global function that allows you to easily access the j_funky singleton object
-function j()
+// define the global function that allows you to easily access the f_funky singleton object
+function f()
 {
-	return j_funky::$j;
+	static $f = null;
+	if($f == null) $f = new f_funky();
+	return $f;
 }
 
 
 // now start the request:
-j()->request->start();
-j()->request->perform();
-j()->request->stop();
+f()->request->start();
+f()->request->perform();
+f()->request->stop();

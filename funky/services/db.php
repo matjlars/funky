@@ -1,5 +1,5 @@
 <?php
-class db extends j_service
+class db
 {
 	private $connection;
 	

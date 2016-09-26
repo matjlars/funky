@@ -1,5 +1,5 @@
 <?php
-class format extends j_service
+class format
 {
 	public function numeric($string)
 	{

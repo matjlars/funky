@@ -9,7 +9,7 @@ class photos extends j_photos{}
 this creates the *photos* controller for your site, thereby granting access to all the public functions in j_photos as route endpoints
 
 */
-class router extends j_service
+class router
 {
 	public function route()
 	{

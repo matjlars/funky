@@ -1,5 +1,5 @@
 <?php
-class j_model
+class f_model
 {
 	private $data = array();
 	protected $table = '';
@@ -19,7 +19,7 @@ class j_model
 				$this->update($arg); // inserts and sets the id
 				$arg = $this->id;
 			}
-			$this->data = j()->db->query('SELECT * FROM '.$this->table.' WHERE id='.$arg)->row();
+			$this->data = f()->db->query('SELECT * FROM '.$this->table.' WHERE id='.$arg)->row();
 		}
 	}
 	public function __get($name)
@@ -36,7 +36,7 @@ class j_model
 	}
 	public function delete()
 	{
-		j()->db->query('DELETE FROM '.$this->table.' WHERE id='.$this->id);
+		f()->db->query('DELETE FROM '.$this->table.' WHERE id='.$this->id);
 	}
 	public function save()
 	{
@@ -46,11 +46,11 @@ class j_model
 		
 		if($this->exists())
 		{
-			j()->db->update($this->table,$data,'id',$this->id);
+			f()->db->update($this->table,$data,'id',$this->id);
 		}
 		else // it doesn't exist yet, so insert:
 		{
-			$this->data['id'] = j()->db->insert($this->table,$data);
+			$this->data['id'] = f()->db->insert($this->table,$data);
 		}
 	}
 	
@@ -70,7 +70,7 @@ class j_model
 	{
 		if(empty(self::$fields[$this->table]))
 		{
-			$columns = j()->db->query('SHOW COLUMNS FROM '.$this->table);
+			$columns = f()->db->query('SHOW COLUMNS FROM '.$this->table);
 			
 			self::$fields[$this->table] = array();
 			foreach($columns as $col)

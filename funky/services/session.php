@@ -1,5 +1,5 @@
 <?php
-class session extends j_service
+class session
 {
 	public function __construct()
 	{
