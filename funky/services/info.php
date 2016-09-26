@@ -1,7 +1,7 @@
 <?php
 
 // This service provides useful information about the site
-class info extends j_service
+class info
 {
 	// returns an array of all controllers on this site
 	public function controllers()

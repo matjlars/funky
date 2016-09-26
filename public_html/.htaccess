@@ -4,8 +4,8 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f 
 RewriteRule ^(.*)$ $1.php
 
-# this must be done in every directory in order for janky to work
-php_value auto_prepend_file ../janky/janky.php
+# this must be done in every directory in order for funky to work
+php_value auto_prepend_file ../funky/funky.php
 
 # turn on all errors:
 php_value display_errors on

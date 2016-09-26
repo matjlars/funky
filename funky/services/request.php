@@ -1,17 +1,17 @@
 <?php
-class request extends j_service
+class request
 {
 	public function start()
 	{
-		j()->template->start('page');
+		f()->template->start('page');
 	}
 	public function perform()
 	{
-		j()->router->route();
+		f()->router->route();
 	}
 	public function stop()
 	{
-		j()->template->render();
+		f()->template->render();
 		exit;
 	}
 	public function isxhr()

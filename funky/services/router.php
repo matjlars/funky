@@ -9,7 +9,7 @@ class photos extends j_photos{}
 this creates the *photos* controller for your site, thereby granting access to all the public functions in j_photos as route endpoints
 
 */
-class router extends j_service
+class router
 {
 	public function route()
 	{
@@ -55,7 +55,7 @@ class router extends j_service
 	
 	// this function tests for if this site has a controller, and if it does, it makes sure a method is also specified.
 	// if both a controller and method are given, it calls those.
-	// keep in mind, you must override the controller per site to use janky controllers (see note at the top of this file)
+	// keep in mind, you must override the controller per site to use funky controllers (see note at the top of this file)
 	public function routecontroller()
 	{
 		// if it's a controller we have on this site, load that, with the method and parameters.

@@ -1,5 +1,5 @@
 <?php
-class underconstruction extends j_service
+class underconstruction
 {
 	public function restrict()
 	{

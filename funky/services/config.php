@@ -1,5 +1,5 @@
 <?php
-class config extends j_service
+class config
 {
 	private $data;
 	public function __construct()

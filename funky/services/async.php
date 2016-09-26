@@ -1,5 +1,5 @@
 <?php
-class async extends j_service
+class async
 {
 	public function getsource($url)
 	{

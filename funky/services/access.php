@@ -1,5 +1,5 @@
 <?php
-class access extends j_service
+class access
 {
 	public function issuperuser()
 	{
