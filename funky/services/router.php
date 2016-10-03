@@ -118,7 +118,6 @@ class router
 			}
 			else // the method doesn't exist in this controller:
 			{
-				j()->debug->error('in j()->router->routecontroller(): no method "'.$method.'" in the controller '.$controllername);
 				return false;
 			}
 		}

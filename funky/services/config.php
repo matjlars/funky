@@ -5,7 +5,7 @@ class config
 	public function __construct()
 	{
 		// Load $data array from config file:
-		include j()->path->php('config.php');
+		include f()->path->php('config.php');
 		if(isset($data)) $this->data = $data;
 	}
 	public function __set($key,$value)
@@ -15,7 +15,7 @@ class config
 	public function __get($key)
 	{
 		if(isset($this->data[$key])) return $this->data[$key];
-		else j()->debug->error('Config value for key "'.$key.'" not found.');
+		else throw new exception('Config value for key "'.$key.'" not found.');
 	}
 	public function __isset($key)
 	{

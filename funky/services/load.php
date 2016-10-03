@@ -26,7 +26,7 @@ class load
 		}
 		
 		// Otherwise, err out:
-		f()->debug->error('View '.$name.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
+		throw new exception('View '.$name.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
 	}
 	
 	// Returns an object of type $name controller
@@ -56,7 +56,7 @@ class load
 			// if it didn't define this class, err out to let the dev know the file is wrong:
 			if(!in_array($class, get_declared_classes()))
 			{
-				f()->debug->error('Your controller class in '.$globalpath.' must be named "'.$class.'"');
+				throw new exception('Your controller class in '.$globalpath.' must be named "'.$class.'"');
 			}
 		}
 		
@@ -69,13 +69,13 @@ class load
 			// err out if there was supposed to be a class in that file but there wasn't:
 			if(!in_array($class, get_declared_classes()))
 			{
-				f()->debug->error('You must create a controller class called "'.$class.'" in this file: '.$controllerpath.'.');
+				throw new exception('You must create a controller class called "'.$class.'" in this file: '.$controllerpath.'.');
 			}
 		}
 		
 		if(empty($class))
 		{
-			f()->debug->error('Controller '.$name.' not found in global or site-specific context.');
+			throw new exception('Controller '.$name.' not found in global or site-specific context.');
 		}
 		else
 		{
@@ -121,7 +121,7 @@ class load
 		
 		if(empty($class))
 		{
-			f()->debug->error('Service '.$name.' not found in global or site-specific context.');
+			throw new exception('Service '.$name.' not found in global or site-specific context.');
 		}
 		else
 		{

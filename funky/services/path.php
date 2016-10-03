@@ -22,8 +22,7 @@ class path
 		}
 		else
 		{
-			j()->debug->error('unable to determine document root in path service.');
-			exit(1);
+			throw new exception('unable to determine document root in path service.');
 		}
 		
 		// generate the base path by just stripping off the last folder:

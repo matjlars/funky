@@ -47,7 +47,7 @@ function __autoload($model)
 {
 	if(!f()->load->model($model))
 	{
-		f()->debug->error('Class '.$model.' not found.');
+		throw new exception('Class '.$model.' not found.');
 	}
 }
 
