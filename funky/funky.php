@@ -61,7 +61,5 @@ function f()
 }
 
 
-// now start the request:
-f()->request->start();
+// now perform the request:
 f()->request->perform();
-f()->request->stop();

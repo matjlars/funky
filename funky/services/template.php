@@ -1,12 +1,8 @@
 <?php
 
-// This is an extremely usefule service that handles templating really well.
-// Basically, you just say "f()->template->view = 'page';" at the top, then do any output, and it'll stick everything you output in a variable called "content" and pass it to your template.
-// This works well for both loading a view from a controller or just using it at the top of a static page.
 class template
 {
 	private $data = array();
-	private $view = 'page';
 	private $head = '';
 	
 	public function __set($key,$value)
@@ -18,32 +14,37 @@ class template
 		if(isset($this->data[$key])) return $this->data[$key];
 		return null;
 	}
-	
-	// this function adds stuff into the <head> tag dynamically.
-	// for example, pass this function an extra javascript file or css file you want to have inside the <head></head> tag.
-	public function head($text)
+	public function getview()
 	{
-		$this->head .= $text;
+		// override this with custom logic to use a different view
+		return 'page';
+	}
+	public function exception($e)
+	{
+		echo 'error on website: '.$e->getMessage();
+		if(f()->access->isadminadmin()){
+			var_dump($e);
+		}
 	}
 	
-	public function start($view='')
+	public function start()
 	{
-		$this->view = $view;
 		ob_start();
+	}
+	public function cancel()
+	{
+		ob_end_clean();
 	}
 	public function render()
 	{
-		if(empty($this->view))
+		if(empty($this->getview()) || f()->request->isxhr())
 		{
-			echo ob_get_clean();
+			ob_end_flush();
 		}
 		else
 		{
-			$count = 1;
-			$content = ob_get_clean();
-			$content = str_replace('</head>',$this->head.'</head>',$content,$count);
-			$this->data['content'] = $content;
-			f()->load->view('templates/'.$this->view, $this->data);
+			$this->data['content'] = ob_get_clean();
+			f()->load->view('templates/'.$this->getview(), $this->data);
 		}
 	}
 }

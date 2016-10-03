@@ -1,18 +1,18 @@
 <?php
 class request
 {
-	public function start()
-	{
-		f()->template->start('page');
-	}
 	public function perform()
 	{
-		f()->router->route();
-	}
-	public function stop()
-	{
-		f()->template->render();
-		exit;
+		try{
+			f()->template->start('page');
+			f()->router->route();
+			f()->template->render();
+			exit(0);
+		}catch(Exception $e){
+			f()->template->cancel();
+			f()->debug->exception($e);
+			exit(1);
+		}
 	}
 	public function isxhr()
 	{

@@ -22,4 +22,11 @@ class debug
 		// error_log the error:
 		error_log($error);
 	}
+	public function exception($e)
+	{
+		echo 'error on website: '.$e->getMessage();
+		if(f()->access->isadminadmin()){
+			var_dump($e);
+		}
+	}
 }
