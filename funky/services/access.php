@@ -5,7 +5,7 @@ class access
 	{
 		return !empty(j()->session->user_id);
 	}
-	public function issuperuser()
+	public function isadminadmin()
 	{
 		return false;
 	}
