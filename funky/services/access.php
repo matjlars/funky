@@ -3,7 +3,7 @@ class access
 {
 	public function isloggedin()
 	{
-		return !empty(j()->session->user_id);
+		return !empty(f()->session->user_id);
 	}
 	public function isadminadmin()
 	{
