@@ -1,0 +1,150 @@
+body{
+	font-family:Helvetica,sans-serif;
+	font-size:100%;
+	margin:0;
+	padding:0;
+}
+
+
+/* nav */
+body>nav{
+	background:#ccc;
+}
+body>nav a{
+	text-decoration:none;
+	display:inline-block;
+	padding:.5rem 1rem;
+	color:black;
+}
+body>nav a:hover {
+	background:rgba(0,0,0,0.2);
+}
+body>nav a:active {
+	background:rgba(0,0,0,0.1);
+}
+body>nav>aside{
+	display:inline-block;
+	float:right;
+}
+body>nav+nav{
+	background:#bbb;
+}
+body>nav+nav a.active{
+	background-color:#aaa;
+}
+
+
+/* main content */
+main{
+	padding:1rem;
+	background:white;
+}
+header{
+	background:#e8e8e8;
+}
+
+
+/* individual tags */
+h1,h2,h3,h4,h5,h6{
+	margin:0;
+}
+h1{
+	background:#ddd;
+	padding:1rem;
+}
+
+
+/* forms */
+form{
+}
+.field{
+	margin:.5rem 0;
+	padding:.5rem;
+}
+.field input[type=text],
+.field input[type=password],
+.field textarea{
+	padding:.2rem;
+	width:100%;
+	font-size:120%;
+	border:1px inset #ccc;
+}
+.field img{
+	max-width:300px;
+}
+
+
+/* buttons */
+.button,
+input[type=submit]{
+	display:inline-block;
+	text-decoration:none;
+	font-size:1.2rem;
+	color:white;
+	margin:.1rem;
+	padding:.3rem 1rem;
+	cursor:pointer;
+	background:#444;
+	border:1px solid #222;
+}
+.button:hover,
+input[type=submit]:hover {
+	opacity:0.8;
+}
+.button:active,
+input[type=submit]:active {
+	opacity:0.6;
+}
+.button.green,
+input[type=submit].green {
+	background:#4b4;
+	border-color:#292;
+}
+.button.red,
+input[type=submit].red{
+	background:#b44;
+	border-color:#922;
+}
+td .button,
+td input[type=submit]{
+	font-size:.8rem;
+	margin:0;
+	padding:.2rem 1rem;
+}
+
+
+/* rows */
+.row{
+	display:flex;
+}
+.row>*{
+	flex:1;
+}
+
+
+/* tables */
+table{
+	border-collapse:collapse;
+	width:100%;
+}
+thead{
+	font-size:1.2rem;
+	color:black;
+	background:#aaa;
+	text-align:left;
+}
+tbody tr{
+	border-bottom:1px solid #aaa;
+}
+tbody tr:nth-child(odd) {
+	background:#eee;
+}
+tbody tr:hover {
+	background:#f8f8ff;
+}
+tbody tr:nth-child(odd):hover {
+	background:#e8e8ee;
+}
+td:first-child,th:first-child {
+	padding-left:.2rem;
+}

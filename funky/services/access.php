@@ -32,7 +32,7 @@ class access
 	{
 		// if we're not logged in at all, redirect to path:
 		if(!$this->isloggedin()){
-			f()->path->redirect(f()->config->login_path);
+			f()->path->redirect('admin/index/login');
 		}
 		
 		// in this context, we are logged in. check roles if any given:
@@ -43,7 +43,7 @@ class access
 					return;
 				}
 			}
-			f()->path->redirect(f()->config->login_path);
+			f()->path->redirect('admin/index/login');
 		}
 	}
 	public function user()
