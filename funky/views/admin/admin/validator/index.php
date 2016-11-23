@@ -2,7 +2,7 @@
 
 <h3>Tools</h3>
 <ul>
-	<li><a href="https://w3.validator.org/nu/?doc=<?=urlencode(site()->path->url())?>" target="_blank">w3 html validator</a></li>
+	<li><a href="https://w3.validator.org/nu/?doc=<?=urlencode(f()->path->url())?>" target="_blank">w3 html validator</a></li>
 	<li><a href="http://csslint.net/" target="_blank">css linter</a></li>
 </ul>
 

@@ -1962,6 +1962,7 @@ class email
 		*/
 		
 		// The above code appears to be the only part that requires codeigniter.. so I just kinda peeled it off..
+		$line = substr($msg, 5);
 		$this->_debug_msg[] = str_replace('%s', $val, $line)."<br />";
 	}
 

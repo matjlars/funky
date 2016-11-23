@@ -25,4 +25,13 @@ class format
 		}
 		return $phone;
 	}
+
+	// sanitize it perfectly to be a slug (only containing [a-zA-Z0-9\-])
+	public function slug($str)
+	{
+		$str = strtolower($str);
+		$str = str_replace(' ', '-', $str);
+		$str = preg_replace('/[^a-z0-9\-]/', '', $str);
+		return $str;
+	}
 }

@@ -3,10 +3,10 @@
 	text-align:center;
 }
 #admin-login form{
+	text-align:left;
 	display:inline-block;
 	padding:1em;
 	margin:1em;
-	background-color:#eee;
 }
 </style>
 
@@ -16,13 +16,21 @@
 
 <div id="admin-login">
 	<h2>Log In</h2>
-	<form action="<?=j()->path->current_url()?>" method="post" id="adminloginform">
-		<input type="text" id="username" name="username" placeholder="Username.."/>
-		<input type="password" name="password" placeholder="Password.."/>
-		<input type="submit" name="login" value="Log In"/>
+	<form action="<?=f()->path->current_url()?>" method="post" id="adminloginform">
+		<div class="field">
+			<label for="email">Email Address</label>
+			<input type="text" id="email" name="email"/>
+		</div>
+		<div class="field">
+			<label for="password">Password</label>
+			<input type="password" name="password"/>
+		</div>
+		<div class="field">
+			<input type="submit" name="login" value="Log In"/>
+		</div>
 	</form>
 </div>
 
 <script type="text/javascript">
-document.getElementById('username').focus();
+document.getElementById('email').focus();
 </script>

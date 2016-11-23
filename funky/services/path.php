@@ -58,6 +58,12 @@ class path
 		return $this->php.$path;
 	}
 	
+	// returns the full server path to the document root
+	public function docroot($path='')
+	{
+		return $this->docroot.$path;
+	}
+	
 	// use this function to test whether we are currently on this page:
 	public function iscurrent($path='')
 	{

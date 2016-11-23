@@ -29,74 +29,6 @@ class load
 		throw new exception('View '.$name.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
 	}
 	
-	// Returns an object of type $name controller
-	public function controller($name)
-	{
-		// figure out the controller name, independent of any path it came with:
-		$controllername = $name;
-		$lastslash = strrpos($name, '/');
-		if($lastslash !== false)
-		{
-			$controllername = substr($name, $lastslash+1);
-		}
-		
-		// figure out the global and site-specific paths:
-		$globalpath = f()->path->php('funky/controllers/'.$name.'.php');
-		$controllerpath = f()->path->php('controllers/'.$name.'.php');
-		
-		// this will contain the class name to instantiate at the end:
-		$class = '';
-		
-		// first see if there's a global controller:
-		if(is_file($globalpath))
-		{
-			require_once $globalpath;
-			$class = $controllername;
-			
-			// if it didn't define this class, err out to let the dev know the file is wrong:
-			if(!in_array($class, get_declared_classes()))
-			{
-				throw new exception('Your controller class in '.$globalpath.' must be named "'.$class.'"');
-			}
-		}
-		
-		// now see if there's a custom one for this particular web site:
-		if(is_file($controllerpath))
-		{
-			require_once $controllerpath;
-			$class = 'my_'.$controllername;
-			
-			// err out if there was supposed to be a class in that file but there wasn't:
-			if(!in_array($class, get_declared_classes()))
-			{
-				throw new exception('You must create a controller class called "'.$class.'" in this file: '.$controllerpath.'.');
-			}
-		}
-		
-		if(empty($class))
-		{
-			throw new exception('Controller '.$name.' not found in global or site-specific context.');
-		}
-		else
-		{
-			return new $class();
-		}
-	}
-	
-	// requires the model file(s) and returns TRUE if successful or FALSE if unsuccessful
-	public function model($name)
-	{
-		// Check for site-specific model file:
-		$modelpath = f()->path->php('models/'.$name.'.php');
-		if(file_exists($modelpath))
-		{
-			require_once $modelpath;
-			return true;
-		}
-		
-		return false;
-	}
-	
 	// requires the service file and a potential extended one, instantiates one and returns it:
 	public function service($name)
 	{
@@ -127,5 +59,24 @@ class load
 		{
 			return new $class();
 		}
+	}
+
+	public function field($name, $typename, $args=array())
+	{
+		$class = '\\funky\\fields\\'.$typename;
+		$field = new $class($name, $args);
+		return $field;
+	}
+	public function fields($arr)
+	{
+		$f = array();
+		foreach($arr as $a){
+			$name = $a[0];
+			$type = $a[1];
+			$args = array();
+			if(isset($a[2])) $args = $a[2];
+			$f[$name] = f()->load->field($name, $type, $args);
+		}
+		return $f;
 	}
 }

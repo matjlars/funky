@@ -9,9 +9,8 @@ class debug
 	}
 	public function exception($e)
 	{
-		echo 'error on website: '.$e->getMessage();
-		if(f()->access->isadminadmin()){
-			var_dump($e);
-		}
+		f()->load->view('errors/exception', array(
+			'e'=>$e,
+		));
 	}
 }

@@ -4,9 +4,9 @@
 this class is responsible for routing URL requests to controllers.
 for example, if you want to use the *photos* controller on a new site, simply make this file at DOC_ROOT/../controllers/photos.php:
 
-class photos extends j_photos{}
+class photos extends f_photos{}
 
-this creates the *photos* controller for your site, thereby granting access to all the public functions in j_photos as route endpoints
+this creates the *photos* controller for your site, thereby granting access to all the public functions in f_photos as route endpoints
 
 */
 class router
@@ -48,7 +48,7 @@ class router
 			include $path2;
 			return true;
 		}
-
+		
 		// couldn't find this file, so let route() know we failed.
 		return false;
 	}
@@ -63,9 +63,10 @@ class router
 		
 		// first, keep going with subdirectories until there isn't a subdirectory that matches:
 		$i = 0; // this is which uripart we are currently concerned with
-		$controllerfilepath = j()->path->php('controllers/');
+		$controllerfilepath = f()->path->php('src/controllers/');
+		$globalfilepath = f()->path->php('funky/src/controllers/');
 		$controllername = '';
-		while(isset($uriparts[$i]) && is_dir($controllerfilepath.$controllername.$uriparts[$i]))
+		while(isset($uriparts[$i]) && (is_dir($controllerfilepath.$controllername.$uriparts[$i]) || is_dir($globalfilepath.$controllername.$uriparts[$i])))
 		{
 			$controllername .= $uriparts[$i].'/';
 			$i++;
@@ -80,7 +81,17 @@ class router
 		{
 			$controllername .= $uriparts[$i];
 		}
-		$controllerfilepath .= $controllername.'.php';
+		
+		// include the controller file
+		$controllerclass = '\\controllers\\'.str_replace('/', '\\', $controllername);
+		try{
+			$controller = new $controllerclass();
+		}catch(\exception $e){
+			f()->debug->exception($e);
+			// if an error happens here, it could be that this class does not exist
+			// in that case, we should definitely 404
+			return false;
+		}
 		$i++; // moving on to the method..
 		
 		// get method name:
@@ -92,7 +103,24 @@ class router
 		{
 			$methodname = $uriparts[$i];
 		}
-		$i++; // moving on to parameters:
+		
+		// validate the method name
+		if(method_exists($controller, $methodname))
+		{
+			$r = new ReflectionMethod($controller, $methodname);
+			if(!$r->isPublic()) return false;
+		}
+		else
+		{
+			// in this context, there is no explicit function for this methodname.
+			// therefore, if there is no __call function, then this is not a valid controller request
+			if(!method_exists($controller, '__call'))
+			{
+				// there is no function to call in this controller
+				return false;
+			}
+		}
+		$i++; // moving on to parameters
 		
 		// get all parameters:
 		$params = array();
@@ -104,32 +132,16 @@ class router
 			$parami++; // move to next param in $params array
 		}
 		
-		// at this point, we've expended all of our uri parts.
-		if(file_exists($controllerfilepath))
-		{
-			// load the controller:
-			$controller = j()->load->controller($controllername);
-			
-			// make sure it has the method:
-			if(method_exists($controller, $methodname))
-			{
-				call_user_func_array(array($controller,$methodname),$params);
-				return true;
-			}
-			else // the method doesn't exist in this controller:
-			{
-				return false;
-			}
-		}
-		
-		return false; // no controller
+		// at this point, we have full knowledge of the function to call
+		call_user_func_array(array($controller,$methodname),$params);
+		return true;
 	}
 	
 	// this functions routes to the 404 page.
 	public function route404()
 	{
 		header('HTTP/1.0 404 Not Found', true, 404);
-		j()->load->view('errors/404');
+		f()->load->view('errors/404');
 		exit;
 	}
 }

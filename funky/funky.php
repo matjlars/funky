@@ -4,12 +4,13 @@
 error_reporting(E_ALL);
 
 
-// load a few required core files:
-require 'core/f_model.php';
+// start the session no matter what:
+session_start();
+
 
 
 // this is the whole funky framework (besides all the awesome services)
-class f_funky
+class funky
 {
 	private $services= array();
 	
@@ -41,22 +42,62 @@ class f_funky
 	}
 }
 
-// Here, we'll define a function for attempting to autoload models:
-// This way, you can just use the model classes without needing to include/require/load them.
-function __autoload($model)
+// this function automatially loads classes
+// $classname is either like \funky\models\classname
+// $classname is else like \models\classname
+// if $classname is like \models\classname, it automatically creates it if it doesn't exist and a funky one does.
+function __autoload($classname)
 {
-	if(!f()->load->model($model))
-	{
-		throw new exception('Class '.$model.' not found.');
+	// try to load class from either /funky/src/ or /src/
+	$tokens = explode('\\', $classname);
+	// add beginning of path to the path
+	if(isset($tokens[0]) && $tokens[0] == 'funky'){
+		// load from /funky
+		unset($tokens[0]);
+		$path = f()->path->php('funky/src/').implode('/', $tokens).'.php';
+	}else{
+		// load from site's /src
+		$fpath = f()->path->php('funky/src/').implode('/', $tokens).'.php';
+		$path = f()->path->php('src/').implode('/', $tokens).'.php';
+		
+		// if the site-specific one doesn't exist, create it quick:
+		if(!is_file($path)){
+			if(is_file($fpath)){
+				// a site-specific one doesn't exist, but a funky one does.
+				// automatically create a new class that is site-specific:
+				$funkyclass = '\\funky\\'.$classname;
+				$lastslash = strrpos($classname, '\\');
+				$namespace = '';
+				$php = '';
+				if($lastslash !== false){
+					$namespace = substr($classname, 0, $lastslash);
+					$classname = substr($classname, $lastslash+1);
+					$php = 'namespace '.$namespace.";\n";
+				}
+				$php .= 'class '.$classname.' extends '.$funkyclass.'{}';
+				eval($php);
+				return;
+			}else{
+				throw new \exception('trying to load class '.$classname.' but neither '.$path.' nor '.$fpath.' exist.');
+			}
+		}
+		// in this context, we know there is a file at $path
+	}
+	if(!is_file($path)){
+		throw new \exception('trying to load class '.$classname.' but file '.$path.' does not exist');
+	}
+	include $path;
+	if(!in_array($classname, get_declared_classes())){
+		throw new \exception('File '.$path.' exists but does not contain class '.$classname);
 	}
 }
 
 
-// define the global function that allows you to easily access the f_funky singleton object
+// define the global function that allows you to easily access the funky singleton object
 function f()
 {
 	static $f = null;
-	if($f == null) $f = new f_funky();
+	if($f == null) $f = new funky();
 	return $f;
 }
 

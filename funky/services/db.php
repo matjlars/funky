@@ -1,30 +1,39 @@
 <?php
 class db
 {
-	private $connection;
+	private $mysqli;
 	
 	public function __construct()
 	{
-		$this->connection = mysql_connect(j()->config->db_server,j()->config->db_user,j()->config->db_password);
-		mysql_select_db(j()->config->db_name,$this->connection) or die('Error while trying to select database: "'.mysql_error().'"');
-		if(!$this->connection) die('Failed to establish database connection. Please check the config file for correct credentials.');
+		$this->mysqli = new mysqli(f()->config->db_server, f()->config->db_user, f()->config->db_password, f()->config->db_name);
+		
+		// make sure it connected:
+		if($this->mysqli->connect_errno){
+			throw new \exception('failed to connect to mysql: ('.$this->mysqli->connect_errno.') '.$this->mysqli->connect_error);
+		}
 	}
 	
 	// Runs the $sql query and returns a db_result
 	public function query($sql)
 	{
-		$resource = mysql_query($sql) or die('An error occured while running an SQL query: SQL: "'.$sql.'" ERROR: '.mysql_error());
-		if($resource===TRUE) return TRUE;
+		$resource = $this->mysqli->query($sql);
+		if($resource === true) return true;
+		if($resource == false){
+			throw new \exception('error while running db query "'.$sql.'". error: "'.$this->mysqli->error.'"');
+		}
 		return new db_result($resource);
 	}
 	
 	// Inserts $data into $table, and returns the inserted PK
 	public function insert($table,$data)
 	{
-		if(empty($table)) die('An error occured while inserting: no table specified in j()->db->insert()');
-		if(empty($data)) die('An error occured while inserting: no data given in j()->db->insert()');
-		if(!is_array($data)) die('An error occured while inserting: data is not an array in j()->db->insert()');
-		$sql = 'INSERT INTO `'.mysql_real_escape_string($table).'` SET ';
+		// validate inputs:
+		if(empty($table)) throw new \exception('An error occured while inserting: no table specified in f()->db->insert()');
+		if(empty($data)) throw new \exception('An error occured while inserting: no data given in f()->db->insert()');
+		if(!is_array($data)) throw new \exception('An error occured while inserting: data is not an array in f()->db->insert()');
+		
+		// generate the sql
+		$sql = 'INSERT INTO `'.$this->escape($table).'` SET ';
 		foreach($data as $key=>$value)
 		{
 			if($value === null)
@@ -33,21 +42,25 @@ class db
 			}
 			else
 			{
-				$sql .= '`'.$key.'`'.'="'.mysql_real_escape_string($value).'",';
+				$sql .= '`'.$key.'`'.'="'.$this->escape($value).'",';
 			}
 		}
 		$sql = substr($sql,0,-1); // strip the last ','
-		mysql_query($sql,$this->connection) or die('An error occurred while running an SQL INSERT: "'.$sql.'" ERROR: '.mysql_error());
-		return mysql_insert_id();
+		
+		$result = $this->mysqli->query($sql);
+		if(!$result) throw new \exception('An error occurred while running an SQL INSERT: "'.$sql.'" ERROR: '.$this->mysqli->error);
+		return $this->mysqli->insert_id;
 	}
 	
 	// Updates a $table with $data given $key = $value
 	public function update($table,$data,$condkey,$condvalue)
 	{
-		if(empty($data)) die('no $data passed to j()->db->update()');
+		// validate inputs:
+		if(empty($table)) throw new \exception('no $table passed to f()->db->update()');
+		if(empty($data)) throw new \exception('no $data passed to f()->db->update()');
 		
 		// Generate UPDATE SQL:
-		$sql = 'UPDATE `'.mysql_real_escape_string($table).'` SET ';
+		$sql = 'UPDATE `'.$this->escape($table).'` SET ';
 		foreach($data as $key=>$value)
 		{
 			if($value === null)
@@ -56,25 +69,49 @@ class db
 			}
 			else
 			{
-				$sql .= '`'.$key.'`="'.mysql_real_escape_string($value).'",';
+				$sql .= '`'.$key.'`="'.$this->escape($value).'",';
 			}
 		}
 		$sql = substr($sql,0,-1); // strip the last ','
-		$sql .= ' WHERE `'.$condkey.'` = "'.mysql_real_escape_string($condvalue).'"';
-		mysql_query($sql,$this->connection) or die('An error occurred while running an SQL UPDATE: "'.$sql.'" ERROR: '.mysql_error());
+		$sql .= ' WHERE `'.$condkey.'` = "'.$this->escape($condvalue).'"';
+		$result = $this->mysqli->query($sql);
+		if(!$result) throw new \exception('An error occurred while running an SQL UPDATE: "'.$sql.'" ERROR: '.$this->mysqli->error);
 	}
 	
 	// Determine if a table exists in the current database:
 	public function table_exists($table)
 	{
-		if(mysql_num_rows(mysql_query('SHOW TABLES LIKE "'.$table.'"',$this->connection))) return true;
+		if($this->query('SHOW TABLES LIKE "'.$table.'"')->count()) return true;
 		return false;
 	}
 	
 	// Safely escapes a value:
 	public function escape($value)
 	{
-		return mysql_real_escape_string($value);
+		return $this->mysqli->real_escape_string($value);
+	}
+	// returns an array of all options for the given SET or ENUM field in the given table.
+	public function set_options($table, $field)
+	{
+		$sql = 'DESCRIBE '.$this->escape($table).' '.$this->escape($field);
+		$row = $this->mysqli->query($sql)->fetch_assoc();
+		return str_getcsv(trim(substr($row['Type'], 3), '()'), ',', "'");
+	}
+	// this function is because I won't remember which one to use later
+	// also in case they ever differ
+	public function enum_options($table, $field)
+	{
+		return $this->set_options($table, $field);
+	}
+	// this function returns all table names as an array
+	public function tables()
+	{
+		$tables = array();
+		$res = $this->mysqli->query('SHOW TABLES');
+		while($row = $res->fetch_array(MYSQLI_NUM)){
+			$tables[] = $row[0];
+		}
+		return $tables;
 	}
 }
 
@@ -82,12 +119,18 @@ class db_result implements Iterator
 {
 	private $resource;
 	private $pos;
-	private $count;
 	
 	public function __construct($resource)
 	{
+		// validate resource:
+		if(empty($resource)){
+			throw new \exception('resource empty in db_result::__construct(). it is type '.gettype($resource));
+		}
 		$this->resource = $resource;
-		$this->count = mysql_num_rows($resource);
+	}
+	public function __destruct()
+	{
+		$this->resource->free();
 	}
 	
 	// Iterator Functions:
@@ -97,9 +140,9 @@ class db_result implements Iterator
 	}
 	function current()
 	{
-		if($this->pos >= $this->count) return array();
-		mysql_data_seek($this->resource,$this->pos);
-		return mysql_fetch_assoc($this->resource);
+		if($this->pos >= $this->count()) return array();
+		$this->resource->data_seek($this->pos);
+		return $this->resource->fetch_assoc();
 	}
 	function next()
 	{
@@ -107,7 +150,7 @@ class db_result implements Iterator
 	}
 	function valid()
 	{
-		return $this->pos < $this->count;
+		return $this->pos < $this->count();
 	}
 	function key()
 	{
@@ -122,15 +165,14 @@ class db_result implements Iterator
 	}
 	public function count()
 	{
-		return $this->count;
+		return $this->resource->num_rows;
 	}
 	
 	// this gives you a SET (like "(0,1,2,3,4,5)") for a given key in the result
 	public function set($key)
 	{
 		$set = '(';
-		while($row = mysql_fetch_assoc($this->resource))
-		{
+		foreach($this as $row){
 			$set .= $row[$key].',';
 		}
 		$set = rtrim($set,',').')';
@@ -141,34 +183,27 @@ class db_result implements Iterator
 	public function map($key1,$key2)
 	{
 		$map = array();
-		while($row = mysql_fetch_assoc($this->resource))
-		{
+		foreach($this as $row){
 			$map[$row[$key1]] = $row[$key2];
 		}
 		return $map;
 	}
 	
 	// returns a single value from the first row with the given $key
+	// returns false if this key does not exist in the first row
 	public function val($key)
 	{
-		$row = mysql_fetch_assoc($this->resource);
+		$row = $this->current();
+		if(!array_key_exists($key, $row)) return false;
 		return $row[$key];
 	}
 	
-	// returns an array of all of the data
+	// returns an array of all of the data for a given key
 	public function arr($key='')
 	{
 		$data = array();
-		while($datum = mysql_fetch_assoc($this->resource))
-		{
-			if(empty($key))
-			{
-				$data[] = $datum;
-			}
-			else
-			{
-				$data[$datum[$key]] = $datum;
-			}
+		foreach($this as $row){
+			$data[] = $row[$key];
 		}
 		return $data;
 	}
