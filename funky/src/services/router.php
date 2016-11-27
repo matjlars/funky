@@ -108,7 +108,7 @@ class router
 		// validate the method name
 		if(method_exists($controller, $methodname))
 		{
-			$r = new ReflectionMethod($controller, $methodname);
+			$r = new \ReflectionMethod($controller, $methodname);
 			if(!$r->isPublic()) return false;
 		}
 		else

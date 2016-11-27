@@ -1,4 +1,7 @@
 <?php
+// This file is included at the very beginning of all requests.
+// That happens via the .htaccess file.
+
 
 // turn on error reporting:
 error_reporting(E_ALL);
@@ -8,56 +11,13 @@ error_reporting(E_ALL);
 session_start();
 
 
-
-// this is the whole funky framework (besides all the awesome services)
-class funky
-{
-	private $services= array();
-	
-	public function __construct()
-	{
-		// determine f() path to load a few
-		$servicespath = dirname(__FILE__).'/services/';
-		
-		// Load the path service so our loader knows where to load stuff from
-		/*
-		require_once $servicespath.'path.php';
-		$this->services['path'] = new path();
-		
-		// Load the loader so we don't try to load the loader to load the loader later (only chuck norris can do that)
-		require_once $servicespath.'load.php';
-		$this->services['load'] = new load();
-		*/
-		// Load a couple services right away every request:
-		foreach(['path', 'load'] as $s){
-			$serviceclass = '\\services\\'.$s;
-			$this->services[$s] = new $serviceclass;
-		}
-	}
-	
-	// auto-load and access services:
-	public function __get($key)
-	{
-		if(!isset($this->services[$key]))
-		{
-			$serviceclass = '\\services\\'.$key;
-			//$this->services[$key] = $this->load->service($key);
-			$this->services[$key] = new $serviceclass();
-			if($this->services[$key] == null){
-				throw new Exception('No such service '.$key);
-			}
-		}
-		return $this->services[$key];
-	}
-}
-
 // this function automatially loads classes
 // $classname is either like \funky\models\classname
 // $classname is else like \models\classname
 // if $classname is like \models\classname, it automatically creates it if it doesn't exist and a funky one does.
 function __autoload($classname)
 {
-	// figure out a few paths to remove the dependency on the path service, so we can load the path service:
+	// figure out a paths to remove the dependency on the path service, so we can load the path service:
 	$projectroot = dirname($_SERVER['DOCUMENT_ROOT']).'/';
 	
 	// try to load class from either /funky/src/ or /src/
@@ -105,14 +65,36 @@ function __autoload($classname)
 }
 
 
-// define the global function that allows you to easily access the funky singleton object
-function f()
+// this is a little class just to make the call to f() nicer.
+// this way, you can just say f()->db for the "db" singleton service.
+class funky_servicecontainer
 {
-	static $f = null;
-	if($f == null) $f = new funky();
-	return $f;
+	private $services = array();
+	
+	// auto-load and access services:
+	public function __get($key)
+	{
+		if(!isset($this->services[$key]))
+		{
+			$serviceclass = '\\services\\'.$key;
+			$this->services[$key] = new $serviceclass();
+			if($this->services[$key] == null){
+				throw new Exception('No such service '.$key);
+			}
+		}
+		return $this->services[$key];
+	}
 }
 
 
-// now perform the request:
+// define the global function that allows you to easily access any of the service singletons
+function f()
+{
+	static $container = null;
+	if(is_null($container)) $container = new funky_servicecontainer();
+	return $container;
+}
+
+
+// now perform the request using the perform() function in the "request" service:
 f()->request->perform();
