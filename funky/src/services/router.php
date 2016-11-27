@@ -1,4 +1,5 @@
 <?php
+namespace funky\services;
 
 /*
 this class is responsible for routing URL requests to controllers.

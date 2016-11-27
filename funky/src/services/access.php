@@ -1,5 +1,7 @@
 <?php
-use \models\user;
+namespace funky\services;
+
+use models\user;
 
 class access
 {

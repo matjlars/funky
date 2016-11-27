@@ -1,4 +1,6 @@
 <?php
+namespace funky\services;
+
 class ssl
 {
 	// returns TRUE if SSL (HTTPS) is currently being used

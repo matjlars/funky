@@ -1,4 +1,6 @@
 <?php
+namespace funky\services;
+
 class debug
 {
 	public function dump($data)

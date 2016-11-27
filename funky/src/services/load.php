@@ -1,4 +1,6 @@
 <?php
+namespace funky\services;
+
 // you can't override this service because of how it's loaded in the site constructor.. sorry.
 // Let MisterMashu (mistermashu@gmail.com) know if you want him to figure out a way to do that.
 // basically, this class is good for loading in models, views, controllers, and services in such a way where you can have global files and site-specific files and it handles it well.
@@ -26,12 +28,14 @@ class load
 		}
 		
 		// Otherwise, err out:
-		throw new exception('View '.$name.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
+		throw new \exception('View '.$name.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
 	}
 	
 	// requires the service file and a potential extended one, instantiates one and returns it:
 	public function service($name)
 	{
+		throw new \exception('dont call load->service() anymore');
+		/*
 		$servicepath = f()->path->php('funky/services/'.$name.'.php');
 		$custompath = f()->path->php('services/'.$name.'.php');
 		
@@ -53,12 +57,13 @@ class load
 		
 		if(empty($class))
 		{
-			throw new exception('Service '.$name.' not found in global or site-specific context.');
+			throw new \exception('Service '.$name.' not found in global or site-specific context.');
 		}
 		else
 		{
 			return new $class();
 		}
+		*/
 	}
 
 	public function field($name, $typename, $args=array())

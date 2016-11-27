@@ -1,4 +1,5 @@
 <?php
+namespace funky\services;
 
 class template
 {

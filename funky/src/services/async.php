@@ -1,4 +1,6 @@
 <?php
+namespace funky\services;
+
 class async
 {
 	public function getsource($url)

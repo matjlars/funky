@@ -1,4 +1,6 @@
 <?php
+namespace funky\services;
+
 class config
 {
 	private $data;
@@ -15,7 +17,7 @@ class config
 	public function __get($key)
 	{
 		if(isset($this->data[$key])) return $this->data[$key];
-		else throw new exception('Config value for key "'.$key.'" not found.');
+		else throw new \exception('Config value for key "'.$key.'" not found.');
 	}
 	public function __isset($key)
 	{

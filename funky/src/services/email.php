@@ -1,4 +1,6 @@
 <?php
+namespace funky\services;
+
 // This was originally from the CodeIgniter framework, but I stripped it out to work in the Janky framework.
 // For documentation, google "codeigniter email"
 

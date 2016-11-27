@@ -1,4 +1,5 @@
 <?php
+namespace funky\services;
 
 // This service is for getting information regarding server paths as well as URLs.
 class path
@@ -22,7 +23,7 @@ class path
 		}
 		else
 		{
-			throw new exception('unable to determine document root in path service.');
+			throw new \exception('unable to determine document root in path service.');
 		}
 		
 		// generate the base path by just stripping off the last folder:

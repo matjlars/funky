@@ -1,4 +1,6 @@
 <?php
+namespace funky\services;
+
 // each function in this class will return TRUE if it's all good to go, and FALSE if it isn't.
 // if the function is passed a TRUE, that means that function will run
 class validator

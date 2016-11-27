@@ -1,4 +1,6 @@
 <?php
+namespace funky\services;
+
 class request
 {
 	public function perform()

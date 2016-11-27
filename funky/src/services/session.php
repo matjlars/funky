@@ -1,9 +1,11 @@
 <?php
+namespace funky\services;
+
 class session
 {
 	public function __get($key)
 	{
-		if(!isset($_SESSION[$key])) throw new exception('no session var "'.$key.'"');
+		if(!isset($_SESSION[$key])) throw new \exception('no session var "'.$key.'"');
 		return $_SESSION[$key];
 	}
 	public function __set($key, $value)

@@ -20,12 +20,19 @@ class funky
 		$servicespath = dirname(__FILE__).'/services/';
 		
 		// Load the path service so our loader knows where to load stuff from
+		/*
 		require_once $servicespath.'path.php';
 		$this->services['path'] = new path();
 		
 		// Load the loader so we don't try to load the loader to load the loader later (only chuck norris can do that)
 		require_once $servicespath.'load.php';
 		$this->services['load'] = new load();
+		*/
+		// Load a couple services right away every request:
+		foreach(['path', 'load'] as $s){
+			$serviceclass = '\\services\\'.$s;
+			$this->services[$s] = new $serviceclass;
+		}
 	}
 	
 	// auto-load and access services:
@@ -33,7 +40,9 @@ class funky
 	{
 		if(!isset($this->services[$key]))
 		{
-			$this->services[$key] = $this->load->service($key);
+			$serviceclass = '\\services\\'.$key;
+			//$this->services[$key] = $this->load->service($key);
+			$this->services[$key] = new $serviceclass();
 			if($this->services[$key] == null){
 				throw new Exception('No such service '.$key);
 			}
@@ -48,17 +57,20 @@ class funky
 // if $classname is like \models\classname, it automatically creates it if it doesn't exist and a funky one does.
 function __autoload($classname)
 {
+	// figure out a few paths to remove the dependency on the path service, so we can load the path service:
+	$projectroot = dirname($_SERVER['DOCUMENT_ROOT']).'/';
+	
 	// try to load class from either /funky/src/ or /src/
 	$tokens = explode('\\', $classname);
 	// add beginning of path to the path
 	if(isset($tokens[0]) && $tokens[0] == 'funky'){
 		// load from /funky
 		unset($tokens[0]);
-		$path = f()->path->php('funky/src/').implode('/', $tokens).'.php';
+		$path = $projectroot.'funky/src/'.implode('/', $tokens).'.php';
 	}else{
 		// load from site's /src
-		$fpath = f()->path->php('funky/src/').implode('/', $tokens).'.php';
-		$path = f()->path->php('src/').implode('/', $tokens).'.php';
+		$fpath = $projectroot.'funky/src/'.implode('/', $tokens).'.php';
+		$path = $projectroot.'src/'.implode('/', $tokens).'.php';
 		
 		// if the site-specific one doesn't exist, create it quick:
 		if(!is_file($path)){

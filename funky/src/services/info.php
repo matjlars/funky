@@ -1,4 +1,5 @@
 <?php
+namespace funky\services;
 
 // This service provides useful information about the site
 class info
