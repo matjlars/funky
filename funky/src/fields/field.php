@@ -12,6 +12,7 @@ class field
 	public function __construct($name, $args)
 	{
 		$this->name = $name;
+		if(!empty($args['label'])) $this->label = $args['label'];
 		$this->init($args);
 	}
 	public function name()
