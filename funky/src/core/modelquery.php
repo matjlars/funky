@@ -9,6 +9,8 @@ class modelquery
 	private $orderby = '';
 	private $limit = 0;
 	private $offset = 0;
+	private $models = null;
+	private $locked = false;
 	
 	// $modelclass is the name of a class of a model.
 	// for example, 'user'
@@ -22,6 +24,7 @@ class modelquery
 	// if $cond is an array, each array element is added as a "key = value" with the value auto-escaped
 	public function where($cond)
 	{
+		if($this->locked) throw new \exception('you cannot add any more where clauses to this modelquery because the query has already ran.');
 		if(is_array($cond)){
 			foreach($cond as $key=>$value){
 				$where[] = '`'.$key.'`='.'`'.f()->db->escape($value).'`';
@@ -37,6 +40,7 @@ class modelquery
 	// the format should be something like 'id ASC' or 'name DESC'
 	public function orderby($orderby)
 	{
+		if($this->locked) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
 		$this->orderby = $orderby;
 	}
 
@@ -44,6 +48,7 @@ class modelquery
 	// use the number 0 to remove the limit
 	public function limit($limit)
 	{
+		if($this->locked) throw new \exception('you cannot limit this modelquery anymore because the query has already ran.');
 		$this->limit = $limit;
 	}
 	// accepts an integer to page the result set ahead by the given number of results
@@ -52,18 +57,26 @@ class modelquery
 	// for pagination, send your Results Per Page to limit() and your (RPP * page #) to this.
 	public function offset($offset)
 	{
+		if($this->locked) throw new \exception('you cannot offset this modelquery anymore because the query has already ran.');
 		$this->offset = $offset;
 	}
-
-	// Performs the query and returns an array of model objects
-	public function get()
+	
+	// performs the query and returns an array of model objects
+	public function toArray()
 	{
-		$models = array();
-		foreach(f()->db->query($this->sql()) as $row){
-			$models[] = $modelclass::fromdata($row);
+		// if we haven't loaded it yet, load it and lock it:
+		if($this->models === null){
+			$this->models = array();
+			foreach(f()->db->query($this->sql()) as $row){
+				$this->models[] = $modelclass::fromdata($row);
+			}
+			// Lock it to prevent further changes. This will surely help a dev not mess up
+			$this->locked = true;
 		}
-		return $models;
+		return $this->models;
 	}
+	
+	// returns the sql needed to run this query
 	public function sql()
 	{
 		// SELECT

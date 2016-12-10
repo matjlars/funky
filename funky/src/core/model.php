@@ -132,6 +132,12 @@ class model
 	{
 		return f()->db->query('select count(1) as c from '.static::table())->val('c');
 	}
+	// returns a modelquery object to use to get an array of this type of model object
+	// An example use case is like this: foreach(user::query()->where('name LIKE "%bob%"') as $user){$user->dostuff();}
+	public static function query()
+	{
+		return new modelquery(gettype($this));
+	}
 	// takes an array of data and sets all applicable data
 	private function setdata($data)
 	{
