@@ -22,6 +22,7 @@ class field
 	{
 		if(!empty($args['label'])) $this->label = $args['label'];
 	}
+	// returns a user-readable value for this field
 	public function get()
 	{
 		return $this->val;
@@ -32,6 +33,7 @@ class field
 		$this->val = $val;
 	}
 	
+	// returns a user-readable label for this field
 	public function label()
 	{
 		if(empty($this->label)){
