@@ -29,7 +29,7 @@ class phone extends field
 	}
 	public function dbtype()
 	{
-		return 'int(11) unsigned';
+		return 'mediumint(11) unsigned';
 	}
 	public static function sanitize($val)
 	{
