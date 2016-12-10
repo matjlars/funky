@@ -9,7 +9,7 @@ class field
 	protected $name;
 	protected $label;
 	
-	public function __construct($name, $args)
+	public function __construct($name, $args=array())
 	{
 		$this->name = $name;
 		if(!empty($args['label'])) $this->label = $args['label'];
@@ -19,10 +19,10 @@ class field
 	{
 		return $this->name;
 	}
-	public function init($args)
-	{
-		if(!empty($args['label'])) $this->label = $args['label'];
-	}
+	
+	// override this function to do stuff with args and set up anything else
+	public function init($args){}
+	
 	// returns a user-readable value for this field
 	public function get()
 	{
