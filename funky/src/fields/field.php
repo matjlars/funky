@@ -75,9 +75,4 @@ class field
 	{
 		throw new \exception('TODO override '.$this->typename().'->dbtype()');
 	}
-	// validates this field exists in the database
-	public function schemavalidate($table)
-	{
-		throw new \exception('TODO');
-	}
 }
