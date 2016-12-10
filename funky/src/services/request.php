@@ -24,4 +24,10 @@ class request
 		}
 		return false;
 	}
+	// returns which type of HTTP method the current request is using.
+	// this will probably be either '', 'GET', or 'POST'
+	public function method()
+	{
+		return $_SERVER['REQUEST_METHOD'];
+	}
 }
