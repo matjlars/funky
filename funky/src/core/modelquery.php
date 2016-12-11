@@ -2,7 +2,7 @@
 namespace funky\core;
 
 // provides a really nice interface for getting 1 or many models objects with 1 db query
-class modelquery
+class modelquery implements Iterator
 {
 	private $modelclass = '';
 	private $where = array();
@@ -10,7 +10,7 @@ class modelquery
 	private $limit = 0;
 	private $offset = 0;
 	private $models = null;
-	private $locked = false;
+	private $it = 0;
 	
 	// $modelclass is the name of a class of a model.
 	// for example, 'user'
@@ -19,12 +19,17 @@ class modelquery
 		$this->modelclass = $modelclass;
 	}
 	
+	public function islocked()
+	{
+		return is_null($this->models);
+	}
+	
 	// accepts either a string or an array.
 	// if $cond is a string, it simply adds that as a WHERE condition that is ANDed with the others
 	// if $cond is an array, each array element is added as a "key = value" with the value auto-escaped
 	public function where($cond)
 	{
-		if($this->locked) throw new \exception('you cannot add any more where clauses to this modelquery because the query has already ran.');
+		if($this->islocked()) throw new \exception('you cannot add any more where clauses to this modelquery because the query has already ran.');
 		if(is_array($cond)){
 			foreach($cond as $key=>$value){
 				$where[] = '`'.$key.'`='.'`'.f()->db->escape($value).'`';
@@ -40,7 +45,7 @@ class modelquery
 	// the format should be something like 'id ASC' or 'name DESC'
 	public function orderby($orderby)
 	{
-		if($this->locked) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
+		if($this->islocked()) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
 		$this->orderby = $orderby;
 	}
 
@@ -48,7 +53,7 @@ class modelquery
 	// use the number 0 to remove the limit
 	public function limit($limit)
 	{
-		if($this->locked) throw new \exception('you cannot limit this modelquery anymore because the query has already ran.');
+		if($this->islocked()) throw new \exception('you cannot limit this modelquery anymore because the query has already ran.');
 		$this->limit = $limit;
 	}
 	// accepts an integer to page the result set ahead by the given number of results
@@ -57,22 +62,14 @@ class modelquery
 	// for pagination, send your Results Per Page to limit() and your (RPP * page #) to this.
 	public function offset($offset)
 	{
-		if($this->locked) throw new \exception('you cannot offset this modelquery anymore because the query has already ran.');
+		if($this->islocked()) throw new \exception('you cannot offset this modelquery anymore because the query has already ran.');
 		$this->offset = $offset;
 	}
 	
 	// performs the query and returns an array of model objects
 	public function toArray()
 	{
-		// if we haven't loaded it yet, load it and lock it:
-		if($this->models === null){
-			$this->models = array();
-			foreach(f()->db->query($this->sql()) as $row){
-				$this->models[] = $modelclass::fromdata($row);
-			}
-			// Lock it to prevent further changes. This will surely help a dev not mess up
-			$this->locked = true;
-		}
+		$this->run();
 		return $this->models;
 	}
 	
@@ -109,5 +106,42 @@ class modelquery
 		}
 
 		return $sql;
+	}
+	
+	public function count()
+	{
+		$this->run();
+		return count($this->models);
+	}
+	
+	// Iterator functions
+	public function rewind()
+	{
+		$this->it = 0;
+	}
+	public function valid()
+	{
+		return $this->it < $this->count();
+	}
+	public function current()
+	{
+		return $this->models[$this->it];
+	}
+	public function key()
+	{
+		return $this->it;
+	}
+	public function next()
+	{
+		$this->it += 1;
+	}
+	private function run()
+	{
+		if(is_null($this->models)){
+			$this->models = array();
+			foreach(f()->db->query($this->sql()) as $row){
+				$this->models[] = $modelclass::fromdata($row);
+			}
+		}
 	}
 }
