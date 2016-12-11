@@ -112,6 +112,14 @@ class modelquery implements Iterator
 		return $sql;
 	}
 	
+	// returns the first model in the array of models.
+	// returns false if there are none.
+	public function first()
+	{
+		$this->run();
+		if(empty($this->models)) return false;
+		return array_shift($this->models);
+	}
 	public function count()
 	{
 		$this->run();
