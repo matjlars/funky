@@ -39,14 +39,16 @@ class modelquery implements Iterator
 		}else{
 			throw new \exception('modelquery->where() must be given an array or string. You gave it a "'.gettype($cond).'"');
 		}
+		return $this;
 	}
-
+	
 	// accepts a string to order the query, and therefore the eventual array of model objects
 	// the format should be something like 'id ASC' or 'name DESC'
 	public function orderby($orderby)
 	{
 		if($this->islocked()) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
 		$this->orderby = $orderby;
+		return $this;
 	}
 
 	// accepts an int to limit the result set to a given size
@@ -55,6 +57,7 @@ class modelquery implements Iterator
 	{
 		if($this->islocked()) throw new \exception('you cannot limit this modelquery anymore because the query has already ran.');
 		$this->limit = $limit;
+		return $this;
 	}
 	// accepts an integer to page the result set ahead by the given number of results
 	// for example, 0 means it doesn't skip any results (default)
@@ -64,6 +67,7 @@ class modelquery implements Iterator
 	{
 		if($this->islocked()) throw new \exception('you cannot offset this modelquery anymore because the query has already ran.');
 		$this->offset = $offset;
+		return $this;
 	}
 	
 	// performs the query and returns an array of model objects
