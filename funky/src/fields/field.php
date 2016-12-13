@@ -5,7 +5,7 @@ class field
 {
 	protected $val = '';
 	protected $validators;
-	protected $errors;
+	protected $errors = array();
 	protected $name;
 	protected $label;
 	
