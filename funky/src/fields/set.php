@@ -3,6 +3,7 @@ namespace funky\fields;
 
 class set extends field
 {
+	// an array of strings that represents all possible values
 	private $values = array();
 	
 	public function init($args)
@@ -29,6 +30,10 @@ class set extends field
 	{
 		if(empty($this->val)) return true;
 		return false;
+	}
+	public function values()
+	{
+		return $this->values;
 	}
 	public function dbtype()
 	{
