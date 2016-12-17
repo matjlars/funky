@@ -1,7 +1,6 @@
 <?php
 namespace funky\services;
-
-using core\dbresult;
+use core\dbresult;
 
 class db
 {
@@ -9,7 +8,7 @@ class db
 	
 	public function __construct()
 	{
-		$this->mysqli = new mysqli(f()->config->db_server, f()->config->db_user, f()->config->db_password, f()->config->db_name);
+		$this->mysqli = new \mysqli(f()->config->db_server, f()->config->db_user, f()->config->db_password, f()->config->db_name);
 		
 		// make sure it connected:
 		if($this->mysqli->connect_errno){

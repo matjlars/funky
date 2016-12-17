@@ -108,7 +108,8 @@ class migrations
 		}
 		return $migrations;
 	}
-	protected function create_table_sql($modelclass){
+	// returns the sql necessary to create a table given a model class name
+	public function create_table_sql($modelclass){
 		$table = $modelclass::table();
 		$sql = 'CREATE TABLE `'.$table.'`(';
 		// generate an array of sql strings for each field
