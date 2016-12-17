@@ -1,9 +1,10 @@
 <?php
 namespace funky\models;
+use core\model;
 
-class user extends core\model
+class user extends model
 {
-	public function fields()
+	public static function fields()
 	{
 		return f()->load->fields([
 			['email', 'text'],
