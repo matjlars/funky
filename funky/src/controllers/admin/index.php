@@ -71,7 +71,7 @@ class index
 		if(empty($_POST)){
 			$user = new \models\user();
 			// default to adminadmin because it's the first user
-			$user->roles = array('adminadmin', 'admin');
+			$user->roles = 'adminadmin,admin';
 			f()->load->view('admin/index/ensureuserexists', array(
 				'user'=>$user,
 			));

@@ -15,6 +15,14 @@ class set extends field
 	{
 		return explode(',', $this->val);
 	}
+	public function set($val)
+	{
+		// convert an array to a comma separate string
+		if(is_array($val)){
+			$val = implode(',', $val);
+		}
+		parent::set($val);
+	}
 	public function in($val)
 	{
 		return in_array($val, $this->get());

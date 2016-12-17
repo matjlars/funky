@@ -7,6 +7,10 @@ class password extends field
 	{
 		parent::init($args);
 	}
+	public function set($val)
+	{
+		parent::set(md5($val));
+	}
 	public function dbtype()
 	{
 		return 'char(32)';
