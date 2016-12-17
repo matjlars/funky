@@ -47,7 +47,7 @@ class index
 		if(!f()->db->table_exists('users')){
 			// get users migrations
 			$sql = f()->migrations->create_table_sql('\\models\\user');
-			if(!empty($_POST)){
+			if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				f()->db->query($sql);
 				return true;
 			}
@@ -69,7 +69,12 @@ class index
 		
 		// in this context, there are no users
 		if(empty($_POST)){
-			f()->load->view('admin/index/ensureuserexists');
+			$user = new \models\user();
+			// default to adminadmin because it's the first user
+			$user->roles = array('adminadmin', 'admin');
+			f()->load->view('admin/index/ensureuserexists', array(
+				'user'=>$user,
+			));
 		}else{
 			$user = \models\user::insert($_POST);
 			return true;
