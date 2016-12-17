@@ -1,7 +1,7 @@
 <?php
 namespace funky\core;
 
-class dbresult implements Iterator
+class dbresult implements \Iterator
 {
 	private $resource;
 	private $pos;
