@@ -66,7 +66,11 @@ class field
 	}
 	public function typename()
 	{
-		return gettype($this);
+		// TODO make this work for sub-classes
+		$classname = __CLASS__;
+		$startpos = strrpos($classname, '\\');
+		$classname = substr($classname, $startpos+1);
+		return $classname;
 	}
 	// returns a value that can be saved to the database
 	public function dbval()
