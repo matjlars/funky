@@ -30,6 +30,10 @@ class index
 	// returns true if the database is set up and ready to use.
 	private function dbsetup()
 	{
+		if(f()->request->method() == 'POST'){
+			// set up the config file
+			throw new \exception('todo make the config editable and utilize that here');
+		}
 		try{
 			$db = f()->db;
 		}catch(\exception $e){
