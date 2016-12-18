@@ -3,6 +3,7 @@
 	border:1px solid red;
 	font-size:1.2rem;
 	background:rgba(255,0,0,0.1);
+	padding:1rem;
 }
 table{
 	border-collapse:collapse;
@@ -11,10 +12,10 @@ td,th{
 	border:1px solid black;
 }
 </style>
+
 <div class="error">
-	<h2>Error</h2>
-	<p>Level: <?=$level?></p>
-	<p>Message: <?=$message?></p>
+	<h2><?=f()->debug->errstr($level)?></small> Error</h2>
+	<p><?=$message?></p>
 	<p>File: <?=$file?></p>
 	<p>Line: <?=$line?></p>
 	<table>
