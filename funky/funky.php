@@ -13,6 +13,24 @@ set_error_handler(function($level, $message, $file, $line, $context){
 });
 
 
+// catch E_FATAL errors, too:
+register_shutdown_function(function(){
+	// try to get the last error
+	$error = error_get_last();
+	
+	// fill in some default values if there wasn't an error
+	if(is_null($error)){
+		$error['type'] = E_CORE_ERROR;
+		$error['file'] = 'unknown file';
+		$error['line'] = 0;
+		$error['message'] = 'A fatal error has occurred.';
+	}
+	
+	// display the error
+	f()->debug->error($error['type'], $error['message'], $error['file'], $error['line'], array());
+});
+
+
 // start the session no matter what:
 session_start();
 

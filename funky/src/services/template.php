@@ -30,7 +30,8 @@ class template
 	}
 	public function cancel()
 	{
-		ob_end_clean();
+		// get rid of all output buffers
+		while(ob_get_level() > 0) ob_end_clean();
 	}
 	public function render()
 	{

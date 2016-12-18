@@ -84,6 +84,7 @@ class debug
 	// returns a readable string (such as "E_WARNING") that is what error level it is
 	public function errstr($level)
 	{
-		return array_flip(array_slice(get_defined_constants(true)['Core'], 1, 15, true))[$level];
+		$constants = array_flip(array_slice(get_defined_constants(true)['Core'], 0, 15, true));
+		return $constants[$level];
 	}
 }
