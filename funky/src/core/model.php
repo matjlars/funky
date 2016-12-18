@@ -94,7 +94,8 @@ class model
 	public static function fromid($id)
 	{
 		if(empty($id)) return new static();
-		$data = f()->db->query('select * from '.static::table().' where id = '.f()->db->escape($id))->row();
+		$sql = 'select * from '.static::table().' where id = '.f()->db->escape($id);
+		$data = f()->db->query($sql)->row();
 		$obj = static::fromdata($data);
 		$obj->id = $id;
 		return $obj;

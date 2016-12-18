@@ -25,7 +25,7 @@ function handleError($level, $message, $file, $line, $context)
 				'context'=>$context,
 			));
 			// and that's it.
-			return;
+			exit(1);
 		}
 	}
 	
