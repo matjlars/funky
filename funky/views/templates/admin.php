@@ -6,7 +6,7 @@
 	<script src="/js/jquery.min.js"></script>
 </head>
 <body>
-	<h1>Site Administration</h1>
+	<h1><?=f()->lang->admin_title?></h1>
 	<nav>
 		<? if(f()->access->isloggedin()){?>
 			<?foreach(array(
