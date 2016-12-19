@@ -23,10 +23,8 @@ class users
 	{
 		$user = user::fromid($id);
 		if(!empty($_POST)){
-			$user->email = $_POST['user']['email'];
-			$user->roles = implode(',', $_POST['user']['roles']);
-			if(!empty($_POST['user']['password'])) $user->set_password($_POST['user']['password']);
-			$user->save();
+			$user->update($_POST['user']);
+			// TODO check for validation errors
 			f()->path->redirect('/admin/admin/users');
 		}else{
 			f()->load->view('admin/admin/users/edit', array(

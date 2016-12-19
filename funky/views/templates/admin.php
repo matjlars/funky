@@ -18,7 +18,7 @@
 				<?if(f()->access->hasrole('adminadmin')){?>
 					<a href="/admin/admin">AdminAdmin</a>
 				<?}?>
-				<a href="/admin/index/logout">Logout</a>
+				<a href="/admin/logout">Logout</a>
 			</aside>
 		<?}?>
 	</nav>
