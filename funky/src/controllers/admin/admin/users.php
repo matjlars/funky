@@ -13,7 +13,8 @@ class users
 	}
 	public function index()
 	{
-		$users = user::search();
+		// get all users
+		$users = user::query();
 		f()->load->view('admin/admin/users/index', array(
 			'users'=>$users,
 		));

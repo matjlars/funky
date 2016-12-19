@@ -1,4 +1,4 @@
-	<h2>Users <a class="green button" href="/admin/admin/users/edit/0">Create New User</a></h2>
+<h2>Users <a class="green button" href="/admin/admin/users/edit/0">Create New User</a></h2>
 <table>
 	<colgroup>
 		<col/>

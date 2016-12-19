@@ -18,13 +18,8 @@ register_shutdown_function(function(){
 	// try to get the last error
 	$error = error_get_last();
 	
-	// fill in some default values if there wasn't an error
-	if(is_null($error)){
-		$error['type'] = E_CORE_ERROR;
-		$error['file'] = 'unknown file';
-		$error['line'] = 0;
-		$error['message'] = 'A fatal error has occurred.';
-	}
+	// if there wasn't an error, just exit
+	if(is_null($error)) exit(1);
 	
 	// display the error
 	f()->debug->error($error['type'], $error['message'], $error['file'], $error['line'], array());

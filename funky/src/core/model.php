@@ -137,7 +137,7 @@ class model
 	// An example use case is like this: foreach(user::query()->where('name LIKE "%bob%"') as $user){$user->dostuff();}
 	public static function query()
 	{
-		return new modelquery(gettype($this));
+		return new modelquery(get_called_class());
 	}
 	// takes an array of data and sets all applicable data
 	private function setdata($data)

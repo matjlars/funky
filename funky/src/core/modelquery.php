@@ -2,7 +2,7 @@
 namespace funky\core;
 
 // provides a really nice interface for getting 1 or many models objects with 1 db query
-class modelquery implements Iterator
+class modelquery implements \Iterator
 {
 	private $modelclass = '';
 	private $where = array();
@@ -152,7 +152,7 @@ class modelquery implements Iterator
 		if(is_null($this->models)){
 			$this->models = array();
 			foreach(f()->db->query($this->sql()) as $row){
-				$this->models[] = $modelclass::fromdata($row);
+				$this->models[] = $this->modelclass::fromdata($row);
 			}
 		}
 	}
