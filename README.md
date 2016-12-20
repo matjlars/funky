@@ -22,6 +22,8 @@ The general idea of Funky is that your "global functions" are all separated out 
 A simple service would be like this:
 
 ```php
+namespace services;
+
 class greeter{
 	function greet(){
 		echo 'hello funky!!!';
@@ -29,10 +31,10 @@ class greeter{
 }
 ```
 
-then, to call that function from *anywhere* (yes, anywhere. within raw php pages, models, views, controllers, service functions, *actually anywhere*), you simply type:
+Then, to call that function from *anywhere* (yes, anywhere. within raw php pages, models, views, controllers, service functions, *actually anywhere*), you simply type:
 
 ```php
-j()->greeter->greet();
+f()->greeter->greet();
 ```
 
 This causes the funky framework to automatically load the greeter class, instantiate it as an object and save that reference, so the second time you use j()->greeter, it is actually the same object.
@@ -42,37 +44,29 @@ This is literally all the Funky framework does (which is a good thing, that mean
 Models, Views, and Controllers
 --------------------------
 
-Since MVC is great, there are some great ways of organizing larger projects using MVC in Funky.
+Since MVC is great, there are some great ways of organizing larger projects using MVC in Funky. You don't have to use any of this, but you should because it's awesome.
 
 First: controllers.
-1) In order to use controllers, you need the .htaccess file that funky comes with in order to redirect all requests to the top level index.php page.
-2) On that page (top level index.php), you must call the router service's route function.
 
-```php
-j()->router->route();
-```
-
-That is a simple function that sees if a file is being requested and routes to that, otherwise it checks for controller functions.
 Each public controller function represents an endpoint (or a uri) for your site.
 You can have private controller functions that contain controller logic, but are not endpoints.
 This way, routes are handled automatically based on your function naming, and you can get multiple routes easily and automatically just by having a controller.
-
-There are a few different ways to make controllers, depending on what you are trying to do.
-
-The simplest way is to make a controller that only one site can use:
-
+Follow the little tutorial below to learn how to make a controller.
 
 MVC Example / Tutorial:
 -----------
 
-Let's make a simple blog. This will solidify using Funky services, as well as how to use MVC ideas.
+Let's make a simple blog. This will solidify using Funky services, as well as how to use MVC concepts.
 
-1) Make a new file for you blog controller (DOCROOT/../controllers/blog.php)
-2) Make a basic class called `blog` (NOTE: it is important that the class name matches the file name)
+1) Make a new file for you blog controller ([PROJECTROOT]/src/controllers/blog.php)
+2) Make a basic class called `blog` in the `controllers` namespace (NOTE: it is important that the class name matches the file name)
+3) NOTE: It is in the `controllers` namespace because it is in the `controllers` directory. This way, funky can efficiently find all controllers.
 
 for example:
 
 ```php
+namespace controllers;
+
 class blog{
 	public function index(){
 		echo 'i haz a blog';
@@ -80,7 +74,7 @@ class blog{
 }
 ```
 
-3) Make a view instead of echoing like a pleb. Make a new file for your blog index page (DOCROOT/../views/blog/index.php)
+3) Make a view instead of echoing like a pleb. Make a new file for your blog index page ([PROJECTROOT]/views/blog/index.php)
 
 ```php
 <h1>that one blog</h1>
@@ -90,6 +84,8 @@ class blog{
 4) Make your controller function load the view, so your controller should look like this:
 
 ```php
+namespace controllers;
+
 class blog{
 	public function index(){
 		// specify view arguments:
@@ -98,13 +94,13 @@ class blog{
 		$args['message'] = 'i haz a blog';
 		
 		// load the view:
-		j()->view('blog/index', $args);
+		j()->load->view('blog/index', $args);
 	}
 }
 ```
 
 5) Note how the message key in the array passed to the view gets converted to a local variable within the view.
-6) Also note how the load view function is **j()->view**.  This means that it is using the **view** service.
+6) Also note how the load view function is `j()->load->view()`.  This means that it is using the `load` service's `view` function.
 
 Contributors
 ============
