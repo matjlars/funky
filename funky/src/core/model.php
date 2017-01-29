@@ -16,7 +16,8 @@ class model
 	public function __get($name)
 	{
 		if($name == 'id') return $this->id;
-		return $this->fields[$name]->get();
+		if(!array_key_exists($name, $this->fields)) throw new \Exception('model '.get_called_class().' does not have field "'.$name.'"');
+		return $this->fields[$name];
 	}
 	public function __set($name,$value)
 	{
@@ -25,10 +26,6 @@ class model
 	public function __isset($name)
 	{
 		return isset($this->fields[$name]);
-	}
-	public function field($name)
-	{
-		return $this->fields[$name];
 	}
 	public function delete()
 	{

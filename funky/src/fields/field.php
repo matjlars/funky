@@ -4,8 +4,7 @@ namespace funky\fields;
 class field
 {
 	protected $val = '';
-	protected $validators;
-	protected $errors = array();
+	protected $validators = array();
 	protected $name;
 	protected $label;
 	
@@ -24,11 +23,13 @@ class field
 	public function init($args){}
 	
 	// returns a user-readable value for this field
+	// override this if you can make a more user-readable version of the data for your field
 	public function get()
 	{
 		return $this->val;
 	}
 	// sets the value
+	// override this if you want to be able to do some cleaning or other logic whenever this value is set
 	public function set($val)
 	{
 		$this->val = $val;
@@ -47,14 +48,15 @@ class field
 	{
 		$this->label = $label;
 	}
-	// runs all validators
-	public function validate()
+	// runs all validators and returns an array of errors
+	public function errors()
 	{
-		foreach($validators as $validator){
-			$v = $validator($this->val);
-			if($v != null) $this->errors[] = $v;
+		$errors = array();
+		foreach($this->validators as $validator){
+			$error = $validator($this->val);
+			if($error != null) $errors[] = $error;
 		}
-		return empty($this->errors);
+		return $errors;
 	}
 	public function view($view='')
 	{
@@ -66,8 +68,7 @@ class field
 	}
 	public function typename()
 	{
-		// TODO make this work for sub-classes
-		$classname = __CLASS__;
+		$classname = get_called_class();
 		$startpos = strrpos($classname, '\\');
 		$classname = substr($classname, $startpos+1);
 		return $classname;
@@ -81,5 +82,12 @@ class field
 	public function dbtype()
 	{
 		throw new \exception('TODO override '.$this->typename().'->dbtype()');
+	}
+	// returns a string representing this value as printed in the html
+	// this way, you can just output $model->fieldname in form fields
+	// obviously, this is only really relevant to simple input fields with "value" attributes
+	public function __toString()
+	{
+		return strval($this->dbval());
 	}
 }
