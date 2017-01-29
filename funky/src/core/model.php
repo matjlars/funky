@@ -139,6 +139,29 @@ class model
 	{
 		return new modelquery(get_called_class());
 	}
+	// runs all field validators and returns true or false, depending on if there were any errors
+	public function isvalid()
+	{
+		return empty($this->errors());
+	}
+	// runs all field validators and returns an array of error messages
+	public function errors()
+	{
+		$errors = array();
+		foreach($this->fields as $field){
+			foreach($field->errors() as $ferr){
+				$errors[] = $ferr;
+			}
+		}
+		return $errors;
+	}
+	// returns a string that is one long error message
+	// it just combines all error messages from $this->errors() with the given delimiter
+	// the default delimiter is ' and '
+	public function errormessage($delim=' and ')
+	{
+		return implode($delim, $this->errors());
+	}
 	// takes an array of data and sets all applicable data
 	private function setdata($data)
 	{
