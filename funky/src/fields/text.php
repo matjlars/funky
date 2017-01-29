@@ -11,6 +11,10 @@ class text extends field
 		if(!empty($args['length'])){
 			$this->max = $args['length'];
 		}
+		// check length
+		$this->validators[] = function($val){
+			if(strlen($val) > $this->length) return 'exceeds max length of '.$this->length.' by '.(strlen($val)-$this->length).' characters';
+		};
 	}
 	public function dbtype()
 	{

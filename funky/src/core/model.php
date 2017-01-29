@@ -54,7 +54,9 @@ class model
 	public function update($data)
 	{
 		$this->setdata($data);
-		$this->save();
+		if($this->isvalid()){
+			$this->save();
+		}
 	}
 	
 	public function dump()
@@ -147,7 +149,7 @@ class model
 		$errors = array();
 		foreach($this->fields as $field){
 			foreach($field->errors() as $ferr){
-				$errors[] = $ferr;
+				$errors[] = $field->label().' '.$ferr;
 			}
 		}
 		return $errors;
