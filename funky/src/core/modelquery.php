@@ -87,7 +87,8 @@ class modelquery implements \Iterator
 		}
 		
 		// FROM
-		$sql .= ' FROM '.$this->modelclass::table();
+		$modelclass = $this->modelclass;
+		$sql .= ' FROM '.$modelclass::table();
 		
 		// WHERE
 		if(!empty($this->where)){
@@ -151,8 +152,9 @@ class modelquery implements \Iterator
 	{
 		if(is_null($this->models)){
 			$this->models = array();
+			$modelclass = $this->modelclass;
 			foreach(f()->db->query($this->sql()) as $row){
-				$this->models[] = $this->modelclass::fromdata($row);
+				$this->models[] = $modelclass::fromdata($row);
 			}
 		}
 	}
