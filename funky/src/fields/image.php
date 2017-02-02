@@ -1,6 +1,8 @@
 <?php
 namespace funky\fields;
 
+use models\image;
+
 // $this->val is the image_id
 class image extends field
 {
@@ -15,8 +17,14 @@ class image extends field
 	// if it doesn't reference any, it returns null
 	public function get()
 	{
-		if(is_null($this->image)) $this->image = \models\image::fromid($this->val);
+		if(is_null($this->image)) $this->image = image::fromid($this->val);
 		return $this->image;
+	}
+	// returns true or false, depending on if an image exists
+	// if the image does not exist, calling get() will not give you anything useful.
+	public function exists()
+	{
+		return $this->val > 0;
 	}
 	// returns the url for this image
 	public function url()
