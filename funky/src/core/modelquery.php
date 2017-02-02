@@ -21,7 +21,7 @@ class modelquery implements \Iterator
 	
 	public function islocked()
 	{
-		return is_null($this->models);
+		return !is_null($this->models);
 	}
 	
 	// accepts either a string or an array.
