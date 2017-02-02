@@ -4,7 +4,7 @@ use core\model;
 
 class user extends model
 {
-	public function hasrole(string $role)
+	public function hasrole($role)
 	{
 		return $this->roles->in($role);
 	}

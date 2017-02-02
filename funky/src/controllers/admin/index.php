@@ -3,6 +3,10 @@ namespace funky\controllers\admin;
 
 class index
 {
+	public function __construct()
+	{
+		f()->template->view = 'admin';
+	}
 	public function index()
 	{
 		if(!$this->dbsetup()) return;
@@ -81,6 +85,8 @@ class index
 			));
 		}else{
 			$user = \models\user::insert($_POST);
+			// also log this user in right now
+			f()->access->login($_POST['email'], $_POST['password']);
 			return true;
 		}
 		return false;
