@@ -18,6 +18,18 @@ class image extends field
 		if(is_null($this->image)) $this->image = \models\image::fromid($this->val);
 		return $this->image;
 	}
+	// returns the url for this image
+	public function url()
+	{
+		$image = $this->get();
+		return $image->url();
+	}
+	// returns the alt text for this image
+	public function alt()
+	{
+		$image = $this->get();
+		return $image->alt();
+	}
 	// takes an image model and sets the val to the image model id
 	public function set($val)
 	{
