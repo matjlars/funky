@@ -1,0 +1,11 @@
+.imagefield img{
+	cursor:pointer;
+	border:2px solid transparent;
+}
+.imagefield img:hover {
+	border:2px dashed #888;
+}
+.imagefield img[src=''] {
+	background-color:#ddd;
+	border:2px dashed #bbb;
+}

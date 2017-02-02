@@ -1,0 +1,41 @@
+.modal{
+	display:block;
+	position:fixed;
+	background-color:white;
+	max-width:80vw;
+	max-height:80vh;
+	z-index:100;
+	margin:auto;
+	/* center it */
+	left:50%;
+	top:50%;
+	transform:translate(-50%, -50%);
+}
+.modal-overlay{
+	position:fixed;
+	top:0;
+	left:0;
+	width:100vw;
+	height:100vh;
+	background-color:rgba(0,0,0,0.7);
+	z-index:99;
+}
+
+.modal>header{
+	background-color:#ddd;
+	padding:1rem;
+	font-size:120%;
+}
+.modal>.content{
+	margin:1rem 1rem 5rem 1rem;
+	overflow:auto;
+	max-height:calc(80vh - 10rem);
+}
+.modal>footer{
+	background-color:#ddd;
+	padding:1rem;
+	position:absolute;
+	bottom:0;
+	box-sizing:border-box;
+	width:100%;
+}

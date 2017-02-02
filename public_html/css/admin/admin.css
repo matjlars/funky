@@ -72,6 +72,9 @@ form{
 .field img{
 	max-width:300px;
 }
+.field label{
+	display:block;
+}
 
 
 /* buttons */
@@ -147,4 +150,8 @@ tbody tr:nth-child(odd):hover {
 }
 td:first-child,th:first-child {
 	padding-left:.2rem;
+}
+
+.hidden{
+	display:none;
 }

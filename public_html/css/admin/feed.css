@@ -1,0 +1,22 @@
+.feed{
+	padding:0;
+}
+.feed>li{
+	display:block;
+	border-bottom:1px solid #bbb;
+}
+.feed>li>a{
+	color:black;
+	text-decoration:none;
+	display:block;
+	padding:.4rem;
+}
+.feed>li:nth-child(odd)>a {
+	background-color:#eee;
+}
+.feed>li>a:hover {
+	background-color:#ddd;
+}
+.feed>li:nth-child(odd)>a:hover {
+	background-color:#ddd;
+}

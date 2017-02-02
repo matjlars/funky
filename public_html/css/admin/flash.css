@@ -1,0 +1,21 @@
+.flash{
+	position:fixed;
+	top:3rem;
+	right:1rem;
+	z-index:100;
+}
+.flash p{
+	border-radius:1rem;
+	padding:1rem;
+	cursor:pointer;
+	background-color:#888;
+	border:1px solid black;
+}
+.flash p.error{
+	border:1px solid red;
+	background-color:#f88;
+}
+.flash p.success{
+	border:1px solid #0f0;
+	background-color: #8f8;
+}
