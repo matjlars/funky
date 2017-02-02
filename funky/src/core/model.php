@@ -16,7 +16,8 @@ class model
 	public function __get($name)
 	{
 		if($name == 'id') return $this->id;
-		return $this->fields[$name]->get();
+		if(!array_key_exists($name, $this->fields)) throw new \Exception('model '.get_called_class().' does not have field "'.$name.'"');
+		return $this->fields[$name];
 	}
 	public function __set($name,$value)
 	{
@@ -25,10 +26,6 @@ class model
 	public function __isset($name)
 	{
 		return isset($this->fields[$name]);
-	}
-	public function field($name)
-	{
-		return $this->fields[$name];
 	}
 	public function delete()
 	{
@@ -57,7 +54,9 @@ class model
 	public function update($data)
 	{
 		$this->setdata($data);
-		$this->save();
+		if($this->isvalid()){
+			$this->save();
+		}
 	}
 	
 	public function dump()
@@ -138,6 +137,29 @@ class model
 	public static function query()
 	{
 		return new modelquery(get_called_class());
+	}
+	// runs all field validators and returns true or false, depending on if there were any errors
+	public function isvalid()
+	{
+		return empty($this->errors());
+	}
+	// runs all field validators and returns an array of error messages
+	public function errors()
+	{
+		$errors = array();
+		foreach($this->fields as $field){
+			foreach($field->errors() as $ferr){
+				$errors[] = $field->label().' '.$ferr;
+			}
+		}
+		return $errors;
+	}
+	// returns a string that is one long error message
+	// it just combines all error messages from $this->errors() with the given delimiter
+	// the default delimiter is ' and '
+	public function errormessage($delim=' and ')
+	{
+		return implode($delim, $this->errors());
 	}
 	// takes an array of data and sets all applicable data
 	private function setdata($data)

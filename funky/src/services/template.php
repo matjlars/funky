@@ -16,13 +16,6 @@ class template
 		if(isset($this->data[$key])) return $this->data[$key];
 		return null;
 	}
-	public function exception($e)
-	{
-		echo 'error on website: '.$e->getMessage();
-		if(f()->access->isadminadmin()){
-			var_dump($e);
-		}
-	}
 	
 	public function start()
 	{
