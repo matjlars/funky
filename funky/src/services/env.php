@@ -9,6 +9,7 @@ class env
 	public function islocal()
 	{
 		if($_SERVER['SERVER_NAME'] == 'localhost') return true;
+		if(substr($_SERVER['SERVER_NAME'], -6) == '.local') return true;
 		return false;
 	}
 }
