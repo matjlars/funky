@@ -134,7 +134,8 @@ class router
 		}
 		
 		// at this point, we have full knowledge of the function to call
-		call_user_func_array(array($controller,$methodname),$params);
+		$result = call_user_func_array(array($controller,$methodname),$params);
+		if($result === false) return false;
 		return true;
 	}
 	
