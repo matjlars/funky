@@ -19,7 +19,19 @@ class config
 	// sets the config value and saves it to the config file
 	public function __set($key,$value)
 	{
-		$this->data[$key] = $value;
+		// don't update it if the value won't change
+		if(isset($this->data[$key]) && $this->data[$key] == $value) return;
+		// an empty string will actually delete this config value:
+		// update this value
+		if(empty($value)){
+			// if this value existed before, delete it
+			if(isset($this->data[$key])){
+				unset($this->data[$key]);
+			}
+			// in this context, this value didn't exist, and shouldn't.
+		}else{
+			$this->data[$key] = $value;
+		}
 		$this->save();
 	}
 	public function __get($key)
@@ -30,6 +42,11 @@ class config
 	public function __isset($key)
 	{
 		return isset($this->data[$key]);
+	}
+	// returns an array of all config values
+	public function all()
+	{
+		return $this->data;
 	}
 	// loads the file and fills $this->data with the data from the file
 	private function load()
