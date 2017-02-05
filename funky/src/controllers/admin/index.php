@@ -81,8 +81,8 @@ class index
 		// in this context, there are no users
 		if(!isset($_POST['email']) || !isset($_POST['password'])){
 			$user = new \models\user();
-			// default to adminadmin because it's the first user
-			$user->roles = 'adminadmin,admin';
+			// default to dev because it's the first user
+			$user->roles = 'dev,admin';
 			f()->load->view('admin/index/ensureuserexists', array(
 				'user'=>$user,
 			));

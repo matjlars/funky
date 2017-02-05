@@ -18,7 +18,7 @@
 <body>
 	<h1><?=f()->lang->admin_title?></h1>
 	<nav><?
-		if(f()->access->isloggedin() && f()->access->hasrole('admin') || f()->access->hasrole('adminadmin')){
+		if(f()->access->isloggedin() && f()->access->hasrole('admin') || f()->access->hasrole('dev')){
 			if(f()->access->hasrole('admin')){
 				foreach(array(
 					'/admin/something'=>'Something',
@@ -27,7 +27,7 @@
 				}
 			}
 			?><aside>
-				<?if(f()->access->hasrole('adminadmin')){?>
+				<?if(f()->access->hasrole('dev')){?>
 					<a href="/admin/admin">AdminAdmin</a>
 				<?}?>
 				<a href="/admin/logout">Logout</a>

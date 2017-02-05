@@ -23,8 +23,8 @@ class debug
 		// cancel the template so it doesn't show half a page
 		f()->template->cancel();
 		
-		// show a really nice error if the user is an adminadmin or running from a local server
-		if((f()->access->isloggedin() && f()->access->hasrole('adminadmin')) || f()->env->islocal()){
+		// show a really nice error if the user is a dev or running from a local server
+		if((f()->access->isloggedin() && f()->access->hasrole('dev')) || f()->env->islocal()){
 			// show an in-depth error
 			f()->load->view('errors/devphp', array(
 				'level'=>$level,
@@ -37,7 +37,7 @@ class debug
 			exit(1);
 		}
 		
-		// in this context, the user is not an adminadmin.
+		// in this context, the user is not a dev.
 		// email a nice error to the dev if the config value is set
 		if(isset(f()->config->devemail)){
 			$body = '';

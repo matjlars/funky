@@ -13,7 +13,7 @@ class user extends model
 		return f()->load->fields([
 			['email', 'text'],
 			['password', 'password'],
-			['roles', 'set', ['values'=>['adminadmin', 'admin']]],
+			['roles', 'set', ['values'=>['dev', 'admin']]],
 		]);
 	}
 }

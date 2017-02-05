@@ -7,7 +7,7 @@ class users
 {
 	public function __construct()
 	{
-		f()->access->enforce('adminadmin');
+		f()->access->enforce('dev');
 		f()->template->view = 'admin';
 		f()->template->premainview = 'admin/admin/subnav';
 	}
