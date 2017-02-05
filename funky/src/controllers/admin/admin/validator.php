@@ -12,6 +12,6 @@ class validator
 	
 	public function index()
 	{
-		f()->load->view('admin/admin/validator/index');
+		return f()->view->load('admin/admin/validator/index');
 	}
 }

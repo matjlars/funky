@@ -17,7 +17,7 @@ class login
 			
 			if(f()->access->isloggedin())
 			{
-				f()->path->redirect('admin');
+				f()->response->redirect('admin');
 			}
 			else
 			{
@@ -26,7 +26,7 @@ class login
 		}
 		
 		// show the log in form:
-		f()->load->view('admin/login/index',array(
+		return f()->view->load('admin/login/index',array(
 			'error'=>$error,
 		));
 	}

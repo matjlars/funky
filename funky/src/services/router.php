@@ -14,14 +14,19 @@ class router
 {
 	public function route()
 	{
-		// test if it's a page:
-		if($this->routepage()) return;
-		if($this->routecontroller()) return;
-		$this->route404();
+		// try to get content from something.
+		foreach(['page','controller'] as $func){
+			$content = $this->$func();
+			if(!empty($content)){
+				return $content;
+			}
+		}
+		// nothing had content, so 404:
+		f()->response->send404();
 	}
 	
 	// this function tests for pages that exist at files (like index.php for the homepage or any other page)
-	public function routepage()
+	public function page()
 	{
 		$path = $_SERVER['DOCUMENT_ROOT'].$_SERVER['REQUEST_URI'];
 		
@@ -32,22 +37,25 @@ class router
 		
 		// see if it's correct already (already has .php)
 		if(is_file($path)){
+			ob_start();
 			include $path;
-			return true;
+			return ob_get_clean();
 		}
 		
 		// see if it just needs the .php
 		$path2 = $path.'.php';
 		if(is_file($path2)){
+			ob_start();
 			include $path2;
-			return true;
+			return ob_get_clean();
 		}
 		
 		// see if it needs a /index.php
 		$path2 = $path.'/index.php';
 		if(is_file($path2)){
+			ob_start();
 			include $path2;
-			return true;
+			return ob_get_clean();
 		}
 		
 		// couldn't find this file, so let route() know we failed.
@@ -57,7 +65,7 @@ class router
 	// this function tests for if this site has a controller, and if it does, it makes sure a method is also specified.
 	// if both a controller and method are given, it calls those.
 	// keep in mind, you must override the controller per site to use funky controllers (see note at the top of this file)
-	public function routecontroller()
+	public function controller()
 	{
 		// if it's a controller we have on this site, load that, with the method and parameters.
 		$uriparts = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'));
@@ -85,14 +93,7 @@ class router
 		
 		// include the controller file
 		$controllerclass = '\\controllers\\'.str_replace('/', '\\', $controllername);
-		try{
-			$controller = new $controllerclass();
-		}catch(\exception $e){
-			f()->debug->exception($e);
-			// if an error happens here, it could be that this class does not exist
-			// in that case, we should definitely 404
-			return false;
-		}
+		$controller = new $controllerclass();
 		$i++; // moving on to the method..
 		
 		// get method name:
@@ -134,16 +135,6 @@ class router
 		}
 		
 		// at this point, we have full knowledge of the function to call
-		$result = call_user_func_array(array($controller,$methodname),$params);
-		if($result === false) return false;
-		return true;
-	}
-	
-	// this functions routes to the 404 page.
-	public function route404()
-	{
-		header('HTTP/1.0 404 Not Found', true, 404);
-		f()->load->view('errors/404');
-		exit;
+		return call_user_func_array(array($controller,$methodname),$params);
 	}
 }

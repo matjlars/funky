@@ -9,26 +9,17 @@ class index
 	}
 	public function index()
 	{
-		if(!$this->dbsetup()) return;
-		if(!$this->userstableexists()) return;
-		if(!$this->ensureuserexists()) return;
-		
-		// first of all, ensure there is a "users" table, otherwise the entire admin area makes no sense.
-		try{
-			if(!f()->db->table_exists('users')){
-				throw new \exception('the "users" database table does not exist.');
-			}
-		}catch(\exception $e){
-			f()->load->view('admin/index/dbsetup', array(
-				'message'=>$e->getMessage(),
-			));
-			return;
+		// validate all of the things
+		// if any of these functions returns false, that means they were not needed
+		foreach(['dbsetup','userstableexists','ensureuserexists'] as $func){
+			$response = $this->$func();
+			if(!empty($response)) return $response;
 		}
 		
 		// the db and user table is set up, so continue
 		f()->access->enforce();
 		f()->template->view = 'admin';
-		f()->load->view('admin/index/index');
+		return f()->view->load('admin/index/index');
 	}
 	// ensures and helps set up the database.
 	// returns true if the database is set up and ready to use.
@@ -44,12 +35,10 @@ class index
 					if(empty($val)) $allset = false;
 					f()->config->$key = $val;
 				}
-				if($allset) return true;
+				if($allset) return false;
 			}
-			f()->load->view('admin/index/dbsetup');
-			return false;
+			return f()->view->load('admin/index/dbsetup');
 		}
-		return true;
 	}
 	// ensures the users table is set up
 	// returns true if the users table is set up
@@ -60,15 +49,12 @@ class index
 			$sql = f()->migrations->create_table_sql('\\models\\user');
 			if(isset($_POST['createusers'])){
 				f()->db->query($sql);
-				return true;
+				return false;
 			}
-			f()->load->view('admin/index/userstableexists', array(
+			return f()->view->load('admin/index/userstableexists', array(
 				'sql'=>$sql,
 			));
-			return false;
 		}
-		// the users table exists
-		return true;
 	}
 	// ensures there is at least 1 user.
 	// returns true if there is at least 1 user.
@@ -76,22 +62,20 @@ class index
 	{
 		// see if there are any already
 		$usercount = \models\user::count();
-		if($usercount > 0) return true;
+		if($usercount > 0) return false;
 		
 		// in this context, there are no users
 		if(!isset($_POST['email']) || !isset($_POST['password'])){
 			$user = new \models\user();
 			// default to dev because it's the first user
 			$user->roles = 'dev,admin';
-			f()->load->view('admin/index/ensureuserexists', array(
+			f()->view->load('admin/index/ensureuserexists', array(
 				'user'=>$user,
 			));
 		}else{
 			$user = \models\user::insert($_POST);
 			// also log this user in right now
 			f()->access->login($_POST['email'], $_POST['password']);
-			return true;
 		}
-		return false;
 	}
 }

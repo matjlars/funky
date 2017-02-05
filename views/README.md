@@ -27,7 +27,7 @@ You can then load that view from anywhere like this:
   $user = new user(1);
   
   // pass this user to the show user view:
-  j()->load->view('users/show', array(
+  return j()->view->load('users/show', array(
     'user'=>$user,
   ));
   

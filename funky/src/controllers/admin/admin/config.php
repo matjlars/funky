@@ -24,7 +24,7 @@ class config
 			}
 		}
 		$vars = f()->config->all();
-		f()->load->view('admin/admin/config/index', array(
+		return f()->view->load('admin/admin/config/index', array(
 			'vars'=>$vars,
 		));
 	}

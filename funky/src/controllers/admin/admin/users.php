@@ -15,7 +15,7 @@ class users
 	{
 		// get all users
 		$users = user::query();
-		f()->load->view('admin/admin/users/index', array(
+		return f()->view->load('admin/admin/users/index', array(
 			'users'=>$users,
 		));
 	}
@@ -25,9 +25,9 @@ class users
 		if(!empty($_POST)){
 			$user->update($_POST['user']);
 			// TODO check for validation errors
-			f()->path->redirect('/admin/admin/users');
+			f()->response->redirect('admin/admin/users');
 		}else{
-			f()->load->view('admin/admin/users/edit', array(
+			return f()->view->load('admin/admin/users/edit', array(
 				'user'=>$user,
 			));
 		}
@@ -36,6 +36,6 @@ class users
 	{
 		$user = user::fromid($id);
 		$user->delete();
-		f()->path->redirect('admin/admin/users');
+		f()->response->redirect('admin/admin/users');
 	}
 }

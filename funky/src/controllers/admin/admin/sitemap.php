@@ -11,6 +11,6 @@ class sitemap
 	}
 	public function index()
 	{
-		f()->load->view('admin/admin/sitemap/index');
+		return f()->view->load('admin/admin/sitemap/index');
 	}
 }

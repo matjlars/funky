@@ -12,7 +12,7 @@ class logs
 	public function index()
 	{
 		$logs = array();
-		f()->load->view('admin/admin/logs/index', array(
+		return f()->view->load('admin/admin/logs/index', array(
 			'logs'=>$logs,
 		));
 	}

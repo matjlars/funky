@@ -1,36 +1,8 @@
 <?php
 namespace funky\services;
 
-// you can't override this service because of how it's loaded in the site constructor.. sorry.
-// Let MisterMashu (mistermashu@gmail.com) know if you want him to figure out a way to do that.
-// basically, this class is good for loading in models, views, controllers, and services in such a way where you can have global files and site-specific files and it handles it well.
 class load
 {
-	public function view($name,$data=array())
-	{
-		// Set up variables for the view:
-		extract($data);
-		
-		// Check for a site-specific view:
-		$siteviewpath = f()->path->php('views/'.$name.'.php');
-		if(file_exists($siteviewpath))
-		{
-			include $siteviewpath;
-			return true;
-		}
-		
-		// Check for a global view (in DOC_ROOT/../funky/views/)
-		$globalviewpath = f()->path->php('funky/views/'.$name.'.php');
-		if(file_exists($globalviewpath))
-		{
-			include $globalviewpath;
-			return true;
-		}
-		
-		// Otherwise, err out:
-		throw new \exception('View '.$name.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
-	}
-	
 	public function field($name, $typename, $args=array())
 	{
 		$class = '\\funky\\fields\\'.$typename;

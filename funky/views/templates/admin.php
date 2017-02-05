@@ -34,7 +34,9 @@
 			</aside>
 		<?}?>
 	</nav>
-	<?if(isset($premainview)) f()->load->view($premainview)?>
+	<?if(isset($premainview)){?>
+		<?=f()->view->load($premainview)?>
+	<?}?>
 	<main><?=$content?></main>
 </body>
 </html>

@@ -11,13 +11,13 @@ class database
 	}
 	public function index()
 	{
-		f()->load->view('admin/admin/database/index');
+		return f()->view->load('admin/admin/database/index');
 	}
 	// ajax function that returns a table of all migrations
 	public function migrations()
 	{
 		$migrations = f()->migrations->getall();
-		f()->load->view('admin/admin/database/migrations', array(
+		return f()->view->load('admin/admin/database/migrations', array(
 			'migrations'=>$migrations,
 		));
 	}
@@ -27,11 +27,11 @@ class database
 		if(empty($_POST['sql'])) die('<p>no sql given.</p>');
 		try{
 			$result = f()->db->query($_POST['sql']);
-			f()->load->view('admin/admin/database/query', array(
+			return f()->view->load('admin/admin/database/query', array(
 				'result'=>$result,
 			));
 		}catch(\exception $e){
-			f()->load->view('errors/message', array(
+			return f()->view->load('errors/message', array(
 				'message'=>$e->getMessage(),
 			));
 		}

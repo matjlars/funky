@@ -9,9 +9,10 @@ class debug
 		var_dump($data);
 		echo '</pre>';
 	}
+	// returns a string containing a nice HTML error
 	public function exception($e)
 	{
-		f()->load->view('errors/exception', array(
+		return f()->view->load('errors/exception', array(
 			'e'=>$e,
 		));
 	}
@@ -26,15 +27,14 @@ class debug
 		// show a really nice error if the user is a dev or running from a local server
 		if(f()->env->islocal()){
 			// show an in-depth error
-			f()->load->view('errors/devphp', array(
+			f()->response->content = f()->view->load('errors/devphp', array(
 				'level'=>$level,
 				'message'=>$message,
 				'file'=>$file,
 				'line'=>$line,
 				'context'=>$context,
 			));
-			// and that's it.
-			exit(1);
+			f()->response->send(500);
 		}
 		
 		// in this context, the user is not a dev.
@@ -75,10 +75,8 @@ class debug
 			f()->email->send();
 		}
 		// show a generic error to the user:
-		f()->load->view('errors/php');
-		
-		// don't do anything else
-		exit(1);
+		f()->response->content = f()->view->load('errors/php');
+		f()->response->send(500);
 	}
 	// accepts a value of bit flags representing predefined PHP constants
 	// returns a readable string (such as "E_WARNING") that is what error level it is

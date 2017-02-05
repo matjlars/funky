@@ -94,13 +94,13 @@ class blog{
 		$args['message'] = 'i haz a blog';
 		
 		// load the view:
-		j()->load->view('blog/index', $args);
+		return j()->view->load('blog/index', $args);
 	}
 }
 ```
 
 5) Note how the message key in the array passed to the view gets converted to a local variable within the view.
-6) Also note how the load view function is `j()->load->view()`.  This means that it is using the `load` service's `view` function.
+6) Also note how the load view function is `j()->view->load()`.  This means that it is using the `view` service's `load` function.
 
 Contributors
 ============

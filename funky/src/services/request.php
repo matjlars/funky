@@ -8,9 +8,10 @@ class request
 		try{
 			f()->template->start('page');
 			f()->router->route();
-			f()->template->render();
+			f()->response->content = f()->template->render();
+			f()->response->send();
 			exit(0);
-		}catch(Exception $e){
+		}catch(\exception $e){
 			f()->template->cancel();
 			f()->debug->exception($e);
 			exit(1);

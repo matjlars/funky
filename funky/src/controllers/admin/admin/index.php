@@ -11,6 +11,6 @@ class index
 	}
 	public function index()
 	{
-		f()->load->view('admin/admin/index/index');
+		return f()->view->load('admin/admin/index/index');
 	}
 }

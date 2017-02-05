@@ -4,7 +4,6 @@ namespace funky\services;
 class template
 {
 	private $data = array();
-	private $head = '';
 	public $view = 'page';
 	
 	public function __set($key,$value)
@@ -26,17 +25,14 @@ class template
 		// get rid of all output buffers
 		while(ob_get_level() > 0) ob_end_clean();
 	}
+	// takes all of the buffered output, sticks it in the template, and returns it all as a string
 	public function render()
 	{
-		if(empty($this->view) || f()->request->isxhr())
-		{
-			die('test');
+		if(empty($this->view) || f()->request->isxhr()){
 			ob_end_flush();
-		}
-		else
-		{
+		}else{
 			$this->data['content'] = ob_get_clean();
-			f()->load->view('templates/'.$this->view, $this->data);
+			f()->view->load('templates/'.$this->view, $this->data);
 		}
 	}
 }
