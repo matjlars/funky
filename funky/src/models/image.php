@@ -7,7 +7,7 @@ class image extends \core\model
 	
 	public function url()
 	{
-		return f()->path->url(static::PATH.$this->filename);
+		return f()->url->get(static::PATH.$this->filename);
 	}
 	public static function targetdir()
 	{

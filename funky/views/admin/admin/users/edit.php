@@ -1,5 +1,5 @@
 <h2>Edit User</h2>
-<form action="<?=f()->path->current_url()?>" method="post">
+<form action="<?=f()->url->current()?>" method="post">
 	<div class="field">
 		<label for="user_email">Email Address</label>
 		<input type="text" name="user[email]" id="user_email" value="<?=$user->email?>"/>

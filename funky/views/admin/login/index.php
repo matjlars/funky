@@ -16,7 +16,7 @@
 
 <div id="admin-login">
 	<h2>Log In</h2>
-	<form action="<?=f()->path->current_url()?>" method="post" id="adminloginform">
+	<form action="<?=f()->url->current()?>" method="post" id="adminloginform">
 		<div class="field">
 			<label for="email">Email Address</label>
 			<input type="text" id="email" name="email"/>

@@ -24,7 +24,7 @@ class debug
 		f()->template->cancel();
 		
 		// show a really nice error if the user is a dev or running from a local server
-		if((f()->access->isloggedin() && f()->access->hasrole('dev')) || f()->env->islocal()){
+		if(f()->env->islocal()){
 			// show an in-depth error
 			f()->load->view('errors/devphp', array(
 				'level'=>$level,

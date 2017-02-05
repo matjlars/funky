@@ -23,7 +23,7 @@
 				foreach(array(
 					'/admin/something'=>'Something',
 				) as $path=>$name){
-					?><a href="<?=$path?>"<?=(f()->path->iscurrent($path))?' class="active"':''?>><?=$name?></a><?
+					?><a href="<?=$path?>"<?=(f()->url->iscurrent($path))?' class="active"':''?>><?=$name?></a><?
 				}
 			}
 			?><aside>

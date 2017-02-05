@@ -31,41 +31,6 @@ class load
 		throw new \exception('View '.$name.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
 	}
 	
-	// requires the service file and a potential extended one, instantiates one and returns it:
-	public function service($name)
-	{
-		throw new \exception('dont call load->service() anymore');
-		/*
-		$servicepath = f()->path->php('funky/services/'.$name.'.php');
-		$custompath = f()->path->php('services/'.$name.'.php');
-		
-		$class = '';
-		
-		// first see if there's a site-wide service:
-		if(is_file($servicepath))
-		{
-			require_once $servicepath;
-			$class = $name;
-		}
-		
-		// now see if there's a custom one for this particular web site:
-		if(is_file($custompath))
-		{
-			require_once $custompath;
-			$class = 'my_'.$name;
-		}
-		
-		if(empty($class))
-		{
-			throw new \exception('Service '.$name.' not found in global or site-specific context.');
-		}
-		else
-		{
-			return new $class();
-		}
-		*/
-	}
-
 	public function field($name, $typename, $args=array())
 	{
 		$class = '\\funky\\fields\\'.$typename;
