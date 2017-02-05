@@ -8,7 +8,9 @@ class db
 	
 	public function __construct()
 	{
-		$this->mysqli = new \mysqli(f()->config->db_server, f()->config->db_user, f()->config->db_password, f()->config->db_name);
+		$server = 'localhost';
+		if(isset(f()->config->db_server)) $server = f()->config->db_server;
+		$this->mysqli = new \mysqli($server, f()->config->db_user, f()->config->db_password, f()->config->db_name);
 		
 		// make sure it connected:
 		if($this->mysqli->connect_errno){
