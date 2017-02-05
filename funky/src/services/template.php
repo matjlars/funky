@@ -16,23 +16,14 @@ class template
 		return null;
 	}
 	
-	public function start()
-	{
-		ob_start();
-	}
-	public function cancel()
-	{
-		// get rid of all output buffers
-		while(ob_get_level() > 0) ob_end_clean();
-	}
 	// takes all of the buffered output, sticks it in the template, and returns it all as a string
-	public function render()
+	public function render($content)
 	{
 		if(empty($this->view) || f()->request->isxhr()){
-			ob_end_flush();
+			echo $content;
 		}else{
-			$this->data['content'] = ob_get_clean();
-			f()->view->load('templates/'.$this->view, $this->data);
+			$this->data['content'] = $content;
+			return f()->view->load('templates/'.$this->view, $this->data);
 		}
 	}
 }

@@ -21,10 +21,7 @@ class debug
 	// you probably shouldn't call this function, but instead use PHP's built in "trigger_error" function
 	public function error($level, $message, $file, $line, $context)
 	{
-		// cancel the template so it doesn't show half a page
-		f()->template->cancel();
-		
-		// show a really nice error if the user is a dev or running from a local server
+		// show a really nice error if the user is running from a local server
 		if(f()->env->islocal()){
 			// show an in-depth error
 			f()->response->content = f()->view->load('errors/devphp', array(
