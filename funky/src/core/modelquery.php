@@ -32,10 +32,10 @@ class modelquery implements \Iterator
 		if($this->islocked()) throw new \exception('you cannot add any more where clauses to this modelquery because the query has already ran.');
 		if(is_array($cond)){
 			foreach($cond as $key=>$value){
-				$where[] = '`'.$key.'`='.'`'.f()->db->escape($value).'`';
+				$this->where[] = '`'.$key.'`='.'"'.f()->db->escape($value).'"';
 			}
 		}else if(is_string($cond)){
-			$where[] = $cond;
+			$this->where[] = $cond;
 		}else{
 			throw new \exception('modelquery->where() must be given an array or string. You gave it a "'.gettype($cond).'"');
 		}

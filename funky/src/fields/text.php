@@ -6,6 +6,11 @@ class text extends field
 	protected $minlength = 0;
 	protected $length = 255;
 	
+	public function set($val)
+	{
+		$val = trim($val);
+		parent::set($val);
+	}
 	public function init($args)
 	{
 		// set length
