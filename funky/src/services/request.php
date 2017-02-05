@@ -6,16 +6,12 @@ class request
 	public function perform()
 	{
 		try{
-			// get this request's content
 			$content = f()->router->route();
-			
-			// render the content in the template
 			f()->response->content = f()->template->render($content);
-			
-			// send the response
 			f()->response->send();
 		}catch(\exception $e){
-			f()->debug->exception($e);
+			f()->response->content = f()->debug->exception($e);
+			f()->response->send(500);
 			exit(1);
 		}
 	}
