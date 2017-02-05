@@ -17,14 +17,16 @@
 </head>
 <body>
 	<h1><?=f()->lang->admin_title?></h1>
-	<nav>
-		<? if(f()->access->isloggedin()){?>
-			<?foreach(array(
-				'/admin/something'=>'Something',
-			) as $path=>$name){?>
-				<a href="<?=$path?>"<?=(f()->path->iscurrent($path))?' class="active"':''?>><?=$name?></a>
-			<?}?>
-			<aside>
+	<nav><?
+		if(f()->access->isloggedin() && f()->access->hasrole('admin') || f()->access->hasrole('adminadmin')){
+			if(f()->access->hasrole('admin')){
+				foreach(array(
+					'/admin/something'=>'Something',
+				) as $path=>$name){
+					?><a href="<?=$path?>"<?=(f()->path->iscurrent($path))?' class="active"':''?>><?=$name?></a><?
+				}
+			}
+			?><aside>
 				<?if(f()->access->hasrole('adminadmin')){?>
 					<a href="/admin/admin">AdminAdmin</a>
 				<?}?>

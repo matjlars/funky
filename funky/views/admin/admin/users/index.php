@@ -16,7 +16,7 @@
 		<?foreach($users as $user){?>
 			<tr>
 				<td><?=$user->email?></td>
-				<td><?=implode(', ', $user->roles)?></td>
+				<td><?=implode(', ', $user->roles->get())?></td>
 				<td>
 					<a class="button" href="/admin/admin/users/edit/<?=$user->id?>">edit</a>
 					<a class="red button" href="/admin/admin/users/delete/<?=$user->id?>">delete</a>
