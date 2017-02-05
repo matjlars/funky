@@ -9,8 +9,10 @@ class access
 	
 	public function isloggedin()
 	{
-		$user_id = $this->user_id();
-		return !empty($user_id);
+		// load the user so it tests to make sure we're logged in as a valid user
+		$user_id = $this->user()->id;
+		if(empty($user_id)) return false;
+		return true;
 	}
 	public function login($email, $password)
 	{
@@ -33,7 +35,7 @@ class access
 	public function enforce($roles=array())
 	{
 		// if we're not logged in at all, redirect to path:
-		if(!$this->isloggedin()){
+		if(empty($this->user_id())){
 			f()->path->redirect('admin/login');
 		}
 		
@@ -50,8 +52,13 @@ class access
 	}
 	public function user()
 	{
-		if(!$this->isloggedin()) return new user();
+		if(empty($this->user_id())) return new user();
 		if($this->user === null) $this->user = user::fromid($this->user_id());
+		// if this user model doesn't exist, log us out right here.
+		if(!$this->user->exists()){
+			$this->logout();
+			return new user();
+		}
 		return $this->user;
 	}
 	public function hasrole($role)

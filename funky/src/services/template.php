@@ -30,6 +30,7 @@ class template
 	{
 		if(empty($this->view) || f()->request->isxhr())
 		{
+			die('test');
 			ob_end_flush();
 		}
 		else

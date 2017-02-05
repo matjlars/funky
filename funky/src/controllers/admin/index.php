@@ -34,16 +34,19 @@ class index
 	// returns true if the database is set up and ready to use.
 	private function dbsetup()
 	{
-		try{
-			$db = f()->db;
-		}catch(\exception $e){
+		// if we don't have any of the config values we need, show the form to add them easily
+		if(!isset(f()->config->db_name) || !isset(f()->config->db_user) || !isset(f()->config->db_password)){
 			if(f()->request->method() == 'POST'){
-				// set up the config file
-				throw new \exception('todo make the config editable and utilize that here');
+				// save all the config values
+				$allset = true;
+				foreach(['db_name','db_user','db_password'] as $key){
+					$val = $_POST[$key];
+					if(empty($val)) $allset = false;
+					f()->config->$key = $val;
+				}
+				if($allset) return true;
 			}
-			f()->load->view('admin/index/dbsetup', array(
-				'message'=>$e->getMessage(),
-			));
+			f()->load->view('admin/index/dbsetup');
 			return false;
 		}
 		return true;
@@ -55,7 +58,7 @@ class index
 		if(!f()->db->table_exists('users')){
 			// get users migrations
 			$sql = f()->migrations->create_table_sql('\\models\\user');
-			if($_SERVER['REQUEST_METHOD'] == 'POST'){
+			if(isset($_POST['createusers'])){
 				f()->db->query($sql);
 				return true;
 			}
@@ -76,7 +79,7 @@ class index
 		if($usercount > 0) return true;
 		
 		// in this context, there are no users
-		if(empty($_POST)){
+		if(!isset($_POST['email']) || !isset($_POST['password'])){
 			$user = new \models\user();
 			// default to adminadmin because it's the first user
 			$user->roles = 'adminadmin,admin';

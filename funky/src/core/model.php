@@ -95,6 +95,7 @@ class model
 		if(empty($id)) return new static();
 		$sql = 'select * from '.static::table().' where id = '.f()->db->escape($id);
 		$data = f()->db->query($sql)->row();
+		if(empty($data['id'])) return new static();
 		$obj = static::fromdata($data);
 		$obj->id = $id;
 		return $obj;

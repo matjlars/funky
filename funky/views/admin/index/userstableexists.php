@@ -7,6 +7,6 @@
 		<textarea disabled rows="5" cols="50"><?=$sql?></textarea>
 	</div>
 	<div class="field">
-		<input type="submit" value="Set up users table"/>
+		<input type="submit" name="createusers" value="Set up users table"/>
 	</div>
 </form>
