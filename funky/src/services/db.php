@@ -41,12 +41,11 @@ class db
 		$sql = 'INSERT INTO `'.$this->escape($table).'` SET ';
 		foreach($data as $key=>$value)
 		{
-			if($value === null)
-			{
+			if($value === null){
 				$sql .= '`'.$key.'`=NULL,';
-			}
-			else
-			{
+			}elseif(is_int($value)){
+				$sql .= '`'.$key.'`='.$this->escape($value).',';
+			}else{
 				$sql .= '`'.$key.'`'.'="'.$this->escape($value).'",';
 			}
 		}
@@ -66,15 +65,13 @@ class db
 		
 		// Generate UPDATE SQL:
 		$sql = 'UPDATE `'.$this->escape($table).'` SET ';
-		foreach($data as $key=>$value)
-		{
-			if($value === null)
-			{
+		foreach($data as $key=>$value){
+			if($value === null){
 				$sql .= '`'.$key.'`=NULL,';
-			}
-			else
-			{
-				$sql .= '`'.$key.'`="'.$this->escape($value).'",';
+			}elseif(is_int($value)){
+				$sql .= '`'.$key.'`='.$this->escape($value).',';
+			}else{
+				$sql .= '`'.$key.'`'.'="'.$this->escape($value).'",';
 			}
 		}
 		$sql = substr($sql,0,-1); // strip the last ','
