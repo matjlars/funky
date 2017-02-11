@@ -69,7 +69,7 @@ class index
 			$user = new \models\user();
 			// default to dev because it's the first user
 			$user->roles = 'dev,admin';
-			f()->view->load('admin/index/ensureuserexists', array(
+			return f()->view->load('admin/index/ensureuserexists', array(
 				'user'=>$user,
 			));
 		}else{
