@@ -16,6 +16,10 @@ class date extends field
 	{
 		return \date($formatstring, $this->val);
 	}
+	public function time()
+	{
+		return $this->val;
+	}
 	public function dbval()
 	{
 		return $this->format('Y-m-d');
