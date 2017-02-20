@@ -6,6 +6,6 @@ class logout
 	public function index()
 	{
 		f()->access->logout();
-		f()->path->redirect('admin/login');
+		f()->path->redirect('/admin/login');
 	}
 }

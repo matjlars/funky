@@ -52,8 +52,13 @@ class decimal extends field
 		$val = strval($val);
 		// get location of period
 		$period = strpos($val, '.');
-		$left = substr($val, 0, $period-1);
-		$right = substr($val, $period);
+		if($period === false){
+			$left = $val;
+			$right = '0';
+		}else{
+			$left = substr($val, 0, $period);
+			$right = substr($val, $period+1);
+		}
 		
 		// make sure there's nothing but numbers
 		$left = preg_replace('/[^0-9]/', '', $left);

@@ -12,8 +12,12 @@ class date extends field
 	{
 		return $this->format('m/d/Y');
 	}
+	// accepts a PHP date() format string and returns this date in that format
+	// google "php date" if you want all the formatting options
 	public function format($formatstring)
 	{
+		// if we have no time, don't try to make a date
+		if(empty($this->val)) return '';
 		return \date($formatstring, $this->val);
 	}
 	public function time()

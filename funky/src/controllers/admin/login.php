@@ -17,7 +17,7 @@ class login
 			
 			if(f()->access->isloggedin())
 			{
-				f()->response->redirect('admin');
+				f()->response->redirect('/admin');
 			}
 			else
 			{
