@@ -8,6 +8,8 @@ tabs.url = function($tab){
 	return $tab.attr('href') + '/' + $tabs.attr('data-id');
 }
 tabs.load = function($tab){
+	// default to reload the current tab
+	if(typeof($tab)=='undefined') $tab = $('.tabs a.active');
 	$tabs = $tab.closest('.tabs');
 	
 	// update the .active class
