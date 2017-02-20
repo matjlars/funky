@@ -13,6 +13,7 @@ class enum extends field
 		
 		// validate on 
 		$this->validators[] = function($val){
+			if(empty($val)) return;
 			if(!in_array($val, $this->values)) return 'contains an invalid value ('.$val.'). It should be one of ['.implode(',',$this->values).']';
 		};
 	}
