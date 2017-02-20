@@ -24,14 +24,14 @@ class debug
 		// show a really nice error if the user is running from a local server
 		if(f()->env->islocal()){
 			// show an in-depth error
-			f()->response->content = f()->view->load('errors/devphp', array(
+			$content = f()->view->load('errors/devphp', array(
 				'level'=>$level,
 				'message'=>$message,
 				'file'=>$file,
 				'line'=>$line,
 				'context'=>$context,
 			));
-			f()->response->send(500);
+			f()->response->send(500, $content);
 		}
 		
 		// in this context, the user is not a dev.
@@ -72,8 +72,8 @@ class debug
 			f()->email->send();
 		}
 		// show a generic error to the user:
-		f()->response->content = f()->view->load('errors/php');
-		f()->response->send(500);
+		$content = f()->view->load('errors/php');
+		f()->response->send(500, $content);
 	}
 	// accepts a value of bit flags representing predefined PHP constants
 	// returns a readable string (such as "E_WARNING") that is what error level it is

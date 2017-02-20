@@ -4,7 +4,6 @@ namespace funky\services;
 class response
 {
 	private $headers = array();
-	public $content = '';
 	
 	// call this function to set a header value
 	// subsequent calls with the same key will overwrite the previous value
@@ -18,19 +17,23 @@ class response
 	// sends the request and exits php
 	// this function uses the headers set with addHeader()
 	// it also uses the public $content property as the content body
-	public function send($code=200){
-		// set the response code. this will automatically configure the HTTP header
-		http_response_code($code);
-		
-		// send the custom headers
-		foreach($this->headers as $key=>$val){
-			header($key.': '.$val);
-		}
-		
-		// output the body content
-		echo $this->content;
-		
-		// exit successfully
+	public function send($code=200, $content){
+		$this->sendHeaders($code);
+		echo $content;
+		exit(0);
+	}
+	// responds with a simple "200 OK"
+	// given an optional message, will also output that as a plain text string
+	public function ok($message=''){
+		http_response_code(200);
+		if(!empty($message)) echo $message;
+		exit(0);
+	}
+	// sends a "400 Bad Request" response with the given message
+	// the message is required because it'd be hard to figure out what's wrong without one
+	public function error($message){
+		http_response_code(400);
+		echo $message;
 		exit(0);
 	}
 	// sends a redirect response
@@ -56,5 +59,11 @@ class response
 	public function disableCache(){
 		$this->addHeader('Cache-Control', 'no-cache, must-revalidate');
 		$this->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+	}
+	private function sendHeaders($code){
+		http_response_code($code);
+		foreach($this->headers as $key=>$val){
+			header($key.': '.$val);
+		}
 	}
 }
