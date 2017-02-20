@@ -1,7 +1,9 @@
 .modal{
-	display:block;
+	display:flex;
+	flex-direction:column;
 	position:fixed;
 	background-color:white;
+	min-width:40vw;
 	max-width:80vw;
 	max-height:80vh;
 	z-index:100;
@@ -21,21 +23,13 @@
 	z-index:99;
 }
 
-.modal>header{
-	background-color:#ddd;
-	padding:1rem;
-	font-size:120%;
-}
-.modal>.content{
-	margin:1rem 1rem 5rem 1rem;
-	overflow:auto;
-	max-height:calc(80vh - 10rem);
-}
+.modal>header,
 .modal>footer{
 	background-color:#ddd;
 	padding:1rem;
-	position:absolute;
-	bottom:0;
-	box-sizing:border-box;
-	width:100%;
+}
+
+.modal>.content{
+	margin:1rem;
+	overflow:auto;
 }
