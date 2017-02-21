@@ -10,6 +10,7 @@
 	text-decoration:none;
 	display:block;
 	padding:.4rem;
+	cursor:pointer;
 }
 .feed>li:nth-child(odd)>a {
 	background-color:#eee;
