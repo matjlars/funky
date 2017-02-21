@@ -81,10 +81,11 @@ class modelquery implements \Iterator
 	public function sql()
 	{
 		// SELECT
-		$sql = 'SELECT *';
+		$sql = 'SELECT ';
 		if(!empty($this->limit)){
-			$sql .= ',CALC_FOUND_ROWS';
+			$sql .= 'SQL_CALC_FOUND_ROWS ';
 		}
+		$sql .= '*';
 		
 		// FROM
 		$modelclass = $this->modelclass;
