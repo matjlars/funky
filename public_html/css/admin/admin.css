@@ -9,6 +9,7 @@ body{
 /* nav */
 body>nav{
 	background:#ccc;
+	overflow:auto;
 }
 body>nav a{
 	text-decoration:none;
