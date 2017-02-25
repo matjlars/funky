@@ -32,11 +32,11 @@ class access
 	}
 	// automatically redirects you to the login path if you are not logged in
 	// additionally, if any roles are specified (a single string or an array of strings), it makes sure the user has at least one of the given roles
-	public function enforce($roles=array())
+	public function enforce($roles=array(), $loginpath='/admin/login')
 	{
 		// if we're not logged in at all, redirect to path:
 		if(empty($this->user_id())){
-			f()->path->redirect('/admin/login');
+			f()->path->redirect($loginpath);
 		}
 		
 		// in this context, we are logged in. check roles if any given:
@@ -47,7 +47,7 @@ class access
 					return;
 				}
 			}
-			f()->path->redirect('/admin/login');
+			f()->path->redirect($loginpath);
 		}
 	}
 	public function user()
