@@ -23,7 +23,10 @@ class users
 	{
 		$user = user::fromid($id);
 		if(!empty($_POST)){
-			$user->update($_POST['user']);
+			// get rid of the password if it's blank.
+			// this will prevent saving the password as a hash of the empty string
+			if(empty($_POST['password'])) unset($_POST['password']);
+			$user->update($_POST);
 			if($user->isvalid()){
 				f()->response->redirect('/admin/admin/users');
 			}

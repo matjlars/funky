@@ -8,6 +8,12 @@ class user extends model
 	{
 		return $this->roles->in($role);
 	}
+	public function update($data)
+	{
+		// if we have a new password to store, encrypt it:
+		if(!empty($data['password'])) $data['password'] = $this->password->encrypt($data['password']);
+		parent::update($data);
+	}
 	public static function fields()
 	{
 		return f()->load->fields([
