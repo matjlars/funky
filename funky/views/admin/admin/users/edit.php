@@ -1,4 +1,5 @@
 <h2>Edit User</h2>
+
 <form action="<?=f()->url->current()?>" method="post">
 	<div class="field">
 		<label for="user_email">Email Address</label>
@@ -23,3 +24,7 @@
 		<?}?>
 	</div>
 </form>
+
+<?foreach($user->errors() as $error){?>
+<script>flash.error('<?=$error?>');</script>
+<?}?>

@@ -24,13 +24,13 @@ class users
 		$user = user::fromid($id);
 		if(!empty($_POST)){
 			$user->update($_POST['user']);
-			// TODO check for validation errors
-			f()->response->redirect('/admin/admin/users');
-		}else{
-			return f()->view->load('admin/admin/users/edit', array(
-				'user'=>$user,
-			));
+			if($user->isvalid()){
+				f()->response->redirect('/admin/admin/users');
+			}
 		}
+		return f()->view->load('admin/admin/users/edit', array(
+			'user'=>$user,
+		));
 	}
 	public function delete($id=0)
 	{
