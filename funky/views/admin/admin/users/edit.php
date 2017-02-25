@@ -9,7 +9,7 @@
 		<input type="password" name="user[password]" id="user_password"/>
 	</div>
 	<h3>Roles</h3>
-	<?foreach(f()->db->set_options('users', 'roles') as $role){?>
+	<?foreach($user->roles->values() as $role){?>
 		<div class="field">
 			<input type="checkbox" name="user[roles][]" id="user_role_<?=$role?>" value="<?=$role?>"<?=($user->hasrole($role))?' checked':''?>/>
 			<label for="user_role_<?=$role?>"><?=$role?></label>
