@@ -1,6 +1,8 @@
 <?php
 namespace funky\core;
 
+// provides a nice interface for dealing with database results.
+// f()->db->query() returns one of these, so learning these functions in and out will help you access data nicely
 class dbresult implements \Iterator
 {
 	private $resource;
