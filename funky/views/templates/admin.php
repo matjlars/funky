@@ -18,7 +18,7 @@
 <body>
 	<h1><?=f()->lang->admin_title?></h1>
 	<nav><?
-		if(f()->access->isloggedin() && f()->access->hasrole('admin') || f()->access->hasrole('dev')){
+		if(f()->access->isloggedin()){
 			if(f()->access->hasrole('admin')){
 				foreach(array(
 					'/admin/something'=>'Something',

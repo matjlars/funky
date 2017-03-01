@@ -1,18 +1,19 @@
 <h2>Edit User</h2>
+
 <form action="<?=f()->url->current()?>" method="post">
 	<div class="field">
-		<label for="user_email">Email Address</label>
-		<input type="text" name="user[email]" id="user_email" value="<?=$user->email?>"/>
+		<label for="email">Email Address</label>
+		<input type="text" name="email" id="email" value="<?=$user->email?>"/>
 	</div>
 	<div class="field">
-		<label for="user_password"><?=$user->exists()?'Reset':'Set'?> Password</label>
-		<input type="password" name="user[password]" id="user_password"/>
+		<label for="password"><?=$user->exists()?'Reset':'Set'?> Password</label>
+		<input type="password" name="password" id="password"/>
 	</div>
 	<h3>Roles</h3>
-	<?foreach(f()->db->set_options('users', 'roles') as $role){?>
+	<?foreach($user->roles->values() as $role){?>
 		<div class="field">
-			<input type="checkbox" name="user[roles][]" id="user_role_<?=$role?>" value="<?=$role?>"<?=($user->hasrole($role))?' checked':''?>/>
-			<label for="user_role_<?=$role?>"><?=$role?></label>
+			<input type="checkbox" name="roles[]" id="role_<?=$role?>" value="<?=$role?>"<?=($user->hasrole($role))?' checked':''?>/>
+			<label for="role_<?=$role?>"><?=$role?></label>
 		</div>
 	<?}?>
 	<div class="field">
@@ -23,3 +24,7 @@
 		<?}?>
 	</div>
 </form>
+
+<?foreach($user->errors() as $error){?>
+<script>flash.error('<?=$error?>');</script>
+<?}?>

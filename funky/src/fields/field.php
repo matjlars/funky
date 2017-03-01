@@ -12,6 +12,7 @@ class field
 	{
 		$this->name = $name;
 		if(!empty($args['label'])) $this->label = $args['label'];
+		if(!empty($args['default'])) $this->val = $args['default'];
 		$this->init($args);
 	}
 	public function name()
