@@ -74,6 +74,7 @@ class index
 			));
 		}else{
 			$user = \models\user::insert($_POST);
+			$user->update($_POST);
 			// also log this user in right now
 			f()->access->login($_POST['email'], $_POST['password']);
 		}
