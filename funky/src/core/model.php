@@ -30,7 +30,7 @@ class model
 	public function delete()
 	{
 		if(empty($this->id)) throw new \exception('You cannot delete that which does not exist.');
-		f()->db->query('DELETE FROM '.static::table().' WHERE id='.$this->id);
+		f()->db->query('DELETE FROM `'.static::table().'` WHERE id='.$this->id);
 	}
 	public function save()
 	{
@@ -93,7 +93,7 @@ class model
 	public static function fromid($id)
 	{
 		if(empty($id)) return new static();
-		$sql = 'select * from '.static::table().' where id = '.f()->db->escape($id);
+		$sql = 'select * from `'.static::table().'` where id = '.f()->db->escape($id);
 		$data = f()->db->query($sql)->row();
 		if(empty($data['id'])) return new static();
 		$obj = static::fromdata($data);
@@ -104,7 +104,7 @@ class model
 	public static function fromids($ids)
 	{
 		$results = array();
-		$data = f()->db->query('select * from '.static::table().' where id IN ('.implode(',', $ids).')');
+		$data = f()->db->query('select * from `'.static::table().'` where id IN ('.implode(',', $ids).')');
 		foreach($data as $dat){
 			$results[] = static::fromdata($dat);
 		}
@@ -131,7 +131,7 @@ class model
 	// returns the number of these models in the database
 	public static function count()
 	{
-		return f()->db->query('select count(1) as c from '.static::table())->val('c');
+		return f()->db->query('select count(1) as c from `'.static::table().'`')->val('c');
 	}
 	// returns a modelquery object to use to get an array of this type of model object
 	// An example use case is like this: foreach(user::query()->where('name LIKE "%bob%"') as $user){$user->dostuff();}

@@ -89,7 +89,7 @@ class modelquery implements \Iterator
 		
 		// FROM
 		$modelclass = $this->modelclass;
-		$sql .= ' FROM '.$modelclass::table();
+		$sql .= ' FROM `'.$modelclass::table().'`';
 		
 		// WHERE
 		if(!empty($this->where)){
