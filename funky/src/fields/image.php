@@ -1,7 +1,7 @@
 <?php
 namespace funky\fields;
 
-use models\imagemodel;
+use models\image as imagemodel;
 
 // $this->val is the image_id
 class image extends field
