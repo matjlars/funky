@@ -57,7 +57,7 @@ class migrations
 				// this table doesn't even exist, so the create table migration trumps this one.
 				continue;
 			}
-			$schema = f()->db->query('describe '.$table)->map('Field', 'Type');
+			$schema = f()->db->query('describe `'.$table.'`')->map('Field', 'Type');
 			$fields = $modelclass::fields();
 			foreach($fields as $field){
 				$fieldname = $field->name();

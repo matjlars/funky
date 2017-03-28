@@ -142,7 +142,8 @@ class model
 	// runs all field validators and returns true or false, depending on if there were any errors
 	public function isvalid()
 	{
-		return empty($this->errors());
+		$errors = $this->errors();
+		return empty($errors);
 	}
 	// runs all field validators and returns an array of error messages
 	public function errors()

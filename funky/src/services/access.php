@@ -35,7 +35,8 @@ class access
 	public function enforce($roles=array(), $loginpath='/admin/login')
 	{
 		// if we're not logged in at all, redirect to path:
-		if(empty($this->user_id())){
+		$user_id = $this->user_id();
+		if(empty($user_id)){
 			f()->path->redirect($loginpath);
 		}
 		
@@ -52,7 +53,8 @@ class access
 	}
 	public function user()
 	{
-		if(empty($this->user_id())) return new user();
+		$user_id = $this->user_id();
+		if(empty($user_id)) return new user();
 		if($this->user === null) $this->user = user::fromid($this->user_id());
 		// if this user model doesn't exist, log us out right here.
 		if(!$this->user->exists()){
