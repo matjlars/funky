@@ -3,7 +3,7 @@ namespace funky\models;
 
 class image extends \core\model
 {
-	const PATH = 'images/uploads/';
+	const PATH = 'uploads/images/';
 	
 	public function url()
 	{
@@ -42,7 +42,7 @@ class image extends \core\model
 		$filename = static::uniquefilename($filename, $dir);
 		
 		// make sure there is a directory to upload into:
-		if(!file_exists($dir)) mkdir($dir);
+		if(!file_exists($dir)) mkdir($dir, 0777, true);
 		
 		// save it to the right spot:
 		if(move_uploaded_file($_FILES[$name]['tmp_name'], $dir.$filename)){
