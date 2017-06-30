@@ -4,11 +4,6 @@
 	"autoload": {
 		"psr-4": {"funky\\": "src/"}
 	},
-	"scripts": {
-		"post-install-cmd": [
-			"cp -rf vendor/mistermashu/funky/scaffold/* ./"
-		]
-	},
 	"license":"MIT",
 	"authors":[
 		{
