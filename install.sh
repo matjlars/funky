@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-BASEPATH=$(dirname $0)
-FUNKY=$(dirname $BASEPATH)
-YOURPROJECT=$FUNKY/../../..
+FUNKY=$(dirname $0)
+MISTERMASHU=$(dirname $FUNKY)
+VENDOR=$(dirname $MISTERMASHU)
+YOURPROJECT=$(dirname $VENDOR)
 
-echo $BASEPATH
 echo $FUNKY
 echo $YOURPROJECT
+
 #cp -rf $FUNKY/scaffold/* $YOURPROJECT
