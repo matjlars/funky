@@ -5,8 +5,9 @@
 		"psr-4": {"funky\\": "src/"}
 	},
 	"scripts": {
-		"post-install-cmd": {
+		"post-install-cmd": [
 			"cp -rf vendor/mistermashu/funky/installation/* ./"
-		}
-	}
+		]
+	},
+	"license":"MIT"
 }
