@@ -3,5 +3,10 @@
 	"description": "A simple yet powerful web framework",
 	"autoload": {
 		"psr-4": {"funky\\": "src/"}
+	},
+	"scripts": {
+		"post-install-cmd": {
+			"cp -rf vendor/mistermashu/funky/installation/* ./"
+		}
 	}
 }
