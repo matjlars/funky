@@ -34,6 +34,7 @@ session_start();
 // $classname is either like \funky\models\classname
 // $classname is else like \models\classname
 // if $classname is like \models\classname, it automatically creates it if it doesn't exist and a funky one does.
+/* old autoloader before composer. delete this if the whole composer thing works out
 function __autoload($classname)
 {
 	// figure out a paths to remove the dependency on the path service, so we can load the path service:
@@ -82,6 +83,7 @@ function __autoload($classname)
 		throw new \exception('File '.$path.' exists but does not contain class '.$classname);
 	}
 }
+*/
 
 
 // this is a little class just to make the call to f() nicer.

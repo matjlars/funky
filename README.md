@@ -10,6 +10,10 @@ This is the scale, where words represent everything you can do with the Funky fr
 Usage
 =====
 
+To start using it, use composer to require it into your project by running the following command:
+
+`composer require mistermashu/funky:dev-master`
+
 Here is a list of basic concepts of the Funky framework.
 
 
