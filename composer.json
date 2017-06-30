@@ -1,7 +1,4 @@
 {
 	"name": "mistermashu/funky",
-	"description": "A simple yet powerful web framework",
-	"require": {
-		"php":"^5.5.0 || ^7.0"
-	}
+	"description": "A simple yet powerful web framework"
 }
