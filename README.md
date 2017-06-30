@@ -7,12 +7,17 @@ This is the scale, where words represent everything you can do with the Funky fr
 |raw---basic----simple----pretty neat-----complicated----complex----advanced-----funky|
 
 
+Installation
+============
+
+- first, create a new directory for your project and cd into it. for example, run `mkdir my-cool-site && cd my-cool-site`
+- then, just run `composer require mistermashu/funky:dev-master && vendor/mistermashu/funky/install.sh`
+
+The first bit of that command uses composer to download the funky package. The second bit runs the install script that basically scaffolds out some files you will need.
+
+
 Usage
 =====
-
-To start using it, use composer to require it into your project by running the following command:
-
-`composer require mistermashu/funky:dev-master`
 
 Here is a list of basic concepts of the Funky framework.
 
