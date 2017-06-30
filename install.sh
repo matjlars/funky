@@ -8,4 +8,5 @@ YOURPROJECT=$(dirname $VENDOR)
 echo $FUNKY
 echo $YOURPROJECT
 
-#cp -rf $FUNKY/scaffold/* $YOURPROJECT
+cp -rf $FUNKY/scaffold/* $YOURPROJECT
+mv _gitignore .gitignore
