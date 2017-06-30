@@ -1,5 +1,5 @@
 <?php
-namespace funky\core;
+namespace funky;
 
 class model
 {

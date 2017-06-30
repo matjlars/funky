@@ -1,5 +1,5 @@
 <?php
-namespace funky\core;
+namespace funky;
 
 // provides a really nice interface for getting 1 or many models objects with 1 db query
 class modelquery implements \Iterator

@@ -1,4 +1,7 @@
 {
 	"name": "mistermashu/funky",
-	"description": "A simple yet powerful web framework"
+	"description": "A simple yet powerful web framework",
+	"autoload": {
+		"psr-4": {"funky\\", "src/"}
+	}
 }
