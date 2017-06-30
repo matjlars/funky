@@ -9,5 +9,13 @@
 			"cp -rf vendor/mistermashu/funky/installation/* ./"
 		]
 	},
-	"license":"MIT"
+	"license":"MIT",
+	"authors":[
+		{
+			"name":"Matt Larson",
+			"email":"mistermashu@gmail.com",
+			"homepage":"http://mistermashu.com",
+			"role":"Developer"
+		}
+	]
 }
