@@ -73,7 +73,7 @@ class router
 		// first, keep going with subdirectories until there isn't a subdirectory that matches:
 		$i = 0; // this is which uripart we are currently concerned with
 		$controllerfilepath = f()->path->php('src/controllers/');
-		$globalfilepath = f()->path->php('funky/src/controllers/');
+		$globalfilepath = f()->path->funky('src/controllers/');
 		$controllername = '';
 		while(isset($uriparts[$i]) && (is_dir($controllerfilepath.$controllername.$uriparts[$i]) || is_dir($globalfilepath.$controllername.$uriparts[$i])))
 		{
@@ -93,6 +93,18 @@ class router
 		
 		// include the controller file
 		$controllerclass = '\\controllers\\'.str_replace('/', '\\', $controllername);
+		
+		// see if funky has a controller for this if the project doesn't:
+		if(!class_exists($controllerclass)){
+			$controllerclass = '\\funky'.$controllerclass;
+
+			// if funky doesn't have a controller for this route, then it's probably a 404:
+			if(!class_exists($controllerclass)){
+				return false;
+			}
+		}
+
+		// in this context, this class exists. instantiate it:
 		$controller = new $controllerclass();
 		$i++; // moving on to the method..
 		
