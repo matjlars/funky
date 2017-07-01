@@ -19,7 +19,7 @@ class view
 		}
 		
 		// Check for a global view (in DOC_ROOT/../funky/views/)
-		$globalviewpath = f()->path->php('funky/views/'.$name.'.php');
+		$globalviewpath = f()->path->funky('views/'.$name.'.php');
 		if(file_exists($globalviewpath))
 		{
 			ob_start();

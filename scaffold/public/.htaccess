@@ -10,7 +10,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L]
 
 # this must be done in every directory in order for funky to work
-php_value auto_prepend_file ../init.php
+php_value auto_prepend_file ../vendor/mistermashu/funky/init.php
 
 # turn on all errors:
 php_value display_errors on

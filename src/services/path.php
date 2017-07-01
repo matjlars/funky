@@ -42,6 +42,12 @@ class path
 	{
 		return $this->php.$path;
 	}
+
+	// returns the full path to the $path specified relative to the funky directory (in vendor/mistermashu/funky/)
+	public function funky($path='')
+	{
+		return dirname(dirname(__DIR__)).'/'.$path;
+	}
 	
 	// returns the full server path to the document root
 	public function docroot($path='')
