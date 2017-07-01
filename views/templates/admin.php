@@ -16,7 +16,7 @@
 	<script src="/js/admin/modal.js"></script>
 </head>
 <body>
-	<h1><?=f()->lang->admin_title?></h1>
+	<h1>Admin</h1>
 	<nav><?
 		if(f()->access->isloggedin()){
 			if(f()->access->hasrole('admin')){
