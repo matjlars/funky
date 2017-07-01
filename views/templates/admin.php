@@ -28,7 +28,7 @@
 			}
 			?><aside>
 				<?if(f()->access->hasrole('dev')){?>
-					<a href="/admin/admin">AdminAdmin</a>
+					<a href="/admin/admin">dev</a>
 				<?}?>
 				<a href="/admin/logout">Logout</a>
 			</aside>
