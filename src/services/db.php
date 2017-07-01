@@ -1,6 +1,6 @@
 <?php
 namespace funky\services;
-use core\dbresult;
+use funky\dbresult;
 
 class db
 {
