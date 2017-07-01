@@ -6,11 +6,21 @@
 // turn on error reporting:
 error_reporting(E_ALL);
 
-
 // pass all php errors along to the debug->error() function
 set_error_handler(function($level, $message, $file, $line, $context){
 	f()->debug->error($level, $message, $file, $line, $context);
 });
+
+
+
+// use composer autoloader:
+$loader = require(dirname(dirname(__DIR__)).'/autoload.php');
+
+// also load stuff from your project's src/ dir
+// as a couple examples, a file at your src/test.php containing an un-namespaced class called "test"
+// or a file at your src/models/test.php with a class "models\test"
+$loader->addPsr4('', dirname($_SERVER['DOCUMENT_ROOT']).'/src');
+
 
 
 // catch E_FATAL errors, too:
@@ -95,13 +105,27 @@ class funky_servicecontainer
 	// auto-load and access services:
 	public function __get($key)
 	{
+		// instantiate this service if we haven't already:
 		if(!isset($this->services[$key]))
 		{
 			$serviceclass = '\\services\\'.$key;
-			$this->services[$key] = new $serviceclass();
-			if($this->services[$key] == null){
-				throw new Exception('No such service '.$key);
+
+			// see if this project has a class for this service:
+			if(class_exists($serviceclass)){
+				$this->services[$key] = new $serviceclass();
+				return $this->services[$key];
 			}
+
+			// in this context, this project has no class for this service.
+			// now let's see if funky has a class for this service:
+			$serviceclass = '\\funky'.$serviceclass;
+			if(class_exists($serviceclass)){
+				$this->services[$key] = new $serviceclass();
+				return $this->services[$key];
+			}
+
+			// in this context, there is no class at all for this service.
+			throw new Exception('No such service '.$key.'. Try creating a file at src/services/'.$key.'.php with a class called \\services\\'.$key);
 		}
 		return $this->services[$key];
 	}
