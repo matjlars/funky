@@ -1,7 +1,7 @@
 <?php
-namespace funky\models;
+namespace models;
 
-class image extends \core\model
+class image extends \funky\model
 {
 	const PATH = 'uploads/images/';
 	

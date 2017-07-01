@@ -1,8 +1,7 @@
 <?php
-namespace funky\models;
-use core\model;
+namespace models;
 
-class user extends model
+class user extends \funky\model
 {
 	public function hasrole($role)
 	{
