@@ -57,33 +57,53 @@ class migrations
 				// this table doesn't even exist, so the create table migration trumps this one.
 				continue;
 			}
-			$schema = f()->db->query('describe `'.$table.'`')->map('Field', 'Type');
+			// get this table's schema
+			$schema = array();
+			foreach(f()->db->query('describe `'.$table.'`') as $schemarow){
+				$schema[$schemarow['Field']] = $schemarow;
+			}
 			$fields = $modelclass::fields();
 			foreach($fields as $field){
 				$fieldname = $field->name();
 				$dbtype = $field->dbtype();
+
+				// determine if this field will be nullable
+				$nullstr = ' NOT NULL';
+				if($field->isnullable()) $nullstr = '';
+
 				// if this field doesn't exist in the schema, add a migration to add it:
 				if(!isset($schema[$fieldname])){
 					$missingfields[$fieldname] = $dbtype;
 					$migrations[] = array(
 						'name'=>'Add field '.$table.'.'.$fieldname,
-						'sql'=>'ALTER TABLE `'.$table.'` ADD `'.$fieldname.'` '.$dbtype,
+						'sql'=>'ALTER TABLE `'.$table.'` ADD `'.$fieldname.'` '.$dbtype.$nullstr,
 					);
 					continue;
 				}
 				
 				// in this context, the field exists in the current schema, so check if the type is good:
-				if($schema[$fieldname] != $dbtype){
+				if($schema[$fieldname]['Type'] != $dbtype){
 					$migrations[] = array(
 						'name'=>'Alter '.$table.'.'.$fieldname,
-						'sql'=>'ALTER TABLE `'.$table.'` MODIFY `'.$fieldname.'` '.$dbtype,
+						'sql'=>'ALTER TABLE `'.$table.'` MODIFY `'.$fieldname.'` '.$dbtype.$nullstr,
 					);
+					continue;
+				}
+
+				// if the field's isnullable value doesn't match the one in the database, add a migration for that
+				if(($schema[$fieldname]['Null'] == 'NO' && $field->isnullable()) || ($schema[$fieldname]['Null'] == 'YES' && !$field->isnullable())){
+					$migrations[] = array(
+						'name'=>'Alter '.$table.'.'.$fieldname."'s nullability",
+						'sql'=>'ALTER TABLE `'.$table.'` MODIFY `'.$fieldname.'` '.$dbtype.$nullstr,
+					);
+					continue;
 				}
 			}
 			
 			// now, find all fields in the schema that are not in $fields:
 			// this means the column is in the database but it shouldn't be.
-			foreach($schema as $column=>$type){
+			foreach($schema as $column=>$s){
+				$type = $s['Type'];
 				if($column == 'id') continue;
 				if(!isset($fields[$column])){
 					$extrafields[] = $column;
@@ -113,12 +133,12 @@ class migrations
 		$table = $modelclass::table();
 		$sql = 'CREATE TABLE `'.$table.'`(';
 		// generate an array of sql strings for each field
-		$field_sqls = array();
 		$sql .= '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,';
 		foreach($modelclass::fields() as $field){
-			$sql .= '`'.$field->name().'` '.$field->dbtype().' NOT NULL,';
+			$sql .= '`'.$field->name().'` '.$field->dbtype();
+			if(!$field->isnullable()) $sql .= ' NOT NULL';
+			$sql .= ',';
 		}
-		$sql .= implode(', ', $field_sqls);
 		$sql .= 'PRIMARY KEY (`id`))';
 		return $sql;
 	}
