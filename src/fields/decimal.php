@@ -22,6 +22,13 @@ class decimal extends field
 			// calculate max:
 			$this->max = str_repeat('9', $this->left).'.'.str_repeat('9', $this->right);
 		}
+
+		// set the default:
+		if(isset($args['default'])){
+			$this->val = static::sanitize($args['default']);
+		}else{
+			$this->val = '0.0';
+		}
 		
 		// validate the left length
 		$this->validators[] = function($val){
