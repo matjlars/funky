@@ -87,6 +87,12 @@ class field
 	{
 		throw new \exception('TODO override '.$this->typename().'->dbtype()');
 	}
+	// returns true if the database accepts null values.
+	// override this function in your field if you want it to be nullable
+	public function isnullable()
+	{
+		return false;
+	}
 	// returns a string representing this value as printed in the html
 	// this way, you can just output $model->fieldname in form fields
 	// obviously, this is only really relevant to simple input fields with "value" attributes
