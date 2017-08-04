@@ -8,8 +8,6 @@ tabs.url = function($tab){
 	return $tab.attr('href') + '/' + $tabs.attr('data-id');
 }
 tabs.load = function($tab){
-	// default to reload the current tab
-	if(typeof($tab)=='undefined') $tab = $('.tabs a.active');
 	$tabs = $tab.closest('.tabs');
 	
 	// update the .active class
@@ -34,6 +32,13 @@ tabs.save = function(onValidSave){
 		}else{
 			flash.error(response);
 		}
+	});
+};
+
+// reloads all tabs on the page
+tabs.reload = function(){
+	$('div.tabs a.active').each(function(){
+		tabs.load($(this));
 	});
 };
 
