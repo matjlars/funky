@@ -12,8 +12,8 @@
 	<script src="/js/admin/admin.js"></script>
 	<script src="/js/admin/tabs.js"></script>
 	<script src="/js/admin/flash.js"></script>
-	<script src="/js/admin/imagefield.js"></script>
 	<script src="/js/admin/modal.js"></script>
+	<script src="/js/admin/imagefield.js"></script>
 </head>
 <body>
 	<h1>Admin</h1>
