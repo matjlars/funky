@@ -36,4 +36,13 @@ class format
 		$str = preg_replace('/[^a-z0-9\-]/', '', $str);
 		return $str;
 	}
+
+	// sanitize the filename to be sane
+	public function filename($filename)
+	{
+		$filename = strtolower($filename);
+		$filename = preg_replace('/[^a-z0-9\-\.]/', '-', $filename);
+		$filename = preg_replace('/-+/', '-', $filename);
+		return $filename;
+	}
 }
