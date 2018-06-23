@@ -1,93 +1,58 @@
-var imagefield = {};
+var tabs = {};
+tabs.ajax = null;
+// an array of functions that will be called after every tab load
+tabs.onload = [];
 
-// actually performs the file upload
-imagefield.upload = function($filefield){
-	if($filefield.attr('type')!='file') throw 'uploadFile() parameter 2 needs to be the selector to an input[type=file]';
-	$imagefield = $filefield.closest('.imagefield');
+
+tabs.url = function($tab){
+	return $tab.attr('href') + '/' + $tabs.attr('data-id');
+}
+tabs.load = function($tab){
+	$tabs = $tab.closest('.tabs');
 	
-	// pack up the files in a nice FormData object:
-	var file = $filefield[0].files[0];
-	var data = new FormData();
-	data.append('image', file);
+	// update the .active class
+	$tabs.find('nav>a').removeClass('active');
+	$tab.addClass('active');
 	
-	// perform the ajax request:
-	$.ajax({
-		url:'/admin/images/upload',
-		type:'POST',
-		data:data,
-		cache:false,
-		dataType:'html',
-		processData:false,
-		contentType:false,
-		success:function(response){
-			response = JSON.parse(response);
-			$imagefield.find('input[type=hidden]').val(response.id).change();
-			$imagefield.find('img').attr('src', response.url);
-		},
-		error:function(response){
-			flash.error(response.responseText);
-		},
-		complete:function(){
-			modal.close();
-		},
+	// get the new tab content
+	if(tabs.ajax) tabs.ajax.abort();
+	tabs.ajax = $.get(tabs.url($tab), function(response){
+		$tabs.find('.content').html(response);
+		for(var i in tabs.onload) tabs.onload[i]();
 	});
 };
-
-imagefield.initfields = function(){
-	// automatically upload the image when one is selected
-	$('.imagefield input[type=file]').on('change', function(){
-		$filefield = $(this);
-		$imagefield = $filefield.closest('.imagefield');
-		$imagefield.addClass('loading');
-		imagefield.upload($filefield, {}, function(){
-			// nothing special on success
-		}, function(response){
-			// error. flash an error and clear the file
-			flash.error(response.responseText);
-		}, function(){
-			// complete. either way, remove the loading class
-			$imagefield.removeClass('loading');
-		});
-	});
-	// when you click an image, bring up the upload dialog
-	$('.imagefield img').on('click', function(){
-		var $img = $(this);
-		var $imagefield = $img.closest('.imagefield');
-		var $hiddeninput = $imagefield.find('input[type=hidden]');
-		var name = $hiddeninput.attr('name');
-		if($img.attr('src') == ''){
-			imagefield.openuploaddialog(name);
+tabs.save = function(onValidSave){
+	$tab = $('.tabs a.active');
+	var url = tabs.url($tab);
+	var data = getFormData('.tabs .content');
+	if(tabs.ajax) tabs.ajax.abort();
+	tabs.ajax = $.post(url, data, function(response){
+		if(response == ''){
+			flash.success('Saved!');
 		}else{
-			// show a modal with the full image and some options
-			var html = '';
-			html += '<header>Image Preview</header>';
-			html += '<div class="content">';
-			html += '<img src="'+$img.attr('src')+'"/>';
-			html += '</div>';
-			html += '<footer>'
-			html += '<a class="button" onclick="modal.close();">Cancel</a>';
-			html += '<a class="button" onclick="imagefield.delete(\''+name+'\');">Delete</a>';
-			html += '<a class="button" onclick="imagefield.openuploaddialog(\''+name+'\');">Replace</a>';
-			html += '</footer>';
-			modal.html(html);
+			flash.error(response);
 		}
 	});
 };
-imagefield.delete = function(name){
-	$hiddeninput = $('input[type=hidden][name="'+name+'"]');
-	$imagefield = $hiddeninput.closest('.imagefield');
-	$imagefield.find('img').attr('src', '');
-	$hiddeninput.val(0).change();
-	modal.close();
-};
-imagefield.openuploaddialog = function(name){
-	$('input[type=hidden][name="'+name+'"]').closest('.imagefield').find('input[type=file]').click();
+
+// reloads all tabs on the page
+tabs.reload = function(){
+	$('div.tabs a.active').each(function(){
+		tabs.load($(this));
+	});
 };
 
-
-// make the tabs system automatically load image fields
-if(typeof(tabs) != 'undefined'){
-	tabs.onload.push(imagefield.initfields);
-}
-// init image fields on page load:
-$(imagefield.initfields);
+$(function(){
+	// click on a tab to load a tab
+	$('.tabs a').click(function(){
+		tabs.load($(this));
+		return false;
+	});
+	
+	// load the active tab, or the first one
+	$tab = $('.tabs a.active');
+	if(!$tab.length) $tab = $('.tabs a');
+	$tab.first().each(function(){
+		tabs.load($(this));
+	});
+});

@@ -3,6 +3,13 @@ namespace funky\fields;
 
 class date extends field
 {
+	private $isnullable = true;
+
+	public function init($args=[])
+	{
+		if(isset($args['isnullable'])) $this->isnullable = $args['isnullable'];
+	}
+
 	// Accepts any date format that can be parsed by strtotime()
 	public function set($val)
 	{
@@ -26,10 +33,15 @@ class date extends field
 	}
 	public function dbval()
 	{
+		if(empty($this->val)) return null;
 		return $this->format('Y-m-d');
 	}
 	public function dbtype()
 	{
 		return 'date';
+	}
+	public function isnullable()
+	{
+		return $this->isnullable;
 	}
 }

@@ -80,6 +80,17 @@ h1{
 	display:flex;
 }
 
+.checkbox{
+	display:inline-block;
+	background-color:rgba(0,0,0,0.1);
+	margin-right:4px;
+	border-radius:4px;
+}
+.checkbox label{
+	display:inline-block;
+	padding:4px;
+}
+
 
 /* buttons */
 .button,

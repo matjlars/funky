@@ -38,6 +38,9 @@ class image extends \funky\model
 			throw new \exception('The file you tried to upload was a .'.$extension.' but only one of these is permitted: ('.implode(', ', $validextensions).')');
 		}
 		
+		// sanitize the filename:
+		$filename = f()->format->filename($filename);
+
 		// get a unique filename:
 		$filename = static::uniquefilename($filename, $dir);
 		

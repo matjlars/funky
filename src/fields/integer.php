@@ -9,6 +9,13 @@ class integer extends field
 	
 	public function init($args)
 	{
+		// set the default:
+		if(isset($args['default'])){
+			$this->val = $args['default'];
+		}else{
+			$this->val = 0;
+		}
+
 		if(isset($args['signed'])) $this->signed = $args['signed'];
 		if(!empty($args['length'])) $this->length = $args['length'];
 		if(!empty($args['min'])){
