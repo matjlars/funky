@@ -4,6 +4,7 @@ namespace funky\fields;
 class time extends field
 {
 	private $format;
+
 	public function init($args)
 	{
 		// set the default format:
@@ -12,6 +13,8 @@ class time extends field
 		}else{
 			$this->format = $args['format'];
 		}
+
+		if(isset($args['default']) && $args['default'] == 'now') $this->val = time();
 	}
 	public function set($val)
 	{

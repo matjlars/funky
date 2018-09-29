@@ -3,6 +3,10 @@ namespace funky\fields;
 
 class datetime extends field
 {
+	public function init($args=[]){
+		if(isset($args['default']) && $args['default'] == 'now') $this->val = time();
+	}
+
 	public function set($val)
 	{
 		parent::set(\strtotime($val));

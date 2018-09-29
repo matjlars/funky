@@ -8,6 +8,7 @@ class date extends field
 	public function init($args=[])
 	{
 		if(isset($args['isnullable'])) $this->isnullable = $args['isnullable'];
+		if(isset($args['default']) && $args['default'] == 'now') $this->val = time();
 	}
 
 	// Accepts any date format that can be parsed by strtotime()
