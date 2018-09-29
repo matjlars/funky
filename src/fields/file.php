@@ -30,8 +30,9 @@ class file extends field
 		// validate based on extension:
 		$this->validators[] = function($val){
 			if(!is_null($this->extensions)){
-				if(!in_array(pathinfo($val, PATHINFO_EXTENSION), $this->extensions)){
-					return $val.' has an invalid extension. It must be one of: '.implode(', ',$this->extensions);
+				$ext = pathinfo($val, PATHINFO_EXTENSION);
+				if(!in_array($ext, $this->extensions)){
+					return $val.' has an invalid extension. It must be one of: '.implode(', ',$this->extensions).' but you tried to upload a '.$ext;
 				}
 			}
 		};
@@ -41,10 +42,32 @@ class file extends field
 		// don't try to upload anything if there is nothing there
 		if(empty($_FILES[$this->name()])) return;
 		if(empty($_FILES[$this->name()]['name'])) return;
+		$filedata = $_FILES[$this->name()];
+
+		// check for upload errors:
+		if($filedata['error'] != 0){
+			switch($filedata['error']){
+			case 1:
+				$this->uploaderror = 'bigger than the PHP installation allows';
+				break;
+			case 2:
+				$this->uploaderror = 'bigger than this form allows';
+				break;
+			case 3:
+				$this->uploaderror = 'was only partially uploaded';
+				break;
+			case 4:
+				$this->uploaderror = 'was not uploaded';
+				break;
+			default:
+				$this->uploaderror = 'has an unknown upload error (error value: '.$filedata['error'].')';
+				break;
+			}
+			return;
+		}
 		
 		// in this context, we want to upload the file
 		$fulldir = f()->path->docroot($this->dir);
-		$filedata = $_FILES[$this->name()];
 		$target_file = $fulldir.basename($filedata['name']);
 		$extension = pathinfo($target_file,PATHINFO_EXTENSION);
 		
@@ -57,7 +80,7 @@ class file extends field
 		}
 		
 		// get a unique filename for this file
-		$filepath = f()->unique->filename($this->dir.'/'.$filedata['name']);
+		$filepath = f()->unique->filename($fulldir.$filedata['name']);
 		
 		// if it gave up, don't save this file
 		if($filepath === false){
@@ -72,7 +95,7 @@ class file extends field
 		if(move_uploaded_file($filedata['tmp_name'], $filepath)){
 			$this->val = basename($filepath);
 		}else{
-			$this->uploaderror = 'Unable to save your file ('.$filedata['name'].') to the server.';
+			$this->uploaderror = 'unable to save ('.$filedata['name'].') to the server at path ('.$filepath.')';
 		}
 	}
 	public function dbtype()
