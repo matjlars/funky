@@ -17,23 +17,7 @@
 </head>
 <body>
 	<h1>Admin</h1>
-	<nav><?
-		if(f()->access->isloggedin()){
-			if(f()->access->hasrole('admin')){
-				foreach(array(
-					'/admin/something'=>'Something',
-				) as $path=>$name){
-					?><a href="<?=$path?>"<?=(f()->url->iscurrent($path))?' class="active"':''?>><?=$name?></a><?
-				}
-			}
-			?><aside>
-				<?if(f()->access->hasrole('dev')){?>
-					<a href="/admin/admin">dev</a>
-				<?}?>
-				<a href="/admin/logout">Logout</a>
-			</aside>
-		<?}?>
-	</nav>
+	<?=f()->view->load('admin/nav')?>
 	<?if(isset($premainview)){?>
 		<?=f()->view->load($premainview)?>
 	<?}?>
