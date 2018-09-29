@@ -41,3 +41,45 @@ function getFormData(selector){
 	});
 	return d;
 }
+
+var feedpage = {};
+feedpage.init = function(url, singular_noun){
+	if(url.substr(-1) != '/') url += '/';
+	feedpage.url = url;
+	feedpage.singular_noun = singular_noun;
+	feedpage.load();
+};
+feedpage.load = function(){
+	var url = feedpage.url + 'feed';
+	$.post(url, function(response){
+		$('#results').html(response);
+	});
+};
+feedpage.deactivate = function(id){
+	var url = feedpage.url + 'deactivate';
+	$.post(url, {id:id}, function(response){
+		feedpage.response(response, 'deactivated');
+	});
+};
+feedpage.activate = function(id){
+	var url = feedpage.url + 'activate';
+	$.post(url, {id:id}, function(response){
+		feedpage.response(response, 'activated');
+	});
+};
+feedpage.delete = function(id){
+	if(confirm('Are you sure you want to permanently delete this '+feedpage.singular_noun+'?')){
+		var url = feedpage.url + 'delete';
+		$.post(url, {id:id}, function(response){
+			feedpage.response(response, 'deleted');
+		});
+	}
+};
+feedpage.response = function(response, action){
+	if(response == 'ok'){
+		flash.success(feedpage.singular_noun + ' ' + action);
+	}else{
+		flash.error(response);
+	}
+	feedpage.load();
+};
