@@ -46,7 +46,7 @@ Then, to call that function from *anywhere* (yes, anywhere. within raw php pages
 f()->greeter->greet();
 ```
 
-This causes the funky framework to automatically load the greeter class, instantiate it as an object and save that reference, so the second time you use j()->greeter, it is actually the same object.
+This causes the funky framework to automatically load the greeter class, instantiate it as an object and save that reference, so the second time you use f()->greeter, it is actually the same object.
 This is literally all the Funky framework does (which is a good thing, that means it's *very* lightweight), and from there, it's all about the great services that only get loaded if you use them.
 
 
@@ -103,13 +103,13 @@ class blog{
 		$args['message'] = 'i haz a blog';
 		
 		// load the view:
-		return j()->view->load('blog/index', $args);
+		return f()->view->load('blog/index', $args);
 	}
 }
 ```
 
 5) Note how the message key in the array passed to the view gets converted to a local variable within the view.
-6) Also note how the load view function is `j()->view->load()`.  This means that it is using the `view` service's `load` function.
+6) Also note how the load view function is `f()->view->load()`.  This means that it is using the `view` service's `load` function.
 
 Contributors
 ============
