@@ -20,6 +20,7 @@ class slug extends text
 		$val = preg_replace('/[\']/', '', $val);
 		$val = preg_replace('/[^a-z0-9-]/', '-', $val);
 		$val = preg_replace('/-+/', '-', $val);
+		$val = trim($val, '-');
 		return $val;
 	}
 }
