@@ -34,6 +34,6 @@ class phone extends field
 	public static function sanitize($val)
 	{
 		// strip all non-numeric characters out:
-		return preg_replace('/[^0-9]/', $val);
+		return preg_replace('/[^0-9]/', '', $val);
 	}
 }
