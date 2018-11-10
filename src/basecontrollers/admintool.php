@@ -15,7 +15,8 @@ class admintool{
 	}
 
 	public function feed(){
-		$modelobjs = $this->modelclass()::query();
+		$modelclass = $this->modelclass();
+		$modelobjs = $modelclass::query();
 		$modelname = $this->modelname().'s';
 		return f()->view->load($this->path().'/feed', [
 			$modelname=>$modelobjs,
@@ -23,7 +24,8 @@ class admintool{
 	}
 
 	public function edit($id=0){
-		$modelobj = $this->modelclass()::fromid($id);
+		$modelclass = $this->modelclass();
+		$modelobj = $modelclass::fromid($id);
 		if(!empty($_POST)){
 			$modelobj->update($_POST);
 			if($modelobj->isvalid()){
