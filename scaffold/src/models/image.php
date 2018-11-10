@@ -86,7 +86,7 @@ class image extends \funky\model
 		return f()->load->fields([
 			['filename', 'text'],
 			['caption', 'text'],
-			['alt', 'text'],
+			['alt', 'text', ['label'=>'Alt Text']],
 		]);
 	}
 }

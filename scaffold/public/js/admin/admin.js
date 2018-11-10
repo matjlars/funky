@@ -83,3 +83,47 @@ feedpage.response = function(response, action){
 	}
 	feedpage.load();
 };
+
+
+var markdown = {};
+markdown.help = function(){
+	var html = '';
+	html += '<header><h2>Markdown Help</h2></header>';
+	html += '<section class="content">';
+	html += '<p>Markdown is a format of text that allows both easy editing and clean data.</p>';
+	html += '<p>This is how you can control the format of your text</p>';
+	html += '<pre>';
+	html += '*bold*\n';
+	html += '**italics**\n';
+	html += '***bold and italics***\n';
+	html += '</pre>';
+	html += '<p>This is how you can make a bulleted list.</p>';
+	html += '<pre>';
+	html += '- Unordered\n';
+	html += '- List\n';
+	html += '- Of\n';
+	html += '- Items\n';
+	html += '</pre>';
+	html += '<p>This is how you can make a numbered list. You can number each line if you want, but using all 1s allows easy editing.</p>';
+	html += '<pre>';
+	html += '1. Ordered\n';
+	html += '1. List\n';
+	html += '1. Of\n';
+	html += '1. Items\n';
+	html += '</pre>';
+	html += '<p>This is how to make a link.</p>';
+	html += '<pre>';
+	html += '[Link Text](https://www.runwayanalytics.com)\n';
+	html += '</pre>';
+	html += '<p>This is how you can display images you upload on the <a href="/admin/images">Images Page</a>. The number here is the corresponding "id" for your image.</p>';
+	html += '<pre>';
+	html += '[img.1234]';
+	html += '</pre>';
+	html += '</section>';
+
+	html += '<footer>';
+	html += '<a class="button" onclick="modal.close();">Got It</a> ';
+	html += 'Feel free to contact Web Elements, LLC. with any questions.';
+	html += '</footer>';
+	modal.html(html);
+};
