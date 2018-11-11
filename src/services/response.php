@@ -52,7 +52,8 @@ class response
 	}
 	public function send404(){
 		http_response_code(404);
-		echo f()->view->load('errors/404');
+		$content = f()->view->load('errors/404');
+		echo f()->template->render($content);
 		exit(0);
 	}
 	// call this function anywhere in your request to set headers to disable caching
