@@ -137,3 +137,227 @@ markdown.help = function(){
 	modal.html(html);
 };
 
+
+var imagefield = {};
+
+// actually performs the file upload
+imagefield.upload = function($filefield){
+	if($filefield.attr('type')!='file') throw 'uploadFile() parameter 2 needs to be the selector to an input[type=file]';
+	$imagefield = $filefield.closest('.imagefield');
+	
+	// pack up the files in a nice FormData object:
+	var file = $filefield[0].files[0];
+	var data = new FormData();
+	data.append('image', file);
+	
+	// perform the ajax request:
+	$.ajax({
+		url:'/admin/images/upload',
+		type:'POST',
+		data:data,
+		cache:false,
+		dataType:'html',
+		processData:false,
+		contentType:false,
+		success:function(response){
+			response = JSON.parse(response);
+			$imagefield.find('input[type=hidden]').val(response.id).change();
+			$imagefield.find('img').attr('src', response.url);
+		},
+		error:function(response){
+			flash.error(response.responseText);
+		},
+		complete:function(){
+			modal.close();
+		},
+	});
+};
+
+imagefield.init = function(){
+	// automatically upload the image when one is selected
+	$('.imagefield input[type=file]').on('change', function(){
+		$filefield = $(this);
+		$imagefield = $filefield.closest('.imagefield');
+		$imagefield.addClass('loading');
+		imagefield.upload($filefield, {}, function(){
+			// nothing special on success
+		}, function(response){
+			// error. flash an error and clear the file
+			flash.error(response.responseText);
+		}, function(){
+			// complete. either way, remove the loading class
+			$imagefield.removeClass('loading');
+		});
+	});
+	// when you click an image, bring up the upload dialog
+	$('.imagefield img').on('click', function(){
+		var $img = $(this);
+		var $imagefield = $img.closest('.imagefield');
+		var $hiddeninput = $imagefield.find('input[type=hidden]');
+		var name = $hiddeninput.attr('name');
+		if($img.attr('src') == ''){
+			imagefield.openuploaddialog(name);
+		}else{
+			// show a modal with the full image and some options
+			var html = '';
+			html += '<header>Image Preview</header>';
+			html += '<div class="content">';
+			html += '<img src="'+$img.attr('src')+'"/>';
+			html += '</div>';
+			html += '<footer>'
+			html += '<a class="button" onclick="modal.close();">Cancel</a>';
+			html += '<a class="button" onclick="imagefield.delete(\''+name+'\');">Delete</a>';
+			html += '<a class="button" onclick="imagefield.openuploaddialog(\''+name+'\');">Replace</a>';
+			html += '</footer>';
+			modal.html(html);
+		}
+	});
+};
+imagefield.delete = function(name){
+	$hiddeninput = $('input[type=hidden][name="'+name+'"]');
+	$imagefield = $hiddeninput.closest('.imagefield');
+	$imagefield.find('img').attr('src', '');
+	$hiddeninput.val(0).change();
+	modal.close();
+};
+imagefield.openuploaddialog = function(name){
+	$('input[type=hidden][name="'+name+'"]').closest('.imagefield').find('input[type=file]').click();
+};
+
+
+// make the tabs system automatically load image fields
+if(typeof(tabs) != 'undefined'){
+	tabs.onload.push(imagefield.init);
+}
+
+
+var tabs = {};
+tabs.ajax = null;
+// an array of functions that will be called after every tab load
+tabs.onload = [];
+
+
+tabs.url = function($tab){
+	return $tab.attr('href') + '/' + $tabs.attr('data-id');
+}
+tabs.load = function($tab){
+	$tabs = $tab.closest('.tabs');
+	
+	// update the .active class
+	$tabs.find('nav>a').removeClass('active');
+	$tab.addClass('active');
+	
+	// get the new tab content
+	if(tabs.ajax) tabs.ajax.abort();
+	tabs.ajax = $.get(tabs.url($tab), function(response){
+		$tabs.find('.content').html(response);
+		for(var i in tabs.onload) tabs.onload[i]();
+	});
+};
+tabs.save = function(onValidSave){
+	$tab = $('.tabs a.active');
+	var url = tabs.url($tab);
+	var data = getFormData('.tabs .content');
+	if(tabs.ajax) tabs.ajax.abort();
+	tabs.ajax = $.post(url, data, function(response){
+		if(response == ''){
+			flash.success('Saved!');
+		}else{
+			flash.error(response);
+		}
+	});
+};
+
+// reloads all tabs on the page
+tabs.reload = function(){
+	$('div.tabs a.active').each(function(){
+		tabs.load($(this));
+	});
+};
+tabs.init = function(){
+	// click on a tab to load a tab
+	$('.tabs a').click(function(){
+		tabs.load($(this));
+		return false;
+	});
+	
+	// load the active tab, or the first one
+	$tab = $('.tabs a.active');
+	if(!$tab.length) $tab = $('.tabs a');
+	$tab.first().each(function(){
+		tabs.load($(this));
+	});
+};
+
+
+var modal = {};
+modal.onopen = [];
+modal.onclose = [];
+
+modal.html = function(html, callback){
+	modal.close();
+	$('body').append('<div class="modal-overlay"></div>');
+	$('body').append('<div class="modal">'+html+'</div>');
+	$('.modal input[type=text]').first().focus();
+	for(var i in modal.onopen) modal.onopen[i]();
+	if(typeof(callback) == 'function') callback();
+};
+modal.get = function(url, callback){
+	$.get(url, function(html){
+		modal.html(html);
+		if(typeof(callback)=='function') callback(html);
+	});
+};
+modal.close = function(callback){
+	if($('.modal').length){
+		$('.modal').remove();
+		$('.modal-overlay').remove();
+		for(var i in modal.onclose) modal.onclose[i]();
+		if(typeof(callback) == 'function') callback();
+	}
+};
+modal.init = function(){
+	// close the modal if you click a modal overlay
+	$('body').on('click', '.modal-overlay', modal.close);
+
+	// close the modal if you press escape (keyCode 27)
+	$('body').on('keydown', function(e){
+		if(e.keyCode==27) modal.close();
+	});
+};
+
+
+var flash = {};
+
+flash.show = function(type, msg){
+	var html = '<p class="'+type+'">'+msg+'</p>';
+	$container = $('.flash');
+	// create a .flash container if one doesn't exist
+	if($container.length==0){
+		$('body').append('<div class="flash"></div>');
+		$container = $('<div class="flash"></div>').appendTo('body');
+	}
+	$(html).appendTo($container).delay(7000).fadeOut('fast');
+};
+flash.message = function(msg){
+	flash.show('message', msg);
+};
+flash.error = function(msg){
+	flash.show('error', msg);
+};
+flash.success = function(msg){
+	flash.show('success', msg);
+}
+flash.init = function(){
+	$('body').on('click', '.flash p', function(){
+		$(this).remove();
+	});
+};
+
+$(function(){
+	imagefield.init();
+	flash.init();
+	tabs.init();
+	modal.init();
+});
+
