@@ -97,6 +97,15 @@ markdown.help = function(){
 	html += '**italics**\n';
 	html += '***bold and italics***\n';
 	html += '</pre>';
+	html += '<p>You can make headers (in HTML terms, h1-h6 tags). Please note that you almost certainly do not want to make a header 1 because there should only be one h1 tag on a final page, and there is probably an h1 already on the page.</p>';
+	html += '<pre>';
+	html += '# This is a header 1\n';
+	html += '## This is a header 2\n';
+	html += '### This is a header 3\n';
+	html += '#### This is a header 4\n';
+	html += '##### This is a header 5\n';
+	html += '###### This is a header 6';
+	html += '</pre>';
 	html += '<p>This is how you can make a bulleted list.</p>';
 	html += '<pre>';
 	html += '- Unordered\n';
@@ -127,3 +136,4 @@ markdown.help = function(){
 	html += '</footer>';
 	modal.html(html);
 };
+
