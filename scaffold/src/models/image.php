@@ -4,11 +4,36 @@ namespace models;
 class image extends \funky\model
 {
 	const PATH = 'uploads/images/';
+
+	public function file_exists()
+	{
+		if(empty($this->filename->get())) return false;
+		return \file_exists($this->path());
+	}
+
+	public function markdown_snippet()
+	{
+		return '[img.'.$this->id.']';
+	}
 	
 	public function url()
 	{
 		return f()->url->get(static::PATH.$this->filename);
 	}
+	
+	public function path()
+	{
+		return self::targetdir().'/'.$this->filename;
+	}
+
+	public function update($data)
+	{
+		if(!empty($_FILES['file']) && !empty($_FILES['file']['name'])){
+			$data['filename'] = self::upload('file');
+		}
+		parent::update($data);
+	}
+
 	public static function targetdir()
 	{
 		return f()->path->docroot(static::PATH);
@@ -17,7 +42,8 @@ class image extends \funky\model
 	{
 		return ['jpg','jpeg','gif','png','svg'];
 	}
-	// handles uploading an image and returns the new image object
+
+	// handles uploading an image and returns the new filename
 	// this function will throw an exception with a better error if something doesn't quite work
 	public static function upload($name)
 	{
@@ -49,16 +75,13 @@ class image extends \funky\model
 		
 		// save it to the right spot:
 		if(move_uploaded_file($_FILES[$name]['tmp_name'], $dir.$filename)){
-			// create the file entry in the database and return that
-			$image = image::insert([
-				'filename'=>$filename,
-			]);
-			return $image;
+			return $filename;
 		}else{
 			// the file upload failed for some reason.
 			throw new \exception('an error occurred while saving the file into its final location on the server');
 		}
 	}
+
 	// returns a unique filename for a given filename and directory
 	public static function uniquefilename($filename, $dir)
 	{
@@ -81,11 +104,11 @@ class image extends \funky\model
 		}
 		return $tmp;
 	}
+
 	public static function fields()
 	{
 		return f()->load->fields([
 			['filename', 'text'],
-			['caption', 'text'],
 			['alt', 'text', ['label'=>'Alt Text']],
 		]);
 	}

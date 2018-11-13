@@ -1,20 +1,17 @@
 <?php
-namespace funky\controllers\admin;
-
+namespace controllers\admin;
 use models\image;
 
-class images
-{
-	public function __construct()
-	{
-		f()->access->enforce('admin');
-		f()->template->view = 'admin';
-	}
+class images extends \funky\basecontrollers\admintool{
+	// upload ajax endpoint (see admin.js/imagefield)
 	public function upload()
 	{
 		// attempt an image upload
 		try{
-			$image = image::upload('image');
+			$filename = image::upload('image');
+			$image = image::insert([
+				'filename'=>$filename,
+			]);
 		}catch(\exception $e){
 			http_response_code(400);
 			die($e->getMessage());
