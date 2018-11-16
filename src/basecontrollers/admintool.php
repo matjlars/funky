@@ -29,7 +29,7 @@ class admintool{
 		if(!empty($_POST)){
 			$modelobj->update($_POST);
 			if($modelobj->isvalid()){
-				f()->response->redirect('/'.$this->path());
+				f()->response->redirect('/'.$this->path().'/edit/'.$modelobj->id);
 			}
 		}
 		$modelname = $this->modelname();
