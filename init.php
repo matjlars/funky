@@ -40,62 +40,6 @@ register_shutdown_function(function(){
 session_start();
 
 
-// this function automatially loads classes
-// $classname is either like \funky\models\classname
-// $classname is else like \models\classname
-// if $classname is like \models\classname, it automatically creates it if it doesn't exist and a funky one does.
-/* old autoloader before composer. delete this if the whole composer thing works out
-function __autoload($classname)
-{
-	// figure out a paths to remove the dependency on the path service, so we can load the path service:
-	$projectroot = dirname($_SERVER['DOCUMENT_ROOT']).'/';
-	
-	// try to load class from either /funky/src/ or /src/
-	$tokens = explode('\\', $classname);
-	// add beginning of path to the path
-	if(isset($tokens[0]) && $tokens[0] == 'funky'){
-		// load from /funky
-		unset($tokens[0]);
-		$path = $projectroot.'funky/src/'.implode('/', $tokens).'.php';
-	}else{
-		// load from site's /src
-		$fpath = $projectroot.'funky/src/'.implode('/', $tokens).'.php';
-		$path = $projectroot.'src/'.implode('/', $tokens).'.php';
-		
-		// if the site-specific one doesn't exist, create it quick:
-		if(!is_file($path)){
-			if(is_file($fpath)){
-				// a site-specific one doesn't exist, but a funky one does.
-				// automatically create a new class that is site-specific:
-				$funkyclass = '\\funky\\'.$classname;
-				$lastslash = strrpos($classname, '\\');
-				$namespace = '';
-				$php = '';
-				if($lastslash !== false){
-					$namespace = substr($classname, 0, $lastslash);
-					$classname = substr($classname, $lastslash+1);
-					$php = 'namespace '.$namespace.";\n";
-				}
-				$php .= 'class '.$classname.' extends '.$funkyclass.'{}';
-				eval($php);
-				return;
-			}else{
-				throw new \exception('trying to load class '.$classname.' but neither '.$path.' nor '.$fpath.' exist.');
-			}
-		}
-		// in this context, we know there is a file at $path
-	}
-	if(!is_file($path)){
-		throw new \exception('trying to load class '.$classname.' but file '.$path.' does not exist');
-	}
-	include $path;
-	if(!in_array($classname, get_declared_classes())){
-		throw new \exception('File '.$path.' exists but does not contain class '.$classname);
-	}
-}
-*/
-
-
 // this is a little class just to make the call to f() nicer.
 // this way, you can just say f()->db for the "db" singleton service.
 class funky_servicecontainer
