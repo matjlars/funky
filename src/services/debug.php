@@ -32,6 +32,7 @@ class debug
 				'context'=>$context,
 			));
 			f()->response->send(500, $content);
+			return;
 		}
 		
 		// in this context, the user is not a dev.
@@ -71,6 +72,10 @@ class debug
 			f()->email->body($body);
 			f()->email->send();
 		}
+
+		// log the error:
+		error_log($message);
+
 		// show a generic error to the user:
 		$content = f()->view->load('errors/php');
 		f()->response->send(500, $content);
