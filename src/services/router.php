@@ -34,28 +34,18 @@ class router
 		if(substr($path, -1) == '/'){
 			$path .= 'index.php';
 		}
-		
-		// see if it's correct already (already has .php)
-		if(is_file($path)){
-			ob_start();
-			include $path;
-			return ob_get_clean();
-		}
-		
-		// see if it just needs the .php
-		$path2 = $path.'.php';
-		if(is_file($path2)){
-			ob_start();
-			include $path2;
-			return ob_get_clean();
-		}
-		
-		// see if it needs a /index.php
-		$path2 = $path.'/index.php';
-		if(is_file($path2)){
-			ob_start();
-			include $path2;
-			return ob_get_clean();
+
+		// try a few different paths
+		foreach([
+			$path,
+			$path.'.php',
+			$path.'/index.php',
+		] as $p){
+			if(is_file($p)){
+				ob_start();
+				include $p;
+				return ob_get_clean();
+			}
 		}
 		
 		// couldn't find this file, so let route() know we failed.
