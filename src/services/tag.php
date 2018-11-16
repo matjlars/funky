@@ -5,14 +5,21 @@ namespace funky\services;
 // all of these functions return a string so you can easily print it in a view
 class tag
 {
-	public function canonical()
+	public function canonical($path='')
 	{
-		// generate a full url for the current page
-		$href = f()->url->get($_SERVER['REQUEST_URI']);
-		// strip slashes off the end to improve consistency
-		$href = rtrim($href, '/');
+		// only do this on an env with a canonicalhost config set
+		if(!isset(f()->config->canonicalhost)) return '';
+
+		if(empty($path)){
+			$path = $_SERVER['REQUEST_URI'];
+			if(substr($path, 0, 1) != '/') $path = '/'.$path;
+			if(substr($path, -1, 1) != '/') $path = $path.'/';
+		}
+
+		$href = f()->config->canonicalhost.$path;
 		return '<link rel="canonical" href="'.$href.'"/>';
 	}
+
 	public function javascript($path)
 	{
 		return '<script src="'.f()->url->get($path).'"></script>';

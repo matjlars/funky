@@ -49,6 +49,11 @@ class template
 		foreach($this->jspaths as $p){
 			$str .= '<script src="'.f()->url->get($p).'"></script>';
 		}
+
+		// add a canonical tag if there is one:
+		$canonical = f()->tag->canonical();
+		if(!empty($canonical)) $str .= $canonical;
+
 		return $str;
 	}
 	
