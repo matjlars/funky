@@ -354,10 +354,46 @@ flash.init = function(){
 	});
 };
 
+
+// put data-slugify="OTHER_INPUT_ID" to automatically slugify a different field
+// also make sure to put [data-slugpath] on the slug field with the controller path (like /admin/blogposts/generateslug for example)
+var slug = {};
+slug.init = function(){
+	$('input[data-slugify]').each(function(){
+		var $slugfield = $(this);
+		var otherfield_id = $slugfield.attr('data-slugify');
+		var $otherfield = $('#'+otherfield_id);
+
+		if($slugfield.val() == ''){
+			$slugfield.addClass('generate');
+			$slugfield.on('input', function(){
+				$slugfield.removeClass('generate');
+			});
+			$otherfield.on('input', function(){
+				if($slugfield.hasClass('generate')){
+					var val = $otherfield.val();
+					if(val == ''){
+						$slugfield.val('');
+					}else{
+						var slugpath = $slugfield.attr('data-slugpath');
+						if(typeof(slugpath)=='undefined'){
+							throw 'no [data-slugpath] defined on slug field.';
+						}
+						$.post(slugpath, {val:val}, function(response){
+							$slugfield.val(response);
+						});
+					}
+				}
+			});
+		}
+	});
+};
+
 $(function(){
 	imagefield.init();
 	flash.init();
 	tabs.init();
 	modal.init();
+	slug.init();
 });
 
