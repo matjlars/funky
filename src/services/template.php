@@ -18,6 +18,12 @@ class template
 		if(isset($this->data[$key])) return $this->data[$key];
 		return null;
 	}
+
+	public function __isset($key)
+	{
+		return isset($this->data[$key]);
+	}
+
 	// tells the template to add a css file to the head tags
 	// given a filepath relative to the docroot (i.e. 'css/styles.css')
 	public function css($filepath)
