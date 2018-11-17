@@ -6,6 +6,7 @@ class template
 	private $data = array();
 	private $csspaths = array();
 	private $jspaths = array();
+	private $canonicalPath = '';
 	public $view = 'page';
 	
 	public function __set($key,$value)
@@ -51,7 +52,7 @@ class template
 		}
 
 		// add a canonical tag if there is one:
-		$canonical = f()->tag->canonical();
+		$canonical = f()->tag->canonical($this->canonicalPath);
 		if(!empty($canonical)) $str .= $canonical;
 
 		return $str;
@@ -66,5 +67,10 @@ class template
 			$this->data['content'] = $content;
 			return f()->view->load('templates/'.$this->view, $this->data);
 		}
+	}
+
+	public function setCanonicalPath($canonicalPath)
+	{
+		$this->canonicalPath = $canonicalPath;
 	}
 }

@@ -10,6 +10,8 @@ class tag
 		// only do this on an env with a canonicalhost config set
 		if(!isset(f()->config->canonicalhost)) return '';
 
+		// do not rely on this auto-detection.
+		// you must supply the desired path in order to assure accuracy.
 		if(empty($path)){
 			$path = $_SERVER['REQUEST_URI'];
 			if(substr($path, 0, 1) != '/') $path = '/'.$path;
