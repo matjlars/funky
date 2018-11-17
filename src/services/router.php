@@ -29,12 +29,10 @@ class router
 	public function page()
 	{
 		$path = $_SERVER['DOCUMENT_ROOT'].$_SERVER['REQUEST_URI'];
-		
-		// append 'index.php' on the end if it ends in /
-		if(substr($path, -1) == '/'){
-			$path .= 'index.php';
-		}
 
+		// strip off the trailing slash:
+		$path = rtrim($path, '/');
+		
 		// try a few different paths
 		foreach([
 			$path,
@@ -59,6 +57,9 @@ class router
 	{
 		// if it's a controller we have on this site, load that, with the method and parameters.
 		$uriparts = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'));
+
+		// get rid of blank parts
+		$uriparts = array_filter($uriparts);
 		
 		// first, keep going with subdirectories until there isn't a subdirectory that matches:
 		$i = 0; // this is which uripart we are currently concerned with
