@@ -29,6 +29,7 @@ class admintool{
 		if(!empty($_POST)){
 			$modelobj->update($_POST);
 			if($modelobj->isvalid()){
+				f()->flash->success('Saved!');
 				f()->response->redirect('/'.$this->path().'/edit/'.$modelobj->id);
 			}
 		}

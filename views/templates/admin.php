@@ -13,5 +13,13 @@
 		<?=f()->view->load($premainview)?>
 	<?}?>
 	<main><?=$content?></main>
+<?php
+$flash = f()->flash->pop();
+foreach($flash as $type=>$messages){
+	foreach($messages as $message){
+		?><script>flash.show('<?=$type?>','<?=$message?>');</script><?
+	}
+}
+?>
 </body>
 </html>
