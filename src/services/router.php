@@ -60,6 +60,16 @@ class router
 
 		// get rid of blank parts
 		$uriparts = array_filter($uriparts);
+
+		// ignore the extension on all uri parts:
+		$uripart_count = count($uriparts);
+		for($i = 0; $i < $uripart_count; $i++){
+			$uripart = $uriparts[$i];
+			$dot = strpos($uripart, '.');
+			if($dot !== false){
+				$uriparts[$i] = substr($uripart, 0, $dot);
+			}
+		}
 		
 		// first, keep going with subdirectories until there isn't a subdirectory that matches:
 		$i = 0; // this is which uripart we are currently concerned with

@@ -20,6 +20,7 @@ class request
 			exit(1);
 		}
 	}
+
 	public function isxhr()
 	{
 		if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
@@ -28,12 +29,25 @@ class request
 		}
 		return false;
 	}
+
 	// returns which type of HTTP method the current request is using.
 	// this will probably be either '', 'GET', or 'POST'
 	public function method()
 	{
 		return $_SERVER['REQUEST_METHOD'];
 	}
+
+	// returns the format for the requested "file"
+	// so if the request path is "/sitemap.xml", this will return "xml"
+	// defaults to "php" if there is nothing.
+	public function format()
+	{
+		if(!empty($_SERVER['REQUEST_URI'])){
+			return pathinfo($_SERVER['REQUEST_URI'], PATHINFO_EXTENSION);
+		}
+		return 'php';
+	}
+
 	// returns TRUE if this request is using https, FALSE otherwise
 	public function issecure()
 	{

@@ -5,21 +5,16 @@ namespace funky\services;
 // all of these functions return a string so you can easily print it in a view
 class tag
 {
-	public function canonical($path='')
+	public function canonical($path)
 	{
-		// only do this on an env with a canonicalhost config set
-		if(!isset(f()->config->canonicalhost)) return '';
+		// only do this on an env with an explicit baseurl and path set
+		if(!isset(f()->config->baseurl) || empty($path)) return '';
 
-		// do not rely on this auto-detection.
-		// you must supply the desired path in order to assure accuracy.
-		if(empty($path)){
-			$path = $_SERVER['REQUEST_URI'];
-			if(substr($path, 0, 1) != '/') $path = '/'.$path;
-			if(substr($path, -1, 1) != '/') $path = $path.'/';
-		}
+		// build the full url
+		$url = f()->url->get($path);
 
-		$href = f()->config->canonicalhost.$path;
-		return '<link rel="canonical" href="'.$href.'"/>';
+		// render the tag
+		return '<link rel="canonical" href="'.$url.'"/>';
 	}
 
 	public function javascript($path)
