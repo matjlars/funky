@@ -103,12 +103,12 @@ class modelquery implements \Iterator
 		
 		// LIMIT
 		if(!empty($this->limit)){
-			$sql .= ' LIMIT '.$this->limit;
-			
 			// OFFSET
 			if(!empty($this->offset)){
-				$sql .= ','.$this->offset;
+				$sql .= $this->offset.',';
 			}
+
+			$sql .= ' LIMIT '.$this->limit;
 		}
 
 		return $sql;
