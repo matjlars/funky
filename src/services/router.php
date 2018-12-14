@@ -148,6 +148,6 @@ class router
 		}
 		
 		// at this point, we have full knowledge of the function to call
-		return call_user_func_array(array($controller,$methodname),$params);
+		return $controller->$methodname(...$params);
 	}
 }
