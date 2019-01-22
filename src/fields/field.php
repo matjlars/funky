@@ -1,7 +1,7 @@
 <?php
 namespace funky\fields;
 
-class field
+abstract class field
 {
 	protected $val = '';
 	protected $validators = array();
@@ -15,13 +15,17 @@ class field
 		if(!empty($args['default'])) $this->val = $args['default'];
 		$this->init($args);
 	}
+
 	public function name()
 	{
 		return $this->name;
 	}
 	
 	// override this function to do stuff with args and set up anything else
-	public function init($args){}
+	abstract public function init($args);
+
+	// returns the sql needed to make this field exist in the db schema
+	abstract public function dbtype();
 	
 	// returns a user-readable value for this field
 	// override this if you can make a more user-readable version of the data for your field
@@ -59,6 +63,7 @@ class field
 		}
 		return $errors;
 	}
+
 	// returns a string containing the content of the field view
 	// these views are relative to /views/fields/FIELD_CLASS/
 	// the view file will get passed the "field" variable containing the field object
@@ -70,6 +75,7 @@ class field
 			'field'=>$this,
 		));
 	}
+
 	public function typename()
 	{
 		$classname = get_called_class();
@@ -77,22 +83,21 @@ class field
 		$classname = substr($classname, $startpos+1);
 		return $classname;
 	}
+
 	// returns a value that can be saved to the database
 	public function dbval()
 	{
 		return $this->val;
 	}
-	// returns the sql needed to make this field exist in the db schema
-	public function dbtype()
-	{
-		throw new \exception('TODO override '.$this->typename().'->dbtype()');
-	}
+
+
 	// returns true if the database accepts null values.
 	// override this function in your field if you want it to be nullable
 	public function isnullable()
 	{
 		return false;
 	}
+
 	// returns a string representing this value as printed in the html
 	// this way, you can just output $model->fieldname in form fields
 	// obviously, this is only really relevant to simple input fields with "value" attributes

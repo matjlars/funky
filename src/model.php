@@ -35,9 +35,9 @@ class model
 	public function save()
 	{
 		if($this->exists()){
-			f()->db->update(static::table(),$this->data(),'id',$this->id);
+			f()->db->update(static::table(), $this->data(), 'id', $this->id);
 		}else{
-			$this->id = f()->db->insert(static::table(),$this->data());
+			$this->id = f()->db->insert(static::table(), $this->data());
 		}
 	}
 	public function data()
@@ -133,6 +133,7 @@ class model
 	{
 		return f()->db->query('select count(1) as c from `'.static::table().'`')->val('c');
 	}
+
 	// returns a modelquery object to use to get an array of this type of model object
 	// An example use case is like this: foreach(user::query()->where('name LIKE "%bob%"') as $user){$user->dostuff();}
 	public static function query()

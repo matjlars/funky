@@ -11,35 +11,16 @@ class index
 	{
 		// validate all of the things
 		// if any of these functions returns false, that means they were not needed
-		foreach(['dbsetup','userstableexists','ensureuserexists'] as $func){
+		foreach(['userstableexists','ensureuserexists'] as $func){
 			$response = $this->$func();
 			if(!empty($response)) return $response;
 		}
 		
 		// the db and user table is set up, so continue
 		f()->access->enforce();
-		f()->template->view = 'admin';
 		return f()->view->load('admin/index/index');
 	}
-	// ensures and helps set up the database.
-	// returns true if the database is set up and ready to use.
-	private function dbsetup()
-	{
-		// if we don't have any of the config values we need, show the form to add them easily
-		if(!isset(f()->config->db_name) || !isset(f()->config->db_user) || !isset(f()->config->db_password)){
-			if(f()->request->method() == 'POST'){
-				// save all the config values
-				$allset = true;
-				foreach(['db_name','db_user','db_password'] as $key){
-					$val = $_POST[$key];
-					if(empty($val)) $allset = false;
-					f()->config->$key = $val;
-				}
-				if($allset) return false;
-			}
-			return f()->view->load('admin/index/dbsetup');
-		}
-	}
+
 	// ensures the users table is set up
 	// returns true if the users table is set up
 	private function userstableexists()
@@ -48,7 +29,7 @@ class index
 			// get users migrations
 			$sql = f()->migrations->create_table_sql('\\models\\user');
 			if(isset($_POST['createusers'])){
-				f()->db->query($sql);
+				f()->db->exec($sql);
 				return false;
 			}
 			return f()->view->load('admin/index/userstableexists', array(
@@ -56,6 +37,7 @@ class index
 			));
 		}
 	}
+
 	// ensures there is at least 1 user.
 	// returns true if there is at least 1 user.
 	private function ensureuserexists()
@@ -73,7 +55,7 @@ class index
 				'user'=>$user,
 			));
 		}else{
-			$user = \models\user::insert($_POST);
+			$user = new \models\user();
 			$user->update($_POST);
 			// also log this user in right now
 			f()->access->login($_POST['email'], $_POST['password']);

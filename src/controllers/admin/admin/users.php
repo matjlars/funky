@@ -11,6 +11,7 @@ class users
 		f()->template->view = 'admin';
 		f()->template->premainview = 'admin/admin/subnav';
 	}
+
 	public function index()
 	{
 		// get all users
@@ -19,6 +20,7 @@ class users
 			'users'=>$users,
 		));
 	}
+
 	public function edit($id=0)
 	{
 		$user = user::fromid($id);
@@ -35,6 +37,7 @@ class users
 			'user'=>$user,
 		));
 	}
+
 	public function delete($id=0)
 	{
 		$user = user::fromid($id);
