@@ -26,11 +26,18 @@ class database
 	{
 		if(empty($_POST['sql'])) die('<p>no sql given.</p>');
 		try{
-			$result = f()->db->query($_POST['sql']);
+			if($_POST['action'] == 'query'){
+				$result = f()->db->query($_POST['sql']);
+			}elseif($_POST['action'] == 'exec'){
+				$result = f()->db->exec($_POST['sql']);
+			}else{
+				throw new \Exception('need to either send "exec" or "query" in "action" key');
+			}
+
 			return f()->view->load('admin/admin/database/query', array(
 				'result'=>$result,
 			));
-		}catch(\exception $e){
+		}catch(\Exception $e){
 			return f()->view->load('errors/message', array(
 				'message'=>$e->getMessage(),
 			));

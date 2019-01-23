@@ -5,7 +5,8 @@
 <section>
 	<h3>SQL Runner</h3>
 	<textarea id="sql" rows="5" cols="50"></textarea>
-	<a class="button" onclick="runsql()">Run</a>
+	<a class="button" onclick="runsql(true)">Query</a>
+	<a class="button" onclick="runsql(false)">Exec</a>
 	<div id="sql-results"></div>
 </section>
 
@@ -20,14 +21,28 @@ function runmigration(button){
 	var $button = $(button);
 	var sql = $button.closest('tr').find('td.has-sql').html();
 	$('#sql').val(sql);
-	runsql();
+	runsql(false);
 }
-function runsql(){
+function runsql(query){
 	$('#sql-results').html('');
-	var sql = $('#sql').val();
-	$.post('/admin/admin/database/query', {sql:sql}, function(response){
-		$('#sql-results').html(response);
-		getmigrations();
+	var data = {};
+	data.sql = $('#sql').val();
+	if(query) data.action = 'query';
+	else data.action = 'exec';
+
+	$.ajax({
+		url:'/admin/admin/database/query',
+		method:'post',
+		data:data,
+		success:function(response){
+			$('#sql-results').html(response);
+		},
+		error:function(jqXHR){
+			$('#sql-results').html(jqXHR.responseText);
+		},
+		complete:function(){
+			getmigrations();
+		},
 	});
 }
 
