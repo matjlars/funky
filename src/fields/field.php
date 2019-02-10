@@ -44,7 +44,7 @@ abstract class field
 	public function label()
 	{
 		if(empty($this->label)){
-			return ucwords($this->name);
+			return ucwords(str_replace('_', ' ', $this->name));
 		}else{
 			return $this->label;
 		}
