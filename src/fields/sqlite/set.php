@@ -43,7 +43,9 @@ class set extends \funky\fields\field
 		// turn on each bit that was set
 		$this->val = 0;
 		foreach($val as $v){
-			$this->val |= (1<<$this->valToBit($v));
+			if($this->isVal($v)){
+				$this->val |= (1<<$this->valToBit($v));
+			}
 		}
 	}
 
@@ -86,5 +88,16 @@ class set extends \funky\fields\field
 			if($this->values[$i] == $val) return $i;
 		}
 		return false;
+	}
+
+	// returns true if the given val exists in the list of possible vals
+	// otherwise, returns false.
+	private function isVal($val)
+	{
+		if(in_array($val, $this->values)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }
