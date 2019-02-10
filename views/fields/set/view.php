@@ -1,3 +1,4 @@
+<label><?=$field->label()?></label>
 <?foreach($field->values() as $val){?>
 <span class="checkbox">
 	<input type="checkbox" name="<?=$field->name()?>[]" id="<?=$field->name()?>_<?=$val?>"<?=($field->in($val))?' checked':''?> value="<?=$val?>"/>
