@@ -185,7 +185,7 @@ class migrations
 					$missingfields[$fieldname] = $dbtype;
 					$migrations[] = array(
 						'name'=>'Add field '.$table.'.'.$fieldname,
-						'sql'=>'ALTER TABLE `'.$table.'` ADD `'.$fieldname.'` '.$dbtype.$nullstr,
+						'sql'=>'ALTER TABLE `'.$table.'` ADD `'.$fieldname.'` '.$dbtype,
 					);
 					continue;
 				}
@@ -194,7 +194,7 @@ class migrations
 				if($schema[$fieldname] != $dbtype){
 					$migrations[] = array(
 						'name'=>'Alter '.$table.'.'.$fieldname,
-						'sql'=>'ALTER TABLE `'.$table.'` MODIFY `'.$fieldname.'` '.$dbtype.$nullstr,
+						'sql'=>'ALTER TABLE `'.$table.'` MODIFY `'.$fieldname.'` '.$dbtype,
 					);
 					continue;
 				}
@@ -310,7 +310,7 @@ class migrations
 		$fields = explode(',', $fieldString);
 		$schema = [];
 		foreach($fields as $field){
-			preg_match('/([a-zA-Z]+)[^a-zA-Z]* ([a-zA-Z]+)/', $field, $matches);
+			preg_match('/([a-zA-Z_]+)[^a-zA-Z_]* ([a-zA-Z_]+)/', $field, $matches);
 			if(isset($matches[1]) && isset($matches[2])){
 				$schema[$matches[1]] = $matches[2];
 			}

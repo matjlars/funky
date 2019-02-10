@@ -3,15 +3,22 @@ namespace funky\fields\base;
 
 abstract class phone extends \funky\fields\field
 {
+	public function init($args)
+	{
+		// nothing yet...
+	}
+
 	public function set($val)
 	{
 		$val = static::sanitize($val);
 		parent::set($val);
 	}
+
 	public function tel()
 	{
 		return '+'.$this->val;
 	}
+
 	public function formatted()
 	{
 		$len = strlen($this->val);
