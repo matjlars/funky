@@ -41,7 +41,8 @@ class sqliteresult implements \Iterator
 	// returns the first row or false if one doesn't exist
 	public function row()
 	{
-		return $this->current();
+		if(count($this->results) > 0) return $this->current();
+		return false;
 	}
 
 	// returns all values for a given key in a string set format, like "(2,4,6,7)"
