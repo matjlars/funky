@@ -12,6 +12,7 @@ class set extends \funky\fields\field
 		}
 
 		$this->values = $args['values'];
+		$this->val = 0;
 	}
 
 	// returns an array of all selected options
