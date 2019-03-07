@@ -1,5 +1,5 @@
 <?php
-namespace controllers\admin;
+namespace funky\controllers\admin;
 use models\image;
 
 class images extends \funky\basecontrollers\admintool{
