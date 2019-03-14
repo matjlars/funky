@@ -1,6 +1,5 @@
 <?php
 namespace funky\fields\base;
-
 use models\image as imagemodel;
 
 // $this->val is the image_id
@@ -13,6 +12,7 @@ abstract class image extends \funky\fields\field
 		// default to 0
 		$this->val = 0;
 	}
+
 	// returns an image model that this field references
 	// if it doesn't reference any, it returns null
 	public function get()
@@ -20,24 +20,28 @@ abstract class image extends \funky\fields\field
 		if(is_null($this->image)) $this->image = imagemodel::fromid($this->val);
 		return $this->image;
 	}
+
 	// returns true or false, depending on if an image exists
 	// if the image does not exist, calling get() will not give you anything useful.
 	public function exists()
 	{
 		return $this->val > 0;
 	}
+
 	// returns the url for this image
 	public function url()
 	{
 		$image = $this->get();
 		return $image->url();
 	}
+
 	// returns the alt text for this image
 	public function alt()
 	{
 		$image = $this->get();
-		return $image->alt();
+		return $image->alt->get();
 	}
+
 	// takes an image model and sets the val to the image model id
 	public function set($val)
 	{
