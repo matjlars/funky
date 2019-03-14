@@ -16,8 +16,15 @@ class admintool{
 
 	public function feed(){
 		$modelclass = $this->modelclass();
-		$modelobjs = $modelclass::query();
 		$modelname = $this->modelname().'s';
+
+		// either get all or filter by post params:
+		if(empty($_POST)){
+			$modelobjs = $modelclass::query();
+		}else{
+			$modelobjs = $modelclass::search($_POST);
+		}
+
 		return f()->view->load($this->path().'/feed', [
 			$modelname=>$modelobjs,
 		]);
