@@ -25,15 +25,9 @@ class database
 	public function query()
 	{
 		if(empty($_POST['sql'])) die('<p>no sql given.</p>');
-		try{
-			if($_POST['action'] == 'query'){
-				$result = f()->db->query($_POST['sql']);
-			}elseif($_POST['action'] == 'exec'){
-				$result = f()->db->exec($_POST['sql']);
-			}else{
-				throw new \Exception('need to either send "exec" or "query" in "action" key');
-			}
 
+		try{
+			$result = f()->db->query($_POST['sql']);
 			return f()->view->load('admin/admin/database/query', array(
 				'result'=>$result,
 			));

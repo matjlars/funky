@@ -5,7 +5,7 @@ class load
 {
 	public function field($name, $typename, $args=array())
 	{
-		$class = '\\funky\\fields\\'.f()->db->type().'\\'.$typename;
+		$class = '\\funky\\fields\\'.$typename;
 		$field = new $class($name, $args);
 		return $field;
 	}

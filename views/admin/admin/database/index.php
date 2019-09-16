@@ -5,8 +5,7 @@
 <section>
 	<h3>SQL Runner</h3>
 	<textarea id="sql" rows="5" cols="50"></textarea>
-	<a class="button" onclick="runsql(true)">Query</a>
-	<a class="button" onclick="runsql(false)">Exec</a>
+	<a class="button" onclick="runsql()">Query</a>
 	<div id="sql-results"></div>
 </section>
 
@@ -21,14 +20,12 @@ function runmigration(button){
 	var $button = $(button);
 	var sql = $button.closest('tr').find('td.has-sql').html();
 	$('#sql').val(sql);
-	runsql(false);
+	runsql();
 }
-function runsql(query){
+function runsql(){
 	$('#sql-results').html('');
 	var data = {};
 	data.sql = $('#sql').val();
-	if(query) data.action = 'query';
-	else data.action = 'exec';
 
 	$.ajax({
 		url:'/admin/admin/database/query',
