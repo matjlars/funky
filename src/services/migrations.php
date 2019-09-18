@@ -20,7 +20,7 @@ class migrations
 			if(!f()->db->table_exists($table)){
 				$migrations[] = array(
 					'name'=>'Create Table '.$table,
-					'sql'=>$this->mysql_create_table_sql($modelclass),
+					'sql'=>$this->create_table_sql($modelclass),
 				);
 			}
 		}
@@ -134,7 +134,7 @@ class migrations
 	}
 
 	// returns the sql necessary to create a table given a model class name
-	private function mysql_create_table_sql($modelclass){
+	public function create_table_sql($modelclass){
 		$table = $modelclass::table();
 		$sql = 'CREATE TABLE `'.$table.'`(';
 		// generate an array of sql strings for each field

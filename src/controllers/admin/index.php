@@ -29,7 +29,7 @@ class index
 			// get users migrations
 			$sql = f()->migrations->create_table_sql('\\models\\user');
 			if(isset($_POST['createusers'])){
-				f()->db->exec($sql);
+				f()->db->query($sql);
 				return false;
 			}
 			return f()->view->load('admin/index/userstableexists', array(
