@@ -23,4 +23,9 @@ class slug extends \funky\fields\field
 		$val = trim($val, '-');
 		return $val;
 	}
+
+	public function dbtype()
+	{
+		return 'varchar(255)';
+	}
 }

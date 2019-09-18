@@ -22,7 +22,7 @@ abstract class field
 	}
 	
 	// override this function to do stuff with args and set up anything else
-	abstract public function init($args);
+	public function init($args){}
 
 	// returns the sql needed to make this field exist in the db schema
 	abstract public function dbtype();
