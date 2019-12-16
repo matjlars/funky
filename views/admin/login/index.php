@@ -10,9 +10,9 @@
 }
 </style>
 
-<? if(!empty($error)){?>
+<?php if(!empty($error)){?>
 	<p class="error"><?=$error?></p>
-<? }?>
+<?php }?>
 
 <div id="admin-login">
 	<h2>Log In</h2>

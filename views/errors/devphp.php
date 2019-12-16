@@ -20,92 +20,92 @@ td,th{
 	<p>Line: <?=$line?></p>
 	<table>
 		<caption>Context</caption>
-		<?foreach($context as $key=>$val){?>
+		<?php foreach($context as $key=>$val){?>
 			<tr>
 				<th><?=$key?></th>
 				<td>
-					<?if(is_string($val)){
+					<?php if(is_string($val)){
 						echo $val;
 					}else{
 						var_dump($val);
 					}?>
 				</td>
 			</tr>
-		<?}?>
+		<?php }?>
 	</table>
 	<table>
 		<caption>Session</caption>
-		<?foreach($_SESSION as $key=>$val){?>
+		<?php foreach($_SESSION as $key=>$val){?>
 			<tr>
 				<th><?=$key?></th>
 				<td>
-					<?if(is_string($val)){
+					<?php if(is_string($val)){
 						echo $val;
 					}else{
 						var_dump($val);
 					}?>
 				</td>
 			</tr>
-		<?}?>
+		<?php }?>
 	</table>
 	<table>
 		<caption>Get Parameters</caption>
-		<?foreach($_GET as $key=>$val){?>
+		<?php foreach($_GET as $key=>$val){?>
 			<tr>
 				<th><?=$key?></th>
 				<td>
-					<?if(is_string($val)){
+					<?php if(is_string($val)){
 						echo $val;
 					}else{
 						var_dump($val);
 					}?>
 				</td>
 			</tr>
-		<?}?>
+		<?php }?>
 	</table>
 	<table>
 		<caption>Post Parameters</caption>
-		<?foreach($_POST as $key=>$val){?>
+		<?php foreach($_POST as $key=>$val){?>
 			<tr>
 				<th><?=$key?></th>
 				<td>
-					<?if(is_string($val)){
+					<?php if(is_string($val)){
 						echo $val;
 					}else{
 						var_dump($val);
 					}?>
 				</td>
 			</tr>
-		<?}?>
+		<?php }?>
 	</table>
 	<table>
 		<caption>Server Variables</caption>
-		<?foreach($_SERVER as $key=>$val){?>
+		<?php foreach($_SERVER as $key=>$val){?>
 			<tr>
 				<th><?=$key?></th>
 				<td>
-					<?if(is_string($val)){
+					<?php if(is_string($val)){
 						echo $val;
 					}else{
 						var_dump($val);
 					}?>
 				</td>
 			</tr>
-		<?}?>
+		<?php }?>
 	</table>
 	<table>
 		<caption>Cookies</caption>
-		<?foreach($_COOKIE as $key=>$val){?>
+		<?php foreach($_COOKIE as $key=>$val){?>
 			<tr>
 				<th><?=$key?></th>
 				<td>
-					<?if(is_string($val)){
+					<?php if(is_string($val)){
 						echo $val;
 					}else{
 						var_dump($val);
 					}?>
 				</td>
 			</tr>
-		<?}?>
+		<?php }?>
 	</table>
 </div>

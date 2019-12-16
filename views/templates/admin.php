@@ -9,15 +9,15 @@
 <body>
 	<h1>Admin</h1>
 	<?=f()->view->load('admin/nav')?>
-	<?if(isset($premainview)){?>
+	<?php if(isset($premainview)){?>
 		<?=f()->view->load($premainview)?>
-	<?}?>
+	<?php }?>
 	<main><?=$content?></main>
 <?php
 $flash = f()->flash->pop();
 foreach($flash as $type=>$messages){
 	foreach($messages as $message){
-		?><script>flash.show('<?=$type?>','<?=$message?>');</script><?
+		?><script>flash.show('<?=$type?>','<?=$message?>');</script><?php
 	}
 }
 ?>

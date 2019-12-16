@@ -1,32 +1,32 @@
 <h2>Query Result</h2>
 
-<?if(empty($result)){?>
+<?php if(empty($result)){?>
 	<p>No result.</p>
-<?}else{?>
-	<?if(is_bool($result)){?>
-		<?if($result){?>
+<?php }else{?>
+	<?php if(is_bool($result)){?>
+		<?php if($result){?>
 			<p>Statement executed successfullly.</p>
-		<?}else{?>
+		<?php }else{?>
 			<p>$result was false which doesn't make sense because it should've been an exception error</p>
-		<?}?>
-	<?}else{?>
+		<?php }?>
+	<?php }else{?>
 		<table>
 			<thead>
 				<tr>
-					<?foreach($result->row() as $key=>$val){?>
+					<?php foreach($result->row() as $key=>$val){?>
 						<th><?=$key?></th>
-					<?}?>
+					<?php }?>
 				</tr>
 			</thead>
 			<tbody>
-				<?foreach($result as $row){?>
+				<?php foreach($result as $row){?>
 					<tr>
-						<?foreach($row as $key=>$val){?>
+						<?php foreach($row as $key=>$val){?>
 							<td><?=$val?></td>
-						<?}?>
+						<?php }?>
 					</tr>
-				<?}?>
+				<?php }?>
 			</tbody>
 		</table>
-	<?}?>
-<?}?>
+	<?php }?>
+<?php }?>

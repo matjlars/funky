@@ -13,7 +13,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?foreach($users as $user){?>
+		<?php foreach($users as $user){?>
 			<tr>
 				<td><?=$user->email?></td>
 				<td><?=implode(', ', $user->roles->get())?></td>
@@ -22,6 +22,6 @@
 					<a class="red button" href="/admin/admin/users/delete/<?=$user->id?>">delete</a>
 				</td>
 			</tr>
-		<?}?>
+		<?php }?>
 	</tbody>
 </table>

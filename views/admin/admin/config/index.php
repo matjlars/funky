@@ -8,12 +8,12 @@
 
 <form action="/admin/admin/config" method="post">
 	<h3>Existing Config</h3>
-	<?foreach($vars as $key=>$val){?>
+	<?php foreach($vars as $key=>$val){?>
 		<div class="field">
 			<label for="<?=$key?>"><?=$key?></label>
 			<input type="text" name="config[<?=$key?>]" id="<?=$key?>" value="<?=$val?>"/>
 		</div>
-	<?}?>
+	<?php }?>
 	<h3>New Config</h3>
 	<p>Enter a new key and a new value here if you want to add a new key/value pair</p>
 	<div class="field">

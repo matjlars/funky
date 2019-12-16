@@ -17,14 +17,14 @@ $trace = $e->getTrace();
 			</tr>
 		</thead>
 		<tbody>
-			<?foreach($trace as $t){?>
+			<?php foreach($trace as $t){?>
 				<tr>
 					<td><?=(empty($t['file']))?'':$t['file']?></td>
 					<td><?=(empty($t['line']))?'':$t['line']?></td>
 					<td><?=(empty($t['class']))?'':$t['class']?></td>
 					<td><?=(empty($t['function']))?'':$t['function']?>()</td>
 				</tr>
-			<?}?>
+			<?php }?>
 		</tbody>
 	</table>
 </div>

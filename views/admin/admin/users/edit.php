@@ -10,21 +10,21 @@
 		<input type="password" name="password" id="password"/>
 	</div>
 	<h3>Roles</h3>
-	<?foreach($user->roles->values() as $role){?>
+	<?php foreach($user->roles->values() as $role){?>
 		<div class="field">
 			<input type="checkbox" name="roles[]" id="role_<?=$role?>" value="<?=$role?>"<?=($user->hasrole($role))?' checked':''?>/>
 			<label for="role_<?=$role?>"><?=$role?></label>
 		</div>
-	<?}?>
+	<?php }?>
 	<div class="field">
 		<a class="button" href="/admin/admin/users">Cancel</a>
 		<input class="green" type="submit" value="Save"/>
-		<?if($user->exists()){?>
+		<?php if($user->exists()){?>
 			<a class="red button" href="/admin/admin/users/delete/<?=$user->id?>" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
-		<?}?>
+		<?php }?>
 	</div>
 </form>
 
-<?foreach($user->errors() as $error){?>
+<?php foreach($user->errors() as $error){?>
 <script>flash.error('<?=$error?>');</script>
-<?}?>
+<?php }?>
