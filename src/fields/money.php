@@ -13,6 +13,6 @@ class money extends \funky\fields\field
 	}
 	public function dbtype()
 	{
-		return 'decimal(10, 2)';
+		return 'decimal(10,2)';
 	}
 }

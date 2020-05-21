@@ -31,7 +31,7 @@ class integer extends \funky\fields\field
 
 	public function dbtype()
 	{
-		$sql = 'int ('.$this->length.')';
+		$sql = 'int('.$this->length.')';
 		if(!$this->signed) $sql .= ' unsigned';
 		return $sql;
 	}
