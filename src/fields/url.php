@@ -18,4 +18,8 @@ class url extends \funky\fields\field
 		}
 		return $val;
 	}
+	public function dbtype()
+	{
+		return 'text';
+	}
 }

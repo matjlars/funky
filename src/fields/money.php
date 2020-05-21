@@ -11,4 +11,8 @@ class money extends \funky\fields\field
 	{
 		return $this->get();
 	}
+	public function dbtype()
+	{
+		return 'decimal(10, 2)';
+	}
 }
