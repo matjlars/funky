@@ -51,7 +51,7 @@ class template
 	{
 		$str = '';
 		foreach($this->csspaths as $p){
-			$str .= '<link rel="stylesheet" src="'.f()->url->get($p).'"/>';
+			$str .= '<link rel="stylesheet" href="'.f()->url->get($p).'">';
 		}
 		foreach($this->jspaths as $p){
 			$str .= '<script src="'.f()->url->get($p).'"></script>';
