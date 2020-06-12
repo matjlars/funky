@@ -26,7 +26,7 @@ Services
 -------
 
 The general idea of Funky is that your "global functions" are all separated out into *services*.
-*services* allow you you organize your imperitive functions and override any logic of the whole framework on a per-site basis.
+*services* allow you you organize your functions and easily override any logic of the whole framework on a per-site basis.
 
 A simple service would be like this:
 
@@ -48,6 +48,31 @@ f()->greeter->greet();
 
 This causes the funky framework to automatically load the greeter class, instantiate it as an object and save that reference, so the second time you use f()->greeter, it is actually the same object.
 This is literally all the Funky framework does (which is a good thing, that means it's *very* lightweight), and from there, it's all about the great services that only get loaded if you use them.
+Additionally, this allows you to override any logic in the whole framework because it's all services all the way down.
+
+All you need to do is define a service in your site and funky will automatically instantiate that new one instead of the one in the framework.
+If you want to keep most of the functionality of a built-in service, but make a little change or addition, simply make your service class extend the built-in one, like this:
+
+```php
+<?php
+// filename: src/services/request.php
+namespace services;
+
+class request extends \funky\services\request
+{
+	// this function is now the main entry point for this request.
+	public function perform()
+	{
+		// you could put some PHP here and it would happen at the beginning of every single request.
+
+		// this is the normal entry-point for requests.
+		// you can see this function in vendor/mistermashu/funky/src/services/request.php
+		parent::perform();
+
+		// some PHP here would happen at the end of every single request.
+	}
+}
+```
 
 
 Models, Views, and Controllers
@@ -74,42 +99,62 @@ Let's make a simple blog. This will solidify using Funky services, as well as ho
 for example:
 
 ```php
+<?php
+// filename: src/models/post.php
+namespace models;
+
+class post extends \funky\model
+{
+	public static function from_slug($slug)
+	{
+		return static::query()->where(['slug'=>$slug])->first();
+	}
+
+	// this function is required for every model.
+	// this is what the migrator uses to automatically generation db migrations
+	public static function fields()
+	{
+		return f()->load->fields([
+			['title', 'text'],
+			['slug', 'slug'],
+			['content', 'markdown'],
+			['tags', 'set', ['values'=>[
+				'personal',
+				'professional',
+				'gaming',
+			]]],
+			['date', 'date', ['default'=>'now']],
+		]);
+	}
+}
+
+```
+
+```php
+<?php
+// filename: src/controllers/blog.php
 namespace controllers;
 
 class blog{
 	public function index(){
-		echo 'i haz a blog';
+		return f()->view->load('blog/index');
+	}
+	public function show($slug){
+		return f()->view->load('blog/show', [
+			'post'=>\models\post::find_by_slug($slug),
+		]);
 	}
 }
 ```
 
-3) Make a view instead of echoing like a pleb. Make a new file for your blog index page ([PROJECTROOT]/views/blog/index.php)
+3) Make a new file for your blog index page ([PROJECTROOT]/views/blog/index.php)
 
 ```php
 <h1>that one blog</h1>
 <p><?=$message?></p>
 ```
 
-4) Make your controller function load the view, so your controller should look like this:
-
-```php
-namespace controllers;
-
-class blog{
-	public function index(){
-		// specify view arguments:
-		// any arguments passed into the view function will be local variables in your view
-		$args = array();
-		$args['message'] = 'i haz a blog';
-		
-		// load the view:
-		return f()->view->load('blog/index', $args);
-	}
-}
-```
-
-5) Note how the message key in the array passed to the view gets converted to a local variable within the view.
-6) Also note how the load view function is `f()->view->load()`.  This means that it is using the `view` service's `load` function.
+Notice how the load view function is `f()->view->load()`.  This means that it is using the `view` service's `load` function.
 
 Contributors
 ============
