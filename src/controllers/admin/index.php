@@ -11,7 +11,7 @@ class index
 	{
 		// validate all of the things
 		// if any of these functions returns false, that means they were not needed
-		foreach(['userstableexists','ensureuserexists'] as $func){
+		foreach(['dbsetup','userstableexists','ensureuserexists'] as $func){
 			$response = $this->$func();
 			if(!empty($response)) return $response;
 		}
@@ -19,6 +19,24 @@ class index
 		// the db and user table is set up, so continue
 		f()->access->enforce();
 		return f()->view->load('admin/index/index');
+	}
+
+	private function dbsetup()
+	{
+		// if we don't have any of the config values we need, show the form to add them easily
+		if(!isset(f()->config->db_name) || !isset(f()->config->db_user) || !isset(f()->config->db_password)){
+			if(f()->request->method() == 'POST'){
+				// save all the config values
+				$allset = true;
+				foreach(['db_name','db_user','db_password'] as $key){
+					$val = $_POST[$key];
+					if(empty($val)) $allset = false;
+					f()->config->$key = $val;
+				}
+				if($allset) return false;
+			}
+			return f()->view->load('admin/index/dbsetup');
+		}
 	}
 
 	// ensures the users table is set up
