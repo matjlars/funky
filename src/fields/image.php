@@ -42,6 +42,13 @@ class image extends \funky\fields\field
 		return $image->alt->get();
 	}
 
+	// returns a simple img tag for this image.
+	public function tag()
+	{
+		$img = $this->get();
+		return '<img src="'.$img->url().'" alt="'.$img->alt->get().'">';
+	}
+
 	// takes an image model and sets the val to the image model id
 	public function set($val)
 	{
