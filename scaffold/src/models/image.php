@@ -57,7 +57,7 @@ class image extends \funky\model
 		
 		$filename = basename($_FILES[$name]['name']);
 		$dir = static::targetdir();
-		$extension = pathinfo($dir.$filename, PATHINFO_EXTENSION);
+		$extension = strtolower(pathinfo($dir.$filename, PATHINFO_EXTENSION));
 		
 		// don't allow this upload if it is an invalid file extension
 		if(!in_array($extension, $validextensions)){
