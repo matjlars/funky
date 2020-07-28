@@ -106,10 +106,15 @@ class migrations
 			
 			// now, find all fields in the schema that are not in $fields:
 			// this means the column is in the database but it shouldn't be.
+			$field_names = [];
+			foreach($fields as $field){
+				$field_names[$field->name()] = true;
+			}
+
 			foreach($schema as $column=>$s){
 				$type = $s['Type'];
 				if($column == 'id') continue;
-				if(!isset($fields[$column])){
+				if(!isset($field_names[$column])){
 					$extrafields[] = $column;
 					$migrations[] = array(
 						'name'=>'Remove column '.$table.'.'.$column.' and LOSE ALL DATA',
