@@ -13,6 +13,7 @@ class set extends \funky\fields\field
 	}
 	public function get()
 	{
+		if(empty($this->val)) return [];
 		return explode(',', $this->val);
 	}
 	public function set($val)
