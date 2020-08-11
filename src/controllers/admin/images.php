@@ -17,19 +17,15 @@ class images
 
 	public function feed()
 	{
-		$images = image::query();
+		$images = image::query()->orderby('alt');
 		return f()->view->load('admin/images/feed', [
 			'images'=>$images,
 		]);
 	}
 
 	public function edit($id=0){
-		if(empty($id)){
-			f()->flash->error('Unable to create a new image this way');
-			f()->response->redirect('/admin/images');
-		}
-
 		$image = image::fromid($id);
+
 		if(!empty($_POST)){
 			$image->update($_POST);
 			if($image->isvalid()){
@@ -38,7 +34,7 @@ class images
 			}
 		}
 
-		return f()->view->load('/admin/images/edit', [
+		return f()->view->load('admin/images/edit', [
 			'image'=>$image,
 		]);
 	}

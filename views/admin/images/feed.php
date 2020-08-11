@@ -5,7 +5,11 @@
 		<?php foreach($images as $i){?>
 			<li data-id="<?=$i->id?>">
 				<a href="/admin/images/edit/<?=$i->id?>">
-					<?=$i->alt?>
+					<?php if(empty($i->alt->get())){?>
+						<em>No alt text. Please add alt text to this image.</em>
+					<?php }else{?>
+						<?=$i->alt?>
+					<?php }?>
 				</a>
 			</li>
 		<?php }?>
