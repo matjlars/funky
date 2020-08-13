@@ -1,12 +1,12 @@
 <?php
 namespace funky\services;
 
-// This was originally from the CodeIgniter framework, but I stripped it out to work in the Janky framework.
+// This was originally from the CodeIgniter framework, but I stripped it out to work in the Funky framework.
 // For documentation, google "codeigniter email"
 
 class email
 {
-	var	$useragent		= "Green Gear Designs Web Application";
+	var	$useragent		= "Web Application";
 	var	$mailpath		= "/usr/sbin/sendmail";	// Sendmail path
 	var	$protocol		= "mail";	// mail/sendmail/smtp
 	var	$smtp_host		= "";		// SMTP Server.  Example: mail.earthlink.net
@@ -61,19 +61,10 @@ class email
 	 *
 	 * The constructor can be passed an array of config values
 	 */
-	public function __construct($config = array())
+	public function __construct()
 	{
-		if (count($config) > 0)
-		{
-			$this->initialize($config);
-		}
-		else
-		{
-			$this->_smtp_auth = ($this->smtp_user == '' AND $this->smtp_pass == '') ? FALSE : TRUE;
-			$this->_safe_mode = ((boolean)@ini_get("safe_mode") === FALSE) ? FALSE : TRUE;
-		}
-
-		//log_message('debug', "Email Class Initialized");
+		$this->_smtp_auth = ($this->smtp_user == '' AND $this->smtp_pass == '') ? FALSE : TRUE;
+		$this->_safe_mode = ((boolean)@ini_get("safe_mode") === FALSE) ? FALSE : TRUE;
 	}
 
 	// --------------------------------------------------------------------
