@@ -59,4 +59,28 @@ class images
 			'url'=>$image->url(),
 		)));
 	}
+
+	// used for the "images" field
+	public function imagesfield_modal($image_id=0)
+	{
+		$image = image::fromid($image_id);
+
+		// create/update
+		if(!empty($_POST)){
+			$image->update($_POST);
+			return $image->id;
+		}
+
+		return f()->view->load('admin/images/imagesfield_modal', [
+			'image'=>$image,
+		]);
+	}
+
+	public function imagesfield_thumbnails()
+	{
+		$images = image::query()->where('id IN ('.$_POST['image_ids'].')');
+		return f()->view->load('admin/images/imagesfield_thumbnails', [
+			'images'=>$images,
+		]);
+	}
 }
