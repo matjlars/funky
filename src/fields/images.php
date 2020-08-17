@@ -19,6 +19,12 @@ class images extends \funky\fields\field
 		return $this->val;
 	}
 
+	// returns true if there are no images
+	public function empty()
+	{
+		return empty($this->val);
+	}
+
 	// accepts a csv string of image_ids, or an array of ids
 	// $this->val is an array of image_ids
 	public function set($val)
