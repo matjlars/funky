@@ -39,7 +39,7 @@ class flash
 		if(empty($data)) return '';
 
 		// generate html
-		$html = '<div class="flash>';
+		$html = '<div class="flash">';
 		foreach($data as $type=>$messages){
 			foreach($messages as $message){
 				$html .= '<p class="'.$type.'">'.$message.'</p>';
