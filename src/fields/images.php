@@ -41,6 +41,7 @@ class images extends \funky\fields\field
 
 	public function dbval()
 	{
+		if(empty($this->val)) return '';
 		return implode(',', $this->val);
 	}
 
