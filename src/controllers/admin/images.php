@@ -78,7 +78,13 @@ class images
 
 	public function imagesfield_thumbnails()
 	{
-		$images = image::query()->where('id IN ('.$_POST['image_ids'].')');
+		if(!empty($_POST['image_ids'])){
+			$images = image::query()->where('id IN ('.$_POST['image_ids'].')');
+		}else{
+			// can't just return '' because that means 404. so we can just do this instead:
+			f()->response->send(200, '');
+		}
+
 		return f()->view->load('admin/images/imagesfield_thumbnails', [
 			'images'=>$images,
 		]);

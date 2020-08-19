@@ -6,10 +6,9 @@ namespace funky\fields;
 class images extends \funky\fields\field
 {
 	// returns a modelquery of image records
-	// or an empty array if there aren't any images.
 	public function get()
 	{
-		if(empty($this->val)) return [];
+		if(empty($this->val)) return \models\image::query()->where('false');
 		return \models\image::query()->where('id IN ('.$this->dbval().')');
 	}
 

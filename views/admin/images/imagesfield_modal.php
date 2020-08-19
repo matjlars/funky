@@ -22,5 +22,8 @@
 
 <footer>
 	<a class="button" onclick="modal.close();">Cancel</a>
+	<?php if($image->exists()){?>
+		<a class="red button" onclick="imagesfield.delete('<?=$image->id?>');">Delete</a>
+	<?php }?>
 	<a class="green button" onclick="imagesfield.save_modal('<?=($image->exists()) ? $image->id : 0?>');">Save</a>
 </footer>
