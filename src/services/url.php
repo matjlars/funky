@@ -45,4 +45,15 @@ class url
 		if($path == $request_uri) return true;
 		return false;
 	}
+
+	// returns the canonical URL if baseurl is in config
+	// returns FALSE if there is no baseurl in the config
+	public function canonical($path)
+	{
+		// only do this on an env with an explicit baseurl and path set
+		if(!isset(f()->config->baseurl) || empty($path)) return '';
+
+		// build the full url
+		return f()->url->get($path);
+	}
 }

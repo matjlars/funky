@@ -29,6 +29,31 @@ class flash
 		return [];
 	}
 
+	// a helper function that pops the flash messages.
+	// this returns HTML you can dump onto the page that will show any flash messages.
+	public function html()
+	{
+		$data = $this->pop();
+
+		// no container if there are no messages (keep that HTML clean!)
+		if(empty($data)) return '';
+
+		// generate html
+		$html = '<div class="flash">';
+		foreach($data as $type=>$messages){
+			foreach($messages as $message){
+				$html .= '<p class="'.$type.'">'.$message.'</p>';
+			}
+		}
+		$html .= '</div>';
+		return $html;
+	}
+
+	// this is so you can just echo f()->flash in your template or wherever.
+	public function __toString(){
+		return $this->html();
+	}
+
 	private function addMessage($type, $msg)
 	{
 		// get the flash array

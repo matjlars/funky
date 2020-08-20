@@ -49,10 +49,12 @@ abstract class field
 			return $this->label;
 		}
 	}
+
 	public function setlabel($label)
 	{
 		$this->label = $label;
 	}
+
 	// runs all validators and returns an array of errors
 	public function errors()
 	{

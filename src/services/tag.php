@@ -7,14 +7,12 @@ class tag
 {
 	public function canonical($path)
 	{
-		// only do this on an env with an explicit baseurl and path set
-		if(!isset(f()->config->baseurl) || empty($path)) return '';
+		$url = f()->url->canonical($path);
 
-		// build the full url
-		$url = f()->url->get($path);
+		// no tag if no canonical url
+		if(empty($url)) return '';
 
-		// render the tag
-		return '<link rel="canonical" href="'.$url.'"/>';
+		return '<link rel="canonical" href="'.f()->url->canonical($path).'"/>';
 	}
 
 	public function javascript($path)

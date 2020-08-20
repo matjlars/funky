@@ -231,6 +231,59 @@ if(typeof(tabs) != 'undefined'){
 }
 
 
+
+// plural "images" field. for multiple images easily.
+var imagesfield = {};
+imagesfield.$current_field = null;
+imagesfield.open_modal = function(ele, image_id){
+	imagesfield.$current_field = $(ele).closest('.imagesfield');
+	if(typeof(image_id)=='undefined') image_id = 0;
+	modal.get('/admin/images/imagesfield_modal/'+image_id, function(){
+		$('.modal form').on('submit', function(e){
+			e.preventDefault();
+			imagesfield.save_modal(image_id);
+		});
+	});
+};
+
+imagesfield.save_modal = function(image_id){
+	if(typeof(image_id)=='undefined') image_id = 0;
+	var $hidden = imagesfield.$current_field.find('input[type=hidden]');
+	var form = document.querySelector('.modal form');
+	var data = new FormData(form);
+	$.ajax({
+		url:'/admin/images/imagesfield_modal/'+image_id,
+		type:'POST',
+		data:data,
+		cache:false,
+		dataType:'html',
+		processData:false,
+		contentType:false,
+		success:function(image_id){
+			// update the input[type=hidden] with the potentially new image_id
+			var ids = $hidden.val().split(',').filter(function(val){return val!='';});
+			if(!ids.includes(image_id)) ids.push(image_id);
+			$hidden.val(ids.join(','));
+			imagesfield.refresh_thumbnails(imagesfield.$current_field);
+		},
+		error:function(response){
+			flash.error(response.responseText);
+		},
+		complete:function(){
+			modal.close();
+		},
+	});
+};
+imagesfield.refresh_thumbnails = function($imagesfield){
+	var $thumbnails = $imagesfield.find('.thumbnails');
+	var data = {};
+	data.image_ids = $imagesfield.find('input[type=hidden]').val();
+	$.post('/admin/images/imagesfield_thumbnails', data, function(response){
+		$thumbnails.html(response);
+	});
+};
+
+
 var tabs = {};
 tabs.ajax = null;
 // an array of functions that will be called after every tab load

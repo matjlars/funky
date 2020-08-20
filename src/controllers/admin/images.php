@@ -17,19 +17,15 @@ class images
 
 	public function feed()
 	{
-		$images = image::query();
+		$images = image::query()->orderby('alt');
 		return f()->view->load('admin/images/feed', [
 			'images'=>$images,
 		]);
 	}
 
 	public function edit($id=0){
-		if(empty($id)){
-			f()->flash->error('Unable to create a new image this way');
-			f()->response->redirect('/admin/images');
-		}
-
 		$image = image::fromid($id);
+
 		if(!empty($_POST)){
 			$image->update($_POST);
 			if($image->isvalid()){
@@ -38,7 +34,7 @@ class images
 			}
 		}
 
-		return f()->view->load('/admin/images/edit', [
+		return f()->view->load('admin/images/edit', [
 			'image'=>$image,
 		]);
 	}
@@ -62,5 +58,35 @@ class images
 			'id'=>$image->id,
 			'url'=>$image->url(),
 		)));
+	}
+
+	// used for the "images" field
+	public function imagesfield_modal($image_id=0)
+	{
+		$image = image::fromid($image_id);
+
+		// create/update
+		if(!empty($_POST)){
+			$image->update($_POST);
+			return $image->id;
+		}
+
+		return f()->view->load('admin/images/imagesfield_modal', [
+			'image'=>$image,
+		]);
+	}
+
+	public function imagesfield_thumbnails()
+	{
+		if(!empty($_POST['image_ids'])){
+			$images = image::query()->where('id IN ('.$_POST['image_ids'].')');
+		}else{
+			// can't just return '' because that means 404. so we can just do this instead:
+			f()->response->send(200, '');
+		}
+
+		return f()->view->load('admin/images/imagesfield_thumbnails', [
+			'images'=>$images,
+		]);
 	}
 }

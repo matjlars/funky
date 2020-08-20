@@ -28,6 +28,14 @@ class enum extends \funky\fields\field
 		};
 	}
 
+	public function set($val)
+	{
+		if(empty($val) && $this->isnullable){
+			$val = null;
+		}
+		parent::set($val);
+	}
+
 	public function values()
 	{
 		return $this->values;

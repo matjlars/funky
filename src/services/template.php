@@ -6,7 +6,8 @@ class template
 	private $data = array();
 	private $csspaths = array();
 	private $jspaths = array();
-	private $canonicalPath = '';
+	private $canonicalPath = false;
+	private $extra_head_tags = [];
 	public $view = 'page';
 	
 	public function __set($key,$value)
@@ -58,8 +59,14 @@ class template
 		}
 
 		// add a canonical tag if there is one:
-		$canonical = f()->tag->canonical($this->canonicalPath);
-		if(!empty($canonical)) $str .= $canonical;
+		if($this->canonicalPath !== false){
+			$str .= f()->tag->canonical($this->canonicalPath);
+		}
+
+		// also any extra head tags
+		foreach($this->extra_head_tags as $ht){
+			$str .= $ht;
+		}
 
 		return $str;
 	}
@@ -78,5 +85,10 @@ class template
 	public function setCanonicalPath($canonicalPath)
 	{
 		$this->canonicalPath = $canonicalPath;
+	}
+
+	public function add_head_tag($head_tag)
+	{
+		$this->extra_head_tags[] = $head_tag;
 	}
 }
