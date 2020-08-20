@@ -73,6 +73,6 @@ class image extends \funky\fields\field
 
 	public function dbtype()
 	{
-		return 'int(11) unsigned';
+		return 'int unsigned';
 	}
 }

@@ -26,6 +26,6 @@ class reference extends \funky\fields\field
 
 	public function dbtype()
 	{
-		return 'int(11) unsigned';
+		return 'int unsigned';
 	}
 }
