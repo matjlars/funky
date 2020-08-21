@@ -15,15 +15,8 @@ class admintool{
 	}
 
 	public function feed(){
-		$modelclass = $this->modelclass();
 		$modelname = $this->modelname().'s';
-
-		// either get all or filter by post params:
-		if(empty($_POST)){
-			$modelobjs = $modelclass::query();
-		}else{
-			$modelobjs = $modelclass::search($_POST);
-		}
+		$modelobjs = $this->get_feed_objects();
 
 		return f()->view->load($this->path().'/feed', [
 			$modelname=>$modelobjs,
@@ -119,5 +112,18 @@ class admintool{
 		$last = substr($class, $lastslash+1);
 		$last = rtrim($last, 's');
 		return $last;
+	}
+
+	// returns a modelquery for which records to show in the feed.
+	protected function get_feed_objects()
+	{
+		// either get all or filter by post params:
+		$modelclass = $this->modelclass();
+		if(empty($_POST)){
+			$modelobjs = $modelclass::query();
+		}else{
+			$modelobjs = $modelclass::search($_POST);
+		}
+		return $modelobjs;
 	}
 }
