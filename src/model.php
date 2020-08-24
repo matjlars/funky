@@ -82,6 +82,16 @@ class model
 	{
 		throw new \exception('You must implement fields() in all models');
 	}
+
+	// returns true if this model has the given field
+	public static function has_field($name)
+	{
+		foreach(static::fields() as $field){
+			if($field->name() == $name) return true;
+		}
+		return false;
+	}
+
 	public static function table()
 	{
 		$fullclass = get_called_class();
@@ -140,6 +150,7 @@ class model
 	{
 		return new modelquery(get_called_class());
 	}
+
 	// runs all field validators and returns true or false, depending on if there were any errors
 	public function isvalid()
 	{
