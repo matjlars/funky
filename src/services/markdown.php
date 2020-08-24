@@ -18,6 +18,12 @@ namespace funky\services;
 
 class markdown
 {
+	public function __construct()
+	{
+		// adds the funky inline image tag to the markdown system
+		$this->InlineTypes['['][] = 'FunkyImageTag';
+	}
+
 	// call this to render markdown into html
 	public function render($markdown)
 	{
@@ -1667,4 +1673,37 @@ class markdown
 				   'var', 'span',
 				   'wbr', 'time',
 	);
+
+	// allows the user to display any of their Image model records as a tag, by id.
+	// transforms [img.1] into <img src="stuff" alt="stuff"/>
+	// can optionally be like [img.1.left] to put class="left" or [img.1.right]
+	protected function inlineFunkyImageTag($excerpt)
+	{
+		if(preg_match('/\[img\.([0-9]+)(\.left|\.right)?\]/', $excerpt['text'], $matches)){
+			$image = image::fromid($matches[1]);
+			if($image->exists()){
+				$ret = [
+					'extent'=>strlen($matches[0]),
+					'element'=>[
+						'name'=>'img',
+						'attributes'=>[
+							'src'=>$image->url(),
+							'alt'=>$image->alt->get(),
+						],
+					],
+				];
+
+				if(isset($matches[2])){
+					if($matches[2] == '.left'){
+						$ret['element']['attributes']['class'] = 'left';
+					}
+					if($matches[2] == '.right'){
+						$ret['element']['attributes']['class'] = 'right';
+					}
+				}
+
+				return $ret;
+			}
+		}
+	}
 }
