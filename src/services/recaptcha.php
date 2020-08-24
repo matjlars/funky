@@ -31,20 +31,20 @@ class recaptcha
 		];
 		if(!empty($_SERVER['REMOTE_ADDR'])) $data['remoteip'] = $_SERVER['REMOTE_ADDR'];
 
-		$c = curl_init('https://www.google.com/recaptcha/api/siteverify');
-		curl_setopt($c, CURLOPT_POSTFIELDS, $postRequest);
-		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		$c = \curl_init('https://www.google.com/recaptcha/api/siteverify');
+		\curl_setopt($c, CURLOPT_POSTFIELDS, $data);
+		\curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 
-		$response = curl_exec($c);
-		curl_close($c);
+		$response = \curl_exec($c);
+		\curl_close($c);
 
-		$response = json_decode($response, true);
+		$response = \json_decode($response, true);
 
 		// if it succeeded, we're done!
 		if(isset($response['success']) && $response['success'] === true) return false;
 
 		// uh oh!
-		return $this->get_error($response['error_code']);
+		return $this->get_error($response['error-codes']);
 	}
 
 	// site key and secret keys.
@@ -87,7 +87,7 @@ class recaptcha
 		// compile all of relevent errors:
 		$error_strings = [];
 		foreach($error_codes as $ec){
-			if(isset($errors[$error_code])) $error_strings[] = $errors[$error_code];
+			if(isset($errors[$ec])) $error_strings[] = $errors[$ec];
 		}
 
 		if(empty($error_strings)) $error_strings[] = 'Unknown recaptcha error.';
