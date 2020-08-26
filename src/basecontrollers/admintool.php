@@ -88,6 +88,15 @@ class admintool{
 		return 'ok';
 	}
 
+	// ajax endpoint the slug field uses
+	public function generateslug(){
+		$modelclass = $this->modelclass();
+		$table = $modelclass::table();
+		$slug = f()->format->slug($_POST['val']);
+		$slug = f()->unique->dbval($table, 'slug', $slug);
+		return $slug;
+	}
+
 	protected function path(){
 		$class = get_called_class();
 		$tokens = explode('\\', $class);

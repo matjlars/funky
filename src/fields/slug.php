@@ -3,11 +3,23 @@ namespace funky\fields;
 
 class slug extends \funky\fields\field
 {
+	private $slugify = false;
+
 	public function set($val)
 	{
 		$val = static::sanitize($val);
 		parent::set($val);
 	}
+
+	public function init($args){
+		parent::init($args);
+		if(!empty($args['slugify'])) $this->slugify = $args['slugify'];
+	}
+
+	public function get_slugify(){
+		return $this->slugify;
+	}
+
 	// accepts anything that can be converted to a string
 	// returns a slug-ified version of that string
 	public static function sanitize($val)
