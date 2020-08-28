@@ -27,7 +27,7 @@ class admintool{
 		$modelclass = $this->modelclass();
 		$modelobj = $modelclass::fromid($id);
 		if(!empty($_POST)){
-			$modelobj->update($_POST);
+			$this->update($modelobj, $_POST);
 			if($modelobj->isvalid()){
 				f()->flash->success('Saved!');
 				f()->response->redirect('/'.$this->path().'/edit/'.$modelobj->id);
@@ -134,5 +134,13 @@ class admintool{
 			$modelobjs = $modelclass::search($_POST);
 		}
 		return $modelobjs;
+	}
+
+	// override this if you want to do something after update
+	// like update some associations or whatever.
+	// make sure to call parent::update($modelobj, $data); so the actual update happens when you want.
+	protected function update($modelobj, $data)
+	{
+		$modelobj->update($data);
 	}
 }
