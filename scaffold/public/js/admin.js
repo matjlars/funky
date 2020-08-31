@@ -149,6 +149,10 @@ imagefield.upload = function($filefield){
 	var file = $filefield[0].files[0];
 	var data = new FormData();
 	data.append('image', file);
+
+	// also include the alt text
+	var $alt_field = $imagefield.find('input[type=text][name$="[alt]"]');
+	if($alt_field.length) data.append('alt', $alt_field.val());
 	
 	// perform the ajax request:
 	$.ajax({

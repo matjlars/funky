@@ -55,18 +55,41 @@ class image extends \funky\fields\field
 		// any empty val will be set to reference 0
 		if(empty($val)){
 			$this->val = 0;
+			$this->image = null;
 			return;
 		}
+
 		// handle setting by id
 		if(is_numeric($val)){
 			$this->val = intval($val);
+			$this->image = null;
 			return;
 		}
+
+		// if it's an array, check if there's an 'id' and/or 'alt'
+		if(is_array($val)){
+			if(isset($val['image_id'])){
+				$this->val = intval($val['image_id']);
+				$this->image = null;
+
+				if(!empty($val['alt'])){
+					// load the image and update the alt
+					$img = $this->get();
+					$img->update(['alt'=>$val['alt']]);
+				}
+				return;
+			}
+
+			throw new \Exception('\\fields\\images::set() takes an array, but requires an "id" and optionally "alt" keys.');
+		}
+
 		// handle setting by image model:
 		if(is_a($val, '\models\image')){
 			$this->val = $val->id;
+			$this->image = null;
 			return;
 		}
+
 		// in this context, it's not an int or an image
 		throw new \exception('\\fields\\image::set() takes either an image_id int or an image model object but you gave it a '.gettype($val));
 	}

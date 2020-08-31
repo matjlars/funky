@@ -44,16 +44,17 @@ class images
 	{
 		// attempt an image upload
 		try{
-			$filename = image::upload('image');
-			$image = image::insert([
-				'filename'=>$filename,
-			]);
+			$data = [];
+			$data['filename'] = image::upload('image');
+			if(!empty($_POST['alt'])) $data['alt'] = $_POST['alt'];
+
+			$image = image::insert($data);
 		}catch(\exception $e){
 			http_response_code(400);
 			die($e->getMessage());
 		}
 		
-		// otherwise, return the new image id in the response
+		// return the new image id and url in the response
 		die(json_encode(array(
 			'id'=>$image->id,
 			'url'=>$image->url(),
