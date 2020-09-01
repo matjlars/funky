@@ -55,11 +55,13 @@ class router
 	// keep in mind, you must override the controller per site to use funky controllers (see note at the top of this file)
 	public function controller()
 	{
-		// if it's a controller we have on this site, load that, with the method and parameters.
-		$uriparts = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'));
+		// get the path for the current request.
+		// this notably strips the query string.
+		$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+		$path = trim($path, '/');
 
-		// get rid of blank parts
-		$uriparts = array_filter($uriparts);
+		// if it's a controller we have on this site, load that, with the method and parameters.
+		$uriparts = explode('/', $path);
 
 		// ignore the extension on all uri parts:
 		$uripart_count = count($uriparts);
