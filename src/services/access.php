@@ -36,7 +36,7 @@ class access
 		// if we're not logged in at all, redirect to path:
 		$user_id = $this->user_id();
 		if(empty($user_id)){
-			f()->path->redirect($loginpath);
+			f()->response->redirect($loginpath);
 		}
 		
 		// in this context, we are logged in. check roles if any given:
@@ -47,7 +47,7 @@ class access
 					return;
 				}
 			}
-			f()->path->redirect($loginpath);
+			f()->response->redirect($loginpath);
 		}
 	}
 	public function user()

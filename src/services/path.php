@@ -29,7 +29,7 @@ class path
 		$this->php = dirname($this->docroot).'/';
 	}
 	
-	// redirects to the given $path
+	// DEPRECATED! you can just use f()->response->redirect() instead.
 	public function redirect($path='')
 	{
 		// send the redirect header:
