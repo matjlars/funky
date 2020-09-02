@@ -28,11 +28,8 @@ class router
 	// this function tests for pages that exist at files (like index.php for the homepage or any other page)
 	public function page()
 	{
-		$path = $_SERVER['DOCUMENT_ROOT'].$_SERVER['REQUEST_URI'];
+		$path = f()->path->docroot($this->path());
 
-		// strip off the trailing slash:
-		$path = rtrim($path, '/');
-		
 		// try a few different paths
 		foreach([
 			$path,
@@ -55,13 +52,8 @@ class router
 	// keep in mind, you must override the controller per site to use funky controllers (see note at the top of this file)
 	public function controller()
 	{
-		// get the path for the current request.
-		// this notably strips the query string.
-		$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-		$path = trim($path, '/');
-
 		// if it's a controller we have on this site, load that, with the method and parameters.
-		$uriparts = explode('/', $path);
+		$uriparts = explode('/', $this->path());
 
 		// ignore the extension on all uri parts:
 		$uripart_count = count($uriparts);
@@ -151,5 +143,15 @@ class router
 		
 		// at this point, we have full knowledge of the function to call
 		return $controller->$methodname(...$params);
+	}
+
+	// returns the path this request is for
+	// without GET params
+	// and without slashes.
+	protected function path()
+	{
+		$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+		$path = trim($path, '/');
+		return $path;
 	}
 }
