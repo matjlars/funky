@@ -39,6 +39,14 @@ class images
 		]);
 	}
 
+	public function delete()
+	{
+		if(empty($_POST['id'])) return 'no id given.';
+		$image = image::fromid($_POST['id']);
+		$image->delete();
+		return 'ok';
+	}
+
 	// upload ajax endpoint (see admin.js/imagefield)
 	public function upload()
 	{

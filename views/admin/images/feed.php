@@ -11,6 +11,7 @@
 						<?=$i->alt?>
 					<?php }?>
 				</a>
+				<a class="delete icon" title="Delete this image" onclick="feedpage.delete('<?=$i->id?>');return false;" href="#"></a>
 			</li>
 		<?php }?>
 	</ul>
