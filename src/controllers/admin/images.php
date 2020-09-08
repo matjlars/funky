@@ -68,6 +68,11 @@ class images
 
 		// create/update
 		if(!empty($_POST)){
+			// make sure there is a file.
+			if(empty($_FILES['file']) || empty($_FILES['file']['name'])){
+				f()->response->error('No image file given.');
+			}
+
 			$image->update($_POST);
 			return $image->id;
 		}
