@@ -21,7 +21,10 @@ class markdown
 	public function __construct()
 	{
 		// adds the funky inline image tag to the markdown system
-		$this->InlineTypes['['][] = 'FunkyImageTag';
+		// but only if the image model exists.
+		if(class_exists('\models\image')){
+			$this->InlineTypes['['][] = 'FunkyImageTag';
+		}
 	}
 
 	// call this to render markdown into html
@@ -1680,7 +1683,7 @@ class markdown
 	protected function inlineFunkyImageTag($excerpt)
 	{
 		if(preg_match('/\[img\.([0-9]+)(\.left|\.right)?\]/', $excerpt['text'], $matches)){
-			$image = image::fromid($matches[1]);
+			$image = \models\image::fromid($matches[1]);
 			if($image->exists()){
 				$ret = [
 					'extent'=>strlen($matches[0]),
