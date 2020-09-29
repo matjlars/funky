@@ -15,6 +15,11 @@ class image extends \funky\model
 	{
 		return '[img.'.$this->id.']';
 	}
+
+	public function tag()
+	{
+		return '<img src="'.$this->url().'" alt="'.$this->alt.'">';
+	}
 	
 	public function url()
 	{

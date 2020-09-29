@@ -12,6 +12,7 @@ class file extends \funky\fields\field
 		if(empty($this->val)) return '';
 		return f()->url->get($this->dir.$this->val);
 	}
+
 	public function init($args)
 	{
 		// set or default the directory
@@ -37,6 +38,23 @@ class file extends \funky\fields\field
 			}
 		};
 	}
+
+	// pass the filename here to set the val to the filename
+	// this will trigger the upload to happen if $_FILES has a file ready to go
+	public function set($val)
+	{
+		// if a file is ready to be uploaded, do that.
+		// the upload function sets $this->val if successful.
+		if(isset($_FILES[$this->name()]) && !empty($_FILES[$this->name()]['name'])){
+			$this->upload();
+			return;
+		}
+
+		// otherwise, just remember the filename we're getting.
+		// for example this could be coming from the database.
+		parent::set($val);
+	}
+
 	public function upload()
 	{
 		// don't try to upload anything if there is nothing there
@@ -81,7 +99,7 @@ class file extends \funky\fields\field
 		
 		// get a unique filename for this file
 		$filepath = f()->unique->filename($fulldir.$filedata['name']);
-		
+
 		// if it gave up, don't save this file
 		if($filepath === false){
 			$this->uploaderror = 'Unable to find a unique filename for '.$this->name().'. Try changing the file name and uploading it again.';
