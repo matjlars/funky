@@ -4,6 +4,6 @@
 		<option value="">&mdash; Choose One &mdash;</option>
 	<?php }?>
 	<?php foreach($field->values() as $val){?>
-		<option value="<?=$val?>"<?=($field->dbval()==$val)?' selected':''?>><?=$val?></option>
+		<option value="<?=$val?>"<?=($field->dbval()==$val)?' selected':''?>><?=$field->option_label($val)?></option>
 	<?php }?>
 </select>
