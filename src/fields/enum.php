@@ -47,8 +47,12 @@ class enum extends \funky\fields\field
 	// returns a human readable label for the given value.
 	// tries to figure it out, but you can override them by specifying them in 'labels' arg
 	// for example, 'labels'=>['aux_life'=>'Auxiliary Life Membership'], (where "aux" is the value)
-	public function option_label($val)
+	// defaults to the currently selected value's option_label
+	public function option_label($val=false)
 	{
+		// default to current val
+		if($val === false) $val = $this->val;
+
 		if(isset($this->option_labels[$val])){
 			return $this->option_labels[$val];
 		}else{
