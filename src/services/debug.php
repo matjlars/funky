@@ -87,4 +87,33 @@ class debug
 		$constants = array_flip(array_slice(get_defined_constants(true)['Core'], 0, 15, true));
 		return $constants[$level];
 	}
+
+	// given a key for the $_FILES array, returns an error string.
+	// returns false if no error.
+	public function file_upload_error($key){
+		if(empty($_FILES[$key])) return 'no file uploaded.';
+		if(empty($_FILES[$key]['name'])) return 'the file has no name.';
+		if(!isset($_FILES[$key]['error'])) return false;
+		$err = $_FILES[$key]['error'];
+		switch($err){
+			case UPLOAD_ERR_OK:
+				return false;
+			case UPLOAD_ERR_INI_SIZE:
+				return 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
+			case UPLOAD_ERR_FORM_SIZE:
+				return 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.';
+			case UPLOAD_ERR_PARTIAL:
+				return 'The uploaded file was only partially uploaded.';
+			case UPLOAD_ERR_NO_FILE:
+				return 'No file was uploaded.';
+			case UPLOAD_ERR_NO_TMP_DIR:
+				return 'Missing a temporary folder.';
+			case UPLOAD_ERR_CANT_WRITE:
+				return 'Failed to write file to disk.';
+			case UPLOAD_ERR_EXTENSION:
+				return 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help.';
+			default:
+				return 'An unknown error was reported by PHPs file uploader: '.$err;
+		}
+	}
 }
