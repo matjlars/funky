@@ -52,12 +52,12 @@ class image extends \funky\model
 	// this function will throw an exception with a better error if something doesn't quite work
 	public static function upload($name)
 	{
-		if(empty($_FILES[$name])){
-			throw new \exception('the image does not exist at all');
+		// first, check for basic php file upload errors:
+		$err = f()->debug->file_upload_error($name);
+		if($err !== false){
+			throw new \exception($err);
 		}
-		if(empty($_FILES[$name]['name'])){
-			throw new \exception('the image does not have a name');
-		}
+
 		$validextensions = static::extensions();
 		
 		$filename = basename($_FILES[$name]['name']);
