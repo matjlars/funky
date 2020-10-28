@@ -124,7 +124,7 @@ markdown.help = function(){
 	html += '<pre>';
 	html += '[Link Text](https://www.runwayanalytics.com)\n';
 	html += '</pre>';
-	html += '<p>This is how you can display images you upload on the <a href="/admin/images">Images Page</a>. The number here is the corresponding "id" for your image.</p>';
+	html += '<p>This is how you can display images you upload on the <a href="/admin/images" target="_blank">Images Page</a>. The number here is the corresponding "id" for your image.</p>';
 	html += '<pre>';
 	html += '[img.1234]';
 	html += '</pre>';
