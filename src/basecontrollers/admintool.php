@@ -31,6 +31,8 @@ class admintool{
 			if($modelobj->isvalid()){
 				f()->flash->success('Saved!');
 				f()->response->redirect('/'.$this->path().'/edit/'.$modelobj->id);
+			}else{
+				f()->flash->error('Error while saving: '.$modelobj->errormessage());
 			}
 		}
 		$modelname = $this->modelname();

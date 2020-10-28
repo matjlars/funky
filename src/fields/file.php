@@ -28,15 +28,6 @@ class file extends \funky\fields\field
 				return $this->uploaderror;
 			}
 		};
-		// validate based on extension:
-		$this->validators[] = function($val){
-			if(!is_null($this->extensions)){
-				$ext = pathinfo($val, PATHINFO_EXTENSION);
-				if(!in_array($ext, $this->extensions)){
-					return $val.' has an invalid extension. It must be one of: '.implode(', ',$this->extensions).' but you tried to upload a '.$ext;
-				}
-			}
-		};
 	}
 
 	// pass the filename here to set the val to the filename
