@@ -25,7 +25,14 @@ class admin
 	
 	protected function get_funky_links()
 	{
-		return $this->glob_links(f()->path->funky('vendor/mistermashu/funky/*.php'));
+		$paths = $this->glob_links(f()->path->funky('src/controllers/admin/*.php'));
+
+		// exclude some ones we don't want to link to:
+		unset($paths['/admin/index']);
+		unset($paths['/admin/login']);
+		unset($paths['/admin/logout']);
+
+		return $paths;
 	}
 
 	protected function glob_links($pattern){
