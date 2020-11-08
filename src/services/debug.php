@@ -88,13 +88,11 @@ class debug
 		return $constants[$level];
 	}
 
-	// given a key for the $_FILES array, returns an error string.
+	// given an error from the $_FILES array, returns an error string.
+	// for example, pass $_FILES['file_name']['error'] to get a string or false.
 	// returns false if no error.
-	public function file_upload_error($key){
-		if(empty($_FILES[$key])) return 'no file uploaded.';
-		if(empty($_FILES[$key]['name'])) return 'the file has no name.';
-		if(!isset($_FILES[$key]['error'])) return false;
-		$err = $_FILES[$key]['error'];
+	public function file_upload_error($err){
+		if(empty($err)) return false;
 		switch($err){
 			case UPLOAD_ERR_OK:
 				return false;

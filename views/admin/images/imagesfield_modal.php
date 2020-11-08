@@ -10,7 +10,7 @@
 
 		<div class="field">
 			<label for="imagesfield_file">Image File</label>
-			<input type="file" id="imagesfield_file" name="file">
+			<input type="file" id="imagesfield_file" name="files[]" multiple>
 		</div>
 
 		<div class="field">

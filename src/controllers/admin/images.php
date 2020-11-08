@@ -72,19 +72,26 @@ class images
 	// used for the "images" field
 	public function imagesfield_modal($image_id=0)
 	{
-		$image = image::fromid($image_id);
-
 		// create/update
 		if(!empty($_POST)){
-			// make sure there is a file.
-			if(empty($_FILES['file']) || empty($_FILES['file']['name'])){
-				f()->response->error('No image file given.');
-			}
+			if(!empty($image_id)){
+				$image = image::fromid($image_id);
+				$image->update($_POST);
+				return $image->id;
+			}else{
+				$images = image::create_from_upload('files', $_POST['alt']);
 
-			$image->update($_POST);
-			return $image->id;
+				$ids = [];
+				foreach($images as $image){
+					$ids[] = $image->id;
+				}
+
+				return implode(',', $ids);
+			}
 		}
 
+		// load the modal
+		$image = image::fromid($image_id);
 		return f()->view->load('admin/images/imagesfield_modal', [
 			'image'=>$image,
 		]);
