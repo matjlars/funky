@@ -21,31 +21,11 @@ class file extends \funky\fields\field
 		
 		// remember allowed extensions
 		if(!empty($args['extensions'])) $this->extensions = $args['extensions'];
-		
-		// validate based on any upload errors:
-		$this->validators[] = function($val){
-			if(!empty($this->uploaderror)){
-				return $this->uploaderror;
-			}
-		};
 	}
 
-	// pass the filename here to set the val to the filename
-	// this will trigger the upload to happen if $_FILES has a file ready to go
-	public function set($val)
-	{
-		// if a file is ready to be uploaded, do that.
-		// the upload function sets $this->val if successful.
-		if(isset($_FILES[$this->name()]) && !empty($_FILES[$this->name()]['name'])){
-			$this->upload();
-			return;
-		}
-
-		// otherwise, just remember the filename we're getting.
-		// for example this could be coming from the database.
-		parent::set($val);
-	}
-
+	// attempts the file upload.
+	// sets $this->val to the new filename if successful.
+	// otherwise, sets $this->uploaderror
 	public function upload()
 	{
 		// don't try to upload anything if there is nothing there
