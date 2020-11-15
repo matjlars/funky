@@ -99,6 +99,23 @@ class admintool{
 		return $slug;
 	}
 
+
+	// ajax endpoint to save sort_id
+	public function sort()
+	{
+		if(empty($_POST['ids'])) throw new \Exception('no ids given');
+
+		$modelclass = $this->modelclass();
+
+		$sort_id = 1;
+		foreach($_POST['ids'] as $id){
+			$model = $modelclass::fromid($id);
+			$model->update(['sort_id'=>$sort_id++]);
+		}
+
+		return 'Sorted.';
+	}
+
 	protected function path(){
 		$class = get_called_class();
 		$tokens = explode('\\', $class);
@@ -135,6 +152,12 @@ class admintool{
 		}else{
 			$modelobjs = $modelclass::search($_POST);
 		}
+
+		// order by sort_id if there is a sort_id
+		if($modelclass::has_field('sort_id')){
+			$modelobjs->orderby('sort_id');
+		}
+
 		return $modelobjs;
 	}
 
