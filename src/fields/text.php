@@ -21,6 +21,7 @@ class text extends \funky\fields\field
 				$englishmaxes = [
 					'short'=>255,
 					'medium'=>4096,
+					'long'=>65535,
 				];
 				// make sure a correct key is given
 				if(!array_key_exists($args['length'], $englishmaxes)){
@@ -46,8 +47,12 @@ class text extends \funky\fields\field
 				$sqltype = 'varchar('.$this->length.')';
 			}else if($this->length <= 4096){
 				$sqltype = 'text';
+			}else if($this->length <= 65535){
+				$sqltype = 'text';
+			}else if($this->length <= 16777215){
+				$sqltype = 'mediumtext';
 			}else{
-				throw new \exception('TODO add text type for length '.$this->length);
+				$sqltype = 'longtext';
 			}
 		}
 		return $sqltype;
