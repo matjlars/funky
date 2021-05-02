@@ -153,4 +153,22 @@ class image extends \funky\model
 			throw new \exception('an error occurred while saving the file into its final location on the server');
 		}
 	}
+
+	// creates a new image record and returns it.
+	// $path should point to an existing image file somewhere on the server.
+	// this is useful for migrating existing images into the images table
+	public static function create_from_existing_file($path, $member_name){
+		$targetdir = static::targetdir();
+		$filename = basename($path);
+		$filename = f()->format->filename($filename);
+		$filename = static::uniquefilename($filename, $targetdir);
+		if(\rename($path, $targetdir.$filename)){
+			return static::insert([
+				'filename'=>$filename,
+				'alt'=>$member_name,
+			]);
+		}
+
+		return false;
+	}
 }
