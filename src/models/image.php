@@ -157,7 +157,7 @@ class image extends \funky\model
 	// creates a new image record and returns it.
 	// $path should point to an existing image file somewhere on the server.
 	// this is useful for migrating existing images into the images table
-	public static function create_from_existing_file($path, $member_name){
+	public static function create_from_existing_file($path, $alt){
 		$targetdir = static::targetdir();
 		$filename = basename($path);
 		$filename = f()->format->filename($filename);
@@ -165,7 +165,7 @@ class image extends \funky\model
 		if(\rename($path, $targetdir.$filename)){
 			return static::insert([
 				'filename'=>$filename,
-				'alt'=>$member_name,
+				'alt'=>$alt,
 			]);
 		}
 
