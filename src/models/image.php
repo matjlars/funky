@@ -24,6 +24,11 @@ class image extends \funky\model
 	{
 		return '<img src="'.$this->url().'" alt="'.$this->alt.'">';
 	}
+
+	// shortcut for printing image as a tag
+	public function __toString(){
+		return $this->tag();
+	}
 	
 	public function url()
 	{
