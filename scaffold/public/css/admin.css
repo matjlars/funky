@@ -234,7 +234,10 @@ td:first-child,th:first-child {
 .feed>li>a.icon.settings{background-image:url('/images/icons/settings.svg');}
 .feed>li>a.icon.share{background-image:url('/images/icons/share.svg');}
 .feed>li>a.icon.tag{background-image:url('/images/icons/tag.svg');}
-
+.feed>li>a.icon.sort{
+	background-image:url('/images/icons/sort.svg');
+	cursor:grab;
+}
 
 
 .flash{
@@ -307,4 +310,48 @@ td:first-child,th:first-child {
 .modal>.content{
 	margin:1rem;
 	overflow:auto;
+}
+
+
+/* sortable */
+body.dragging, body.dragging * {
+	cursor: move !important;
+	left:100%;
+}
+li.placeholder{
+	border:1px solid #45f5f0;
+}
+
+.dragged {
+	position: absolute;
+	opacity: 0.5;
+	z-index: 2000;
+}
+ol.menu-sections{
+	list-style: none;
+	padding-left: 0;
+}
+ol.menu-sections>li{
+	background-color: #e8e8e8;
+	margin:.5rem 0;
+	padding: .5rem;
+	font-weight: 900;
+}
+ol.menu-sections li.placeholder{
+	position: relative;
+	background:#45f5f0;
+	/** More li styles **/
+}
+ol.menu-sections li.placeholder:before {
+	position: absolute;
+	/** Define arrowhead **/
+}
+.menu-sections .menu-items{
+	list-style: none;
+	padding-left:.5rem;
+}
+.menu-sections .menu-items>li{
+	background-color: #ccc;
+	margin:.5rem 0;
+	padding:.25rem;
 }
