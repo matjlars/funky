@@ -11,7 +11,7 @@ Installation
 ============
 
 - first, create a new directory for your project and cd into it. for example, run `mkdir my-cool-site && cd my-cool-site`
-- then, just run `composer require mistermashu/funky:dev-master && vendor/mistermashu/funky/install.sh`
+- then, just run `composer require mistermashu/funky:dev-main && vendor/mistermashu/funky/install.sh`
 
 The first bit of that command uses composer to download the funky package. The second bit runs the install script that basically scaffolds out some files you will need.
 
