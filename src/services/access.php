@@ -4,7 +4,7 @@ use models\user;
 
 class access
 {
-	private $user = null;
+	protected $user = null;
 	
 	public function isloggedin()
 	{
@@ -13,6 +13,7 @@ class access
 		if(empty($user_id)) return false;
 		return true;
 	}
+
 	public function login($email, $password)
 	{
 		// see if this user is in the database:
@@ -24,11 +25,13 @@ class access
 			$this->user = null;
 		}
 	}
+
 	public function logout()
 	{
 		unset(f()->session->user_id);
 		$this->user = null;
 	}
+
 	// automatically redirects you to the login path if you are not logged in
 	// additionally, if any roles are specified (a single string or an array of strings), it makes sure the user has at least one of the given roles
 	public function enforce($roles=array(), $loginpath='/admin/login')
@@ -50,6 +53,7 @@ class access
 			f()->response->redirect($loginpath);
 		}
 	}
+
 	public function user()
 	{
 		$user_id = $this->user_id();
@@ -62,10 +66,12 @@ class access
 		}
 		return $this->user;
 	}
+
 	public function hasrole($role)
 	{
 		return $this->user()->hasrole($role);
 	}
+
 	public function user_id()
 	{
 		if(isset(f()->session->user_id)) return f()->session->user_id;

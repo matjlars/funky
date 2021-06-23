@@ -14,8 +14,7 @@ class migrations
 
 	private function mysql_getcreatetables(){
 		$migrations = array();
-		foreach(f()->info->models() as $modelname){
-			$modelclass = '\\models\\'.$modelname;
+		foreach($this->model_classes() as $modelclass){
 			$table = $modelclass::table();
 			if(!f()->db->table_exists($table)){
 				$migrations[] = array(
@@ -30,11 +29,9 @@ class migrations
 	public function mysql_getdroptables(){
 		$migrations = array();
 		$tables = f()->db->tables();
-		$models = f()->info->models();
 		// get an array of model table names:
 		$modeltables = array();
-		foreach($models as $modelname){
-			$modelclass = '\\models\\'.$modelname;
+		foreach($this->model_classes() as $modelclass){
 			$modeltables[] = $modelclass::table();
 		}
 		// find all tables that exist that are not model table names:
@@ -52,10 +49,9 @@ class migrations
 	{
 		$migrations = array();
 		// run through every field of every table
-		foreach(f()->info->models() as $modelname){
+		foreach($this->model_classes() as $modelclass){
 			$extrafields = array();
 			$missingfields = array();
-			$modelclass = '\\models\\'.$modelname;
 			$table = $modelclass::table();
 			if(!f()->db->table_exists($table)){
 				// this table doesn't even exist, so the create table migration trumps this one.
@@ -151,5 +147,15 @@ class migrations
 		}
 		$sql .= 'PRIMARY KEY (`id`))';
 		return $sql;
+	}
+
+	// returns an array of all model classes to consider generating migrations for
+	// override this if you want to get fancy with which migrations to run where
+	protected function model_classes(){
+		$classes = [];
+		foreach(f()->info->models() as $model){
+			$classes[] = '\\models\\'.$modelname;
+		}
+		return $classes;
 	}
 }

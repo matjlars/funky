@@ -4,7 +4,7 @@ use funky\dbresult;
 
 class db
 {
-	private $mysqli;
+	protected $mysqli;
 	
 	public function __construct()
 	{

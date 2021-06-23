@@ -11,14 +11,14 @@ class admintool{
 	}
 
 	public function index(){
-		return f()->view->load($this->path().'/index');
+		return f()->view->load($this->view_path().'/index');
 	}
 
 	public function feed(){
 		$modelname = $this->modelname().'s';
 		$modelobjs = $this->get_feed_objects();
 
-		return f()->view->load($this->path().'/feed', [
+		return f()->view->load($this->view_path().'/feed', [
 			$modelname=>$modelobjs,
 		]);
 	}
@@ -30,13 +30,13 @@ class admintool{
 			$this->update($modelobj, $_POST);
 			if($modelobj->isvalid()){
 				f()->flash->success('Saved!');
-				f()->response->redirect('/'.$this->path().'/edit/'.$modelobj->id);
+				f()->response->redirect('/'.$this->url_path().'/edit/'.$modelobj->id);
 			}else{
 				f()->flash->error('Error while saving: '.$modelobj->errormessage());
 			}
 		}
 		$modelname = $this->modelname();
-		return f()->view->load($this->path().'/edit', array(
+		return f()->view->load($this->view_path().'/edit', array(
 			$modelname=>$modelobj,
 		));
 	}
@@ -116,7 +116,7 @@ class admintool{
 		return 'Sorted.';
 	}
 
-	protected function path(){
+	protected function url_path(){
 		$class = get_called_class();
 		$tokens = explode('\\', $class);
 
@@ -124,6 +124,10 @@ class admintool{
 		array_shift($tokens);
 
 		return implode('/', $tokens);
+	}
+
+	protected function view_path(){
+		return $this->url_path();
 	}
 
 	// returns a fully namespaced model class name to use for this admin tool
