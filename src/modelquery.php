@@ -98,7 +98,7 @@ class modelquery implements \Iterator
 		
 		// ORDER
 		if(!empty($this->orderby)){
-			$sql .= ' ORDER BY '.$this->orderby;
+			$sql .= ' ORDER BY `'.$this->orderby.'`';
 		}
 		
 		// LIMIT
