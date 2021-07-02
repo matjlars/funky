@@ -153,7 +153,7 @@ class migrations
 	// override this if you want to get fancy with which migrations to run where
 	protected function model_classes(){
 		$classes = [];
-		foreach(f()->info->models() as $model){
+		foreach(f()->info->models() as $modelname){
 			$classes[] = '\\models\\'.$modelname;
 		}
 		return $classes;
