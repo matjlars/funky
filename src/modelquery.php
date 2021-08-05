@@ -6,7 +6,7 @@ class modelquery implements \Iterator
 {
 	private $modelclass = '';
 	private $where = array();
-	private $orderby = '';
+	private $order = NULL;
 	private $limit = 0;
 	private $offset = 0;
 	private $models = null;
@@ -42,12 +42,39 @@ class modelquery implements \Iterator
 		return $this;
 	}
 	
+	// DEPRECATED. Use order() instead.
 	// accepts a string to order the query, and therefore the eventual array of model objects
 	// the format should be something like 'id ASC' or 'name DESC'
 	public function orderby($orderby)
 	{
 		if($this->islocked()) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
-		$this->orderby = $orderby;
+		$this->order = [$orderby];
+		return $this;
+	}
+
+	// orders the results
+	// pass the column name that you want to order by.
+	// optionally pass "true" to $is_descending to order it descending.
+	// otherwise, it defaults to ascending.
+	// you can call this a second time to specify multiple columns to order by.
+	// pass a NULL to the $col to clear this query's existing orderings.
+	public function order($col, $is_descending=false){
+		if($this->islocked()) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
+
+		// clear if passed NULL
+		if($col === NULL){
+			$this->order = NULL;
+			return;
+		}
+
+		// generate ORDER BY clause
+		$clause = '`'.$col.'`';
+		if($is_descending) $clause .= ' DESC';
+
+		// add this clause to the array of ORDER BY clauses.
+		if($this->order === NULL) $this->order = [];
+		$this->order[] = $clause;
+
 		return $this;
 	}
 
@@ -97,8 +124,8 @@ class modelquery implements \Iterator
 		}
 		
 		// ORDER
-		if(!empty($this->orderby)){
-			$sql .= ' ORDER BY `'.$this->orderby.'`';
+		if($this->order !== NULL){
+			$sql .= ' ORDER BY '.implode(', ', $this->order);
 		}
 		
 		// LIMIT

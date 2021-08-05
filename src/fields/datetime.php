@@ -10,14 +10,25 @@ class datetime extends \funky\fields\field
 
 		// if there is no default, this field is nullable
 		if(!isset($args['default'])) $this->nullable = true;
+
+		// allow explicitly setting nullable
+		if(isset($args['nullable'])) $this->nullable = boolval($args['nullable']);
 	}
 
 	public function set($val){
-		parent::set(\strtotime($val));
+		if($this->nullable && empty($val)){
+			parent::set(null);
+		}else{
+			parent::set(\strtotime($val));
+		}
 	}
 
 	public function get(){
-		return $this->format('m/d/Y g:ia');
+		if($this->nullable && empty($this->val)){
+			return null;
+		}else{
+			return $this->format('m/d/Y g:ia');
+		}
 	}
 
 	public function format($formatstring){
@@ -47,5 +58,13 @@ class datetime extends \funky\fields\field
 
 	public function isnullable(){
 		return $this->nullable;
+	}
+
+	public function __toString(){
+		if($this->nullable && empty($this->val)){
+			return 'N/A';
+		}else{
+			return $this->format('m/d/Y g:ia');
+		}
 	}
 }
