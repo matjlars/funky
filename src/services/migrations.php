@@ -67,6 +67,9 @@ class migrations
 				$fieldname = $field->name();
 				$dbtype = $field->dbtype();
 
+				// allow virtual fields by setting dbtype to null. they do not exist in the db.
+				if(is_null($dbtype)) continue;
+
 				// determine if this field will be nullable
 				$nullstr = ' NOT NULL';
 				if($field->isnullable()) $nullstr = '';

@@ -24,6 +24,15 @@ abstract class field
 	// override this function to do stuff with args and set up anything else
 	public function init($args){}
 
+	// override this function to do stuff with the model
+	// for example, you could keep a reference to it, if you need it.
+	// this is called *after* init()
+	public function init_model($model){}
+
+	// the model calls this after everything else in update()
+	// so you can do additional db stuff here if you want.
+	public function after_update(){}
+
 	// returns the sql needed to make this field exist in the db schema
 	abstract public function dbtype();
 	

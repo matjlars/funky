@@ -43,8 +43,6 @@ class modelquery implements \Iterator
 	}
 	
 	// DEPRECATED. Use order() instead.
-	// accepts a string to order the query, and therefore the eventual array of model objects
-	// the format should be something like 'id ASC' or 'name DESC'
 	public function orderby($orderby)
 	{
 		if($this->islocked()) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
@@ -80,26 +78,24 @@ class modelquery implements \Iterator
 
 	// accepts an int to limit the result set to a given size
 	// use the number 0 to remove the limit
-	public function limit($limit)
-	{
+	public function limit($limit){
 		if($this->islocked()) throw new \exception('you cannot limit this modelquery anymore because the query has already ran.');
 		$this->limit = $limit;
 		return $this;
 	}
+
 	// accepts an integer to page the result set ahead by the given number of results
 	// for example, 0 means it doesn't skip any results (default)
 	// another example: 1 means it will skip the first result.
 	// for pagination, send your Results Per Page to limit() and your (RPP * page #) to this.
-	public function offset($offset)
-	{
+	public function offset($offset){
 		if($this->islocked()) throw new \exception('you cannot offset this modelquery anymore because the query has already ran.');
 		$this->offset = $offset;
 		return $this;
 	}
 	
 	// performs the query and returns an array of model objects
-	public function toArray()
-	{
+	public function toArray(){
 		$this->run();
 		return $this->models;
 	}

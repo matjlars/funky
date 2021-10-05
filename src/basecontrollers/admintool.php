@@ -116,6 +116,24 @@ class admintool{
 		return 'Sorted.';
 	}
 
+	// ajax endpoint for the bridge_field js
+	// this is for if a user is trying to find these
+	// for the purposes of a bridge table.
+	// the response format is a JSON object mapping id: name
+	// where "name" actually just means a human readable version of the record.
+	public function bridge_ajax(){
+		$modelclass = $this->modelclass();
+		$records = $modelclass::search($_GET);
+
+		// generate map from id to label
+		$data = [];
+		foreach($records as $r){
+			$data[$r->id] = $r->bridge_label();
+		}
+
+		f()->response->json($data);
+	}
+
 	protected function url_path(){
 		$class = get_called_class();
 		$tokens = explode('\\', $class);
