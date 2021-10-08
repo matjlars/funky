@@ -144,9 +144,12 @@ class migrations
 		// generate an array of sql strings for each field
 		$sql .= '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,';
 		foreach($modelclass::fields() as $field){
-			$sql .= '`'.$field->name().'` '.$field->dbtype();
-			if(!$field->isnullable()) $sql .= ' NOT NULL';
-			$sql .= ',';
+			$dbtype = $field->dbtype();
+			if($dbtype !== null){
+				$sql .= '`'.$field->name().'` '.$dbtype;
+				if(!$field->isnullable()) $sql .= ' NOT NULL';
+				$sql .= ',';
+			}
 		}
 		$sql .= 'PRIMARY KEY (`id`))';
 		return $sql;

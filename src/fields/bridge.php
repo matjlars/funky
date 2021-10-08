@@ -59,6 +59,10 @@ class bridge extends \funky\fields\field{
 		return f()->db->query('SELECT '.$this->other_id_col.' FROM '.$this->bridge.' WHERE '.$this->id_col.' = '.$this->model->id)->arr($this->other_id_col);
 	}
 
+	public function count(){
+		return count($this->get_ids());
+	}
+
 	public function set($ids){
 		if(empty($ids)){
 			$this->val = [];
