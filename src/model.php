@@ -187,6 +187,22 @@ class model
 		return $this->id;
 	}
 
+	// override this to return an array of export headers
+	// if you want to support exporting this model data to CSV
+	public static function export_headers(){
+		throw new \exception('You must override '.get_called_class().'::export_headers()');
+	}
+
+	// attempts to use export_headers to piece together an export data array.
+	// override this if you need more complexity.
+	public function export_data(){
+		$data = [];
+		foreach(static::export_headers() as $header){
+			$data[$header] = $this->$header->get();
+		}
+		return $data;
+	}
+
 	// takes an array of data and sets all applicable data
 	private function setdata($data){
 		foreach($this->fields as $key=>$field){

@@ -71,6 +71,21 @@ class response
 		exit(0);
 	}
 
+	// sends a CSV file to the browser.
+	// $data should be an array of arrays. each sub-array is one row in the CSV.
+	// $filename is just the name of the file to download. Probably end it with ".csv"
+	public function csv($data, $filename='export.csv'){
+		header('Content-Type: text/csv');
+		header('Content-Disposition: attachment; filename="'.$filename.'";');
+
+		// output each row
+		$f = fopen('php://output', 'w');
+		foreach($data as $row){
+			fputcsv($f, $row);
+		}
+		exit(0);
+	}
+
 	// call this function anywhere in your request to set headers to disable caching
 	public function disableCache(){
 		$this->addHeader('Cache-Control', 'no-cache, must-revalidate');

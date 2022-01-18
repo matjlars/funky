@@ -134,6 +134,34 @@ class admintool{
 		f()->response->json($data);
 	}
 
+	// file download endpoint for exporting data to a CSV file.
+	public function export(){
+		$modelclass = $this->modelclass();
+		
+		// start creating the export data array
+		$data = [];
+		$data[] = $modelclass::export_headers();
+
+		// add a row for eaach export record
+		foreach($this->get_export_records() as $r){
+			$data[] = $r->export_data();
+		}
+
+		// send the csv file to the browser
+		$table_name = $modelclass::table();
+		f()->response->csv($data, $table_name.'.csv');
+	}
+
+	protected function get_export_records(){
+		$modelclass = $this->modelclass();
+		if(empty($_GET)){
+			// no params, so grab all records
+			return $modelclass::query();
+		}else{
+			return $modelclass::search($_GET);
+		}
+	}
+
 	protected function url_path(){
 		$class = get_called_class();
 		$tokens = explode('\\', $class);
