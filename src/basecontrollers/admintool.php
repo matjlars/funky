@@ -152,6 +152,57 @@ class admintool{
 		f()->response->csv($data, $table_name.'.csv');
 	}
 
+	public function import(){
+		$modelname = $this->modelname();
+		$modelclass = $this->modelclass();
+		$headers = $modelclass::import_headers();
+
+		// download a template file
+		if(!empty($_GET['download_template'])){
+			f()->response->csv([$headers], $modelname.'-import.csv');
+		}
+
+		if(!empty($_FILES['file'])){
+			$f = fopen($_FILES['file']['tmp_name'], 'r');
+			if($f === false) die('unable to open uploaded file.');
+
+			// keys are all the field names
+			$model_fields = array_flip($headers);
+
+			// maps the column index to the field name
+			$csv_headers = null;
+
+			// go through each row in the csv
+			$insert_count = 0;
+			while(($row = fgetcsv($f, 10000, ',')) !== false){
+				if(is_null($csv_headers)){ // the first row
+					$csv_headers = $row;
+				}else{ // not the first row
+					$new_model_data = [];
+					foreach($row as $col_idx=>$val){
+						$field_name = $csv_headers[$col_idx];
+						$new_model_data[$field_name] = $val;
+					}
+					$modelclass::insert($new_model_data);
+					$insert_count++;
+				}
+			}
+
+			if(empty($insert_count)){
+				f()->flash->error('There were no rows to insert in the CSV file.');
+			}else{
+				f()->flash->success('Successfully imported '.$insert_count.' row'.(($insert_count==1) ? '' : 's').'!');
+			}
+		}
+
+		// display the import page
+		return f()->view->load('basecontrollers/admintool/import', [
+			'headers'=>$headers,
+			'modelname'=>$modelname,
+			'path'=>$this->url_path(),
+		]);
+	}
+
 	protected function get_export_records(){
 		$modelclass = $this->modelclass();
 		if(empty($_GET)){

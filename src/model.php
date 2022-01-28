@@ -203,6 +203,12 @@ class model
 		return $data;
 	}
 
+	// returns an array of import headers
+	// defaults to export headers, but you can override this if they're different.
+	public static function import_headers(){
+		return static::export_headers();
+	}
+
 	// takes an array of data and sets all applicable data
 	private function setdata($data){
 		foreach($this->fields as $key=>$field){
