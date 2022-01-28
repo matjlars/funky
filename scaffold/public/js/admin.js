@@ -55,6 +55,19 @@ feedpage.init = function(url, singular_noun){
 	if($filters.length > 0){
 		$filters.find('select').on('change', feedpage.load);
 		$filters.find('input').on('input', feedpage.load);
+
+		// export button needs to append filters
+		$('.export.button').each(function(){
+			$(this).on('click', function(e){
+				e.preventDefault();
+
+				// append filters to the URL
+				let export_url = $(this).attr('href');
+				if(export_url.substr(-1) != '/') export_url += '/';
+				export_url += '&'+$filters.serialize();
+				location.href = export_url;
+			});
+		});
 	}
 };
 feedpage.load = function(){
