@@ -2,7 +2,7 @@
 	<h2>Import</h2>
 	<div>
 		<a href="/<?=$path?>" class="button">Back</a>
-		<a href="/<?=$path?>/import/?download_template=1" class="import button">Download Template</a>
+		<a href="/<?=$path?>/import/?download_template=1" class="export button">Download Template</a>
 	</div>
 </header>
 
