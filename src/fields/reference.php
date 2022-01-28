@@ -6,6 +6,7 @@ class reference extends \funky\fields\field
 	// the name of the other model that this references
 	protected $to = '';
 	protected $tolabelfield = '';
+	protected $options_order = '';
 	
 	public function init($args)
 	{
@@ -13,6 +14,7 @@ class reference extends \funky\fields\field
 		$this->val = 0;
 		if(!empty($args['to'])) $this->to = $args['to'];
 		if(!empty($args['tolabelfield'])) $this->tolabelfield = $args['tolabelfield'];
+		if(!empty($args['options_order'])) $this->options_order = $args['options_order'];
 	}
 	public function options()
 	{
@@ -21,7 +23,14 @@ class reference extends \funky\fields\field
 		if(empty($this->tolabelfield)) throw new \exception('you must specify a "tolabelfield" arg for reference field '.$this->typename().' in order to use \fields\reference::options()');
 		$otherclass = 'models\\'.$this->to;
 		$othertable = $otherclass::table();
-		return f()->db->query('select id,'.$this->tolabelfield.' from '.$othertable)->map('id', $this->tolabelfield);
+
+		$sql = 'select id,'.$this->tolabelfield.' from '.$othertable.' ORDER BY ';
+		if(empty($this->options_order)){
+			$sql .= $this->tolabelfield;
+		}else{
+			$sql .= $this->options_order;
+		}
+		return f()->db->query($sql)->map('id', $this->tolabelfield);
 	}
 
 	public function dbtype()
