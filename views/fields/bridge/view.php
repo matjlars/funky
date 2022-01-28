@@ -11,13 +11,13 @@ foreach($records as $record){
 $selected_ids = implode(',', $selected_ids);
 
 ?>
-<div class="bridge_field" data-ajax_path="<?=$field->ajax_path()?>">
-	<label for="<?=$field->name()?>"><?=$field->label()?></label>
+<fieldset class="bridge_field" data-ajax_path="<?=$field->ajax_path()?>">
+	<legend><label for="<?=$field->name()?>"><?=$field->label()?></label></legend>
 	<input type="hidden" name="<?=$field->name()?>" value="">
 	<input type="search" id="<?=$field->name()?>" placeholder="Search">
 	<ul class="search-results"></ul>
 	<ul class="tags"></ul>
-</div>
+</fieldset>
 <?php foreach($records as $record){?>
 	<script>bridge_field.select($('#<?=$field->name()?>').closest('.bridge_field'), '<?=$record->id?>', "<?=htmlspecialchars($record->bridge_label())?>");</script>
 <?php }?>
