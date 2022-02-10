@@ -564,6 +564,7 @@ bridge_field.search = function($bf){
 			let $li = $(this);
 			let id = $li.attr('data-id');
 			bridge_field.select($bf, id, $li.text());
+			$bf.find('input[type=search]').focus();
 		});
 		$searchResults.show();
 	});
@@ -588,7 +589,7 @@ bridge_field.select = function($bf, id, label){
 		$tags.append(li);
 
 		$bf.find('.search-results').hide();
-		$bf.find('input[type=search]').val('').focus();
+		$bf.find('input[type=search]').val('');
 	}
 };
 bridge_field.deselect = function(tag_ele){

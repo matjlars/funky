@@ -78,13 +78,13 @@ abstract class field
 	// returns a string containing the content of the field view
 	// these views are relative to /views/fields/FIELD_CLASS/
 	// the view file will get passed the "field" variable containing the field object
-	public function view($view='')
+	// $data will be passed into the field view
+	public function view($view='', $data=[])
 	{
 		if(empty($view)) $view = 'view';
 		$view = 'fields/'.$this->typename().'/'.$view;
-		return f()->view->load($view, array(
-			'field'=>$this,
-		));
+		$data['field'] = $this;
+		return f()->view->load($view, $data);
 	}
 
 	public function typename()
