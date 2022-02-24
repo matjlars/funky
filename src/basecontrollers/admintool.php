@@ -11,21 +11,41 @@ class admintool{
 	}
 
 	public function index(){
-		return f()->view->load($this->view_path().'/index');
+		$view = $this->view_path().'/index';
+		if(f()->view->exists($view)){
+			return f()->view->load($this->view_path().'/index');
+		}
+
+		$modelclass = $this->modelclass();
+		return f()->view->load('basecontrollers/admintool/index', [
+			'modelname'=>$this->modelname(),
+			'modelname_plural'=>$modelclass::table(),
+			'url_path'=>$this->url_path(),
+		]);
 	}
 
 	public function feed(){
 		$modelname = $this->modelname().'s';
 		$modelobjs = $this->get_feed_objects();
 
-		return f()->view->load($this->view_path().'/feed', [
-			$modelname=>$modelobjs,
+		$view = $this->view_path().'/feed';
+		if(f()->view->exists($view)){
+			return f()->view->load($view, [
+				$modelname=>$modelobjs,
+			]);
+		}
+
+		return f()->view->load('basecontrollers/admintool/feed', [
+			'modelobjs'=>$modelobjs,
+			'url_path'=>$this->url_path(),
+			'modelname'=>$this->modelname(),
 		]);
 	}
 
 	public function edit($id=0){
 		$modelclass = $this->modelclass();
 		$modelobj = $modelclass::fromid($id);
+
 		if(!empty($_POST)){
 			$this->update($modelobj, $_POST);
 			if($modelobj->isvalid()){
@@ -35,10 +55,25 @@ class admintool{
 				f()->flash->error('Error while saving: '.$modelobj->errormessage());
 			}
 		}
+
 		$modelname = $this->modelname();
-		return f()->view->load($this->view_path().'/edit', array(
-			$modelname=>$modelobj,
-		));
+
+		// use the site-specific view if it exists
+		$view = $this->view_path().'/edit';
+		if(f()->view->exists($view)){
+			return f()->view->load($view, [
+				$modelname=>$modelobj,
+			]);
+		}
+
+		// default to the basecontrollers view
+		return f()->view->load('basecontrollers/admintool/edit', [
+			'modelname'=>$this->modelname(),
+			'modelname_plural'=>$modelclass::table(),
+			'url_path'=>$this->url_path(),
+			'fields'=>$this->get_edit_fields(),
+			'modelobj'=>$modelobj,
+		]);
 	}
 
 	public function deactivate(){
@@ -101,8 +136,7 @@ class admintool{
 
 
 	// ajax endpoint to save sort_id
-	public function sort()
-	{
+	public function sort(){
 		if(empty($_POST['ids'])) throw new \Exception('no ids given');
 
 		$modelclass = $this->modelclass();
@@ -221,6 +255,16 @@ class admintool{
 		array_shift($tokens);
 
 		return implode('/', $tokens);
+	}
+
+	// returns an array of field names to show on the edit form
+	protected function get_edit_fields(){
+		$modelclass = $this->modelclass();
+		$fields = [];
+		foreach($modelclass::fields() as $f){
+			$fields[] = $f->name();
+		}
+		return $fields;
 	}
 
 	protected function view_path(){
