@@ -24,6 +24,15 @@ abstract class field
 	// override this function to do stuff with args and set up anything else
 	public function init($args){}
 
+	// override this function to do stuff with the model
+	// for example, you could keep a reference to it, if you need it.
+	// this is called *after* init()
+	public function init_model($model){}
+
+	// the model calls this after everything else in update()
+	// so you can do additional db stuff here if you want.
+	public function after_update(){}
+
 	// returns the sql needed to make this field exist in the db schema
 	abstract public function dbtype();
 	
@@ -69,13 +78,13 @@ abstract class field
 	// returns a string containing the content of the field view
 	// these views are relative to /views/fields/FIELD_CLASS/
 	// the view file will get passed the "field" variable containing the field object
-	public function view($view='')
+	// $data will be passed into the field view
+	public function view($view='', $data=[])
 	{
 		if(empty($view)) $view = 'view';
 		$view = 'fields/'.$this->typename().'/'.$view;
-		return f()->view->load($view, array(
-			'field'=>$this,
-		));
+		$data['field'] = $this;
+		return f()->view->load($view, $data);
 	}
 
 	public function typename()

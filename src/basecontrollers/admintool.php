@@ -11,21 +11,41 @@ class admintool{
 	}
 
 	public function index(){
-		return f()->view->load($this->view_path().'/index');
+		$view = $this->view_path().'/index';
+		if(f()->view->exists($view)){
+			return f()->view->load($this->view_path().'/index');
+		}
+
+		$modelclass = $this->modelclass();
+		return f()->view->load('basecontrollers/admintool/index', [
+			'modelname'=>$this->modelname(),
+			'modelname_plural'=>$modelclass::table(),
+			'url_path'=>$this->url_path(),
+		]);
 	}
 
 	public function feed(){
 		$modelname = $this->modelname().'s';
 		$modelobjs = $this->get_feed_objects();
 
-		return f()->view->load($this->view_path().'/feed', [
-			$modelname=>$modelobjs,
+		$view = $this->view_path().'/feed';
+		if(f()->view->exists($view)){
+			return f()->view->load($view, [
+				$modelname=>$modelobjs,
+			]);
+		}
+
+		return f()->view->load('basecontrollers/admintool/feed', [
+			'modelobjs'=>$modelobjs,
+			'url_path'=>$this->url_path(),
+			'modelname'=>$this->modelname(),
 		]);
 	}
 
 	public function edit($id=0){
 		$modelclass = $this->modelclass();
 		$modelobj = $modelclass::fromid($id);
+
 		if(!empty($_POST)){
 			$this->update($modelobj, $_POST);
 			if($modelobj->isvalid()){
@@ -35,10 +55,25 @@ class admintool{
 				f()->flash->error('Error while saving: '.$modelobj->errormessage());
 			}
 		}
+
 		$modelname = $this->modelname();
-		return f()->view->load($this->view_path().'/edit', array(
-			$modelname=>$modelobj,
-		));
+
+		// use the site-specific view if it exists
+		$view = $this->view_path().'/edit';
+		if(f()->view->exists($view)){
+			return f()->view->load($view, [
+				$modelname=>$modelobj,
+			]);
+		}
+
+		// default to the basecontrollers view
+		return f()->view->load('basecontrollers/admintool/edit', [
+			'modelname'=>$this->modelname(),
+			'modelname_plural'=>$modelclass::table(),
+			'url_path'=>$this->url_path(),
+			'fields'=>$this->get_edit_fields(),
+			'modelobj'=>$modelobj,
+		]);
 	}
 
 	public function deactivate(){
@@ -101,8 +136,7 @@ class admintool{
 
 
 	// ajax endpoint to save sort_id
-	public function sort()
-	{
+	public function sort(){
 		if(empty($_POST['ids'])) throw new \Exception('no ids given');
 
 		$modelclass = $this->modelclass();
@@ -116,6 +150,103 @@ class admintool{
 		return 'Sorted.';
 	}
 
+	// ajax endpoint for the bridge_field js
+	// this is for if a user is trying to find these
+	// for the purposes of a bridge table.
+	// the response format is a JSON object mapping id: name
+	// where "name" actually just means a human readable version of the record.
+	public function bridge_ajax(){
+		$modelclass = $this->modelclass();
+		$records = $modelclass::search($_GET);
+
+		// generate map from id to label
+		$data = [];
+		foreach($records as $r){
+			$data[$r->id] = $r->bridge_label();
+		}
+
+		f()->response->json($data);
+	}
+
+	// file download endpoint for exporting data to a CSV file.
+	public function export(){
+		$modelclass = $this->modelclass();
+		
+		// start creating the export data array
+		$data = [];
+		$data[] = $modelclass::export_headers();
+
+		// add a row for eaach export record
+		foreach($this->get_export_records() as $r){
+			$data[] = $r->export_data();
+		}
+
+		// send the csv file to the browser
+		$table_name = $modelclass::table();
+		f()->response->csv($data, $table_name.'.csv');
+	}
+
+	public function import(){
+		$modelname = $this->modelname();
+		$modelclass = $this->modelclass();
+		$headers = $modelclass::import_headers();
+
+		// download a template file
+		if(!empty($_GET['download_template'])){
+			f()->response->csv([$headers], $modelname.'-import.csv');
+		}
+
+		if(!empty($_FILES['file'])){
+			$f = fopen($_FILES['file']['tmp_name'], 'r');
+			if($f === false) die('unable to open uploaded file.');
+
+			// keys are all the field names
+			$model_fields = array_flip($headers);
+
+			// maps the column index to the field name
+			$csv_headers = null;
+
+			// go through each row in the csv
+			$insert_count = 0;
+			while(($row = fgetcsv($f, 10000, ',')) !== false){
+				if(is_null($csv_headers)){ // the first row
+					$csv_headers = $row;
+				}else{ // not the first row
+					$new_model_data = [];
+					foreach($row as $col_idx=>$val){
+						$field_name = $csv_headers[$col_idx];
+						$new_model_data[$field_name] = $val;
+					}
+					$modelclass::insert($new_model_data);
+					$insert_count++;
+				}
+			}
+
+			if(empty($insert_count)){
+				f()->flash->error('There were no rows to insert in the CSV file.');
+			}else{
+				f()->flash->success('Successfully imported '.$insert_count.' row'.(($insert_count==1) ? '' : 's').'!');
+			}
+		}
+
+		// display the import page
+		return f()->view->load('basecontrollers/admintool/import', [
+			'headers'=>$headers,
+			'modelname'=>$modelname,
+			'path'=>$this->url_path(),
+		]);
+	}
+
+	protected function get_export_records(){
+		$modelclass = $this->modelclass();
+		if(empty($_GET)){
+			// no params, so grab all records
+			return $modelclass::query();
+		}else{
+			return $modelclass::search($_GET);
+		}
+	}
+
 	protected function url_path(){
 		$class = get_called_class();
 		$tokens = explode('\\', $class);
@@ -124,6 +255,16 @@ class admintool{
 		array_shift($tokens);
 
 		return implode('/', $tokens);
+	}
+
+	// returns an array of field names to show on the edit form
+	protected function get_edit_fields(){
+		$modelclass = $this->modelclass();
+		$fields = [];
+		foreach($modelclass::fields() as $f){
+			$fields[] = $f->name();
+		}
+		return $fields;
 	}
 
 	protected function view_path(){

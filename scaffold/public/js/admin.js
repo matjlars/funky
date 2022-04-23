@@ -55,6 +55,19 @@ feedpage.init = function(url, singular_noun){
 	if($filters.length > 0){
 		$filters.find('select').on('change', feedpage.load);
 		$filters.find('input').on('input', feedpage.load);
+
+		// export button needs to append filters
+		$('.export.button').each(function(){
+			$(this).on('click', function(e){
+				e.preventDefault();
+
+				// append filters to the URL
+				let export_url = $(this).attr('href');
+				if(export_url.substr(-1) != '/') export_url += '/';
+				export_url += '&'+$filters.serialize();
+				location.href = export_url;
+			});
+		});
 	}
 };
 feedpage.load = function(){
@@ -518,3 +531,81 @@ getItemOffsetParent:function(){var a=this.el;return"relative"===a.css("position"
 f},_destroy:function(){var a=this;this.target.off(t.start,this.handle);this.el.removeData(m);this.options.drop&&(this.group.containers=d.grep(this.group.containers,function(b){return b!=a}));d.each(this.items||[],function(){d.removeData(this,"subContainers")})}};var u={enable:function(){this.traverse(function(a){a.disabled=!1})},disable:function(){this.traverse(function(a){a.disabled=!0})},serialize:function(){return this._serialize(this.el,!0)},refresh:function(){this.traverse(function(a){a._clearDimensions()})},
 destroy:function(){this.traverse(function(a){a._destroy()})}};d.extend(s.prototype,u);d.fn[m]=function(a){var b=Array.prototype.slice.call(arguments,1);return this.map(function(){var c=d(this),e=c.data(m);if(e&&u[a])return u[a].apply(e,b)||this;e||a!==f&&"object"!==typeof a||c.data(m,new s(c,a));return this})}}(jQuery,window,"sortable");
 
+
+var bridge_field = {};
+bridge_field.init = function(){
+	$('.bridge_field').each(function(){
+		let bf = $(this);
+		bf.on('input', function(){
+			bridge_field.search(bf);
+		});
+	});
+};
+bridge_field.search = function($bf){
+	let $sf = $bf.find('input[type=search]');
+	let $searchResults = $bf.find('.search-results');
+	let search_val = $sf.val();
+
+	// if there is nothing in the search field,
+	// hide the results and don't do anything else.
+	if(search_val == ''){
+		$searchResults.hide();
+		return;
+	}
+
+	let ajax_path = $bf.attr('data-ajax_path');
+	$.get(ajax_path+'?q='+$sf.val(), function(records){
+		let html = '';
+		for(let id in records){
+			html += '<li data-id="'+id+'">'+records[id]+'</li>';
+		}
+		$searchResults.html(html);
+		$searchResults.find('li').on('click', function(){
+			let $li = $(this);
+			let id = $li.attr('data-id');
+			bridge_field.select($bf, id, $li.text());
+			$bf.find('input[type=search]').focus();
+		});
+		$searchResults.show();
+	});
+};
+bridge_field.select = function($bf, id, label){
+	// add the id to the hidden input, which contains all the ids
+	let $hidden = $bf.find('input[type=hidden]');
+	let ids = $hidden.val().split(',').filter(function(i){return i!=''});
+	if(!ids.includes(id)){
+		// change the hidden value (ids)
+		ids.push(id);
+		$hidden.val(ids).change();
+
+		// add the tag to the page
+		let li = document.createElement('li');
+		li.innerHTML = label;
+		li.dataset.id = id;
+		li.addEventListener('click', function(){
+			bridge_field.deselect(li);
+		});
+		let $tags = $bf.find('.tags');
+		$tags.append(li);
+
+		$bf.find('.search-results').hide();
+		$bf.find('input[type=search]').val('');
+	}
+};
+bridge_field.deselect = function(tag_ele){
+	let $tag = $(tag_ele);
+	let $bf = $tag.closest('.bridge_field');
+	let id = $tag.attr('data-id');
+	let $hidden = $bf.find('input[type=hidden]');
+	let ids = $hidden.val().split(',').filter(function(i){return i!='';});
+
+	// find and remove it from ids
+	let idx = ids.indexOf(id);
+	if(idx >= 0){
+		ids.splice(idx, 1);
+		$hidden.val(ids).change();
+	}
+
+	$tag.remove();
+}
+$(bridge_field.init);

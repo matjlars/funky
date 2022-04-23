@@ -3,7 +3,8 @@ namespace funky\services;
 
 class url
 {
-	private $baseurl;
+	protected $baseurl;
+	protected $current_path;
 	
 	public function __construct()
 	{
@@ -22,6 +23,13 @@ class url
 		if(substr($this->baseurl, -1, 1) != '/'){
 			$this->baseurl .= '/';
 		}
+
+		// figure out the current path
+		if(!empty($_SERVER['REQUEST_URI'])){
+			$this->current_path = trim($_SERVER['REQUEST_URI'], '/');
+		}else{
+			$this->current_path = '';
+		}
 	}
 
 	public function get($path='')
@@ -35,15 +43,20 @@ class url
 
 	public function current()
 	{
-		return $this->get($_SERVER['REQUEST_URI']);
+		return $this->get($this->current_path);
 	}
 
-	public function iscurrent($path)
-	{
+	// returns true if the given $path is the current user's path exactly
+	public function iscurrent($path){
 		$path = trim($path, '/');
-		$request_uri = trim($_SERVER['REQUEST_URI'], '/');
-		if($path == $request_uri) return true;
+		if($path == $this->current_path) return true;
 		return false;
+	}
+
+	// returns true if the given $path is the beginning of the user's current path.
+	public function starts_with($path){
+		$path = trim($path, '/');
+		return strpos($this->current_path, $path) === 0;
 	}
 
 	// returns the canonical URL if baseurl is in config

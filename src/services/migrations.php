@@ -67,6 +67,9 @@ class migrations
 				$fieldname = $field->name();
 				$dbtype = $field->dbtype();
 
+				// allow virtual fields by setting dbtype to null. they do not exist in the db.
+				if(is_null($dbtype)) continue;
+
 				// determine if this field will be nullable
 				$nullstr = ' NOT NULL';
 				if($field->isnullable()) $nullstr = '';
@@ -141,9 +144,12 @@ class migrations
 		// generate an array of sql strings for each field
 		$sql .= '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,';
 		foreach($modelclass::fields() as $field){
-			$sql .= '`'.$field->name().'` '.$field->dbtype();
-			if(!$field->isnullable()) $sql .= ' NOT NULL';
-			$sql .= ',';
+			$dbtype = $field->dbtype();
+			if($dbtype !== null){
+				$sql .= '`'.$field->name().'` '.$dbtype;
+				if(!$field->isnullable()) $sql .= ' NOT NULL';
+				$sql .= ',';
+			}
 		}
 		$sql .= 'PRIMARY KEY (`id`))';
 		return $sql;

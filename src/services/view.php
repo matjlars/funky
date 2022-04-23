@@ -1,16 +1,14 @@
 <?php
 namespace funky\services;
 
-class view
-{
+class view{
 	// loads a view and returns it as a string
-	public function load($name,$data=array())
-	{
+	public function load($path, $data=[]){
 		// Set up variables for the view:
 		extract($data);
 		
 		// Check for a site-specific view:
-		$siteviewpath = f()->path->php('views/'.$name.'.php');
+		$siteviewpath = f()->path->php('views/'.$path.'.php');
 		if(file_exists($siteviewpath))
 		{
 			ob_start();
@@ -19,7 +17,7 @@ class view
 		}
 		
 		// Check for a global view (in DOC_ROOT/../funky/views/)
-		$globalviewpath = f()->path->funky('views/'.$name.'.php');
+		$globalviewpath = f()->path->funky('views/'.$path.'.php');
 		if(file_exists($globalviewpath))
 		{
 			ob_start();
@@ -28,6 +26,25 @@ class view
 		}
 		
 		// Otherwise, err out:
-		throw new \exception('View '.$name.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
+		throw new \exception('View '.$path.' not found in site-specific ('.$siteviewpath.') or global views ('.$globalviewpath.') directory.');
+	}
+
+	// takes the same $path as load()
+	// but just returns true if it exists
+	// and false if it doesn't.
+	public function exists($path){
+		// Check for a site-specific view:
+		$siteviewpath = f()->path->php('views/'.$path.'.php');
+		if(file_exists($siteviewpath)){
+			return true;
+		}
+		
+		// Check for a global view (in DOC_ROOT/../funky/views/)
+		$globalviewpath = f()->path->funky('views/'.$path.'.php');
+		if(file_exists($globalviewpath)){
+			return true;
+		}
+
+		return false;
 	}
 }
