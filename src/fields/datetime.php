@@ -60,6 +60,10 @@ class datetime extends \funky\fields\field
 		return $this->nullable;
 	}
 
+	public function is_null(){
+		return $this->nullable && $this->val === null;
+	}
+
 	public function __toString(){
 		if($this->nullable && empty($this->val)){
 			return 'N/A';
