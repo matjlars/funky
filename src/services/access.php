@@ -18,12 +18,23 @@ class access
 	{
 		// see if this user is in the database:
 		$user_id = f()->db->query('select id from users where email = "'.f()->db->escape($email).'" AND password = "'.md5($password).'"')->val('id');
-		
+
 		// if this user_id exists, log the user in:
-		if(!empty($user_id)){
+		if($this->login_authorize($user_id)){
 			f()->session->user_id = $user_id;
-			$this->user = null;
 		}
+
+		$this->user = null;
+	}
+
+	// override this if you want to add some global authorization logic
+	protected function login_authorize($user_id){
+		if(empty($user_id)){
+			f()->flash->error('Log in failed. Please try again.');
+			return false;
+		}
+
+		return true;
 	}
 
 	public function logout()
