@@ -6,13 +6,26 @@ class datetime extends \funky\fields\field
 	protected $nullable = false;
 
 	public function init($args=[]){
-		if(isset($args['default']) && $args['default'] == 'now') $this->val = time();
-
 		// if there is no default, this field is nullable
-		if(!isset($args['default'])) $this->nullable = true;
+		if(!isset($args['default'])){
+			$this->nullable = true;
+		}
 
 		// allow explicitly setting nullable
 		if(isset($args['nullable'])) $this->nullable = boolval($args['nullable']);
+
+		// default value:
+		if(isset($args['default'])){
+			if($args['default'] == 'now'){
+				$this->val = time();
+			}else{
+				$this->set($args['default']);
+			}
+		}else{
+			// this will set to null
+			// and if you have explicitly set nullable to true, this will set it to zero.
+			$this->set(0);
+		}
 	}
 
 	public function set($val){
