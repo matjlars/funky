@@ -54,7 +54,7 @@ class image extends \funky\model
 	}
 	public static function extensions()
 	{
-		return ['jpg','jpeg','gif','png','svg'];
+		return ['jpg','jpeg','gif','png','svg','webp'];
 	}
 
 	// handles uploading an image and returns the new filename
