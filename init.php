@@ -7,8 +7,8 @@
 error_reporting(E_ALL);
 
 // pass all php errors along to the debug->error() function
-set_error_handler(function($level, $message, $file, $line, $context){
-	f()->debug->error($level, $message, $file, $line, $context);
+set_error_handler(function($level, $message, $file, $line){
+	f()->debug->error($level, $message, $file, $line);
 });
 
 

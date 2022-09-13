@@ -1,8 +1,7 @@
 <?php
 namespace funky\fields;
 
-abstract class field
-{
+abstract class field{
 	protected $val = '';
 	protected $validators = array();
 	protected $name;

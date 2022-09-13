@@ -16,10 +16,8 @@ class admintool{
 			return f()->view->load($this->view_path().'/index');
 		}
 
-		$modelclass = $this->modelclass();
 		return f()->view->load('basecontrollers/admintool/index', [
-			'modelname'=>$this->modelname(),
-			'modelname_plural'=>$modelclass::table(),
+			'modelclass'=>$this->modelclass(),
 			'url_path'=>$this->url_path(),
 		]);
 	}
@@ -38,7 +36,7 @@ class admintool{
 		return f()->view->load('basecontrollers/admintool/feed', [
 			'modelobjs'=>$modelobjs,
 			'url_path'=>$this->url_path(),
-			'modelname'=>$this->modelname(),
+			'modelclass'=>$this->modelclass(),
 		]);
 	}
 
@@ -68,11 +66,10 @@ class admintool{
 
 		// default to the basecontrollers view
 		return f()->view->load('basecontrollers/admintool/edit', [
-			'modelname'=>$this->modelname(),
-			'modelname_plural'=>$modelclass::table(),
 			'url_path'=>$this->url_path(),
 			'fields'=>$this->get_edit_fields(),
 			'modelobj'=>$modelobj,
+			'modelclass'=>$modelclass,
 		]);
 	}
 
@@ -162,7 +159,7 @@ class admintool{
 		// generate map from id to label
 		$data = [];
 		foreach($records as $r){
-			$data[$r->id] = $r->bridge_label();
+			$data[$r->id] = $r->label();
 		}
 
 		f()->response->json($data);
@@ -288,8 +285,7 @@ class admintool{
 	}
 
 	// returns a modelquery for which records to show in the feed.
-	protected function get_feed_objects()
-	{
+	protected function get_feed_objects(){
 		// either get all or filter by post params:
 		$modelclass = $this->modelclass();
 		if(empty($_POST)){
@@ -309,8 +305,7 @@ class admintool{
 	// override this if you want to do something after update
 	// like update some associations or whatever.
 	// make sure to call parent::update($modelobj, $data); so the actual update happens when you want.
-	protected function update($modelobj, $data)
-	{
+	protected function update($modelobj, $data){
 		$modelobj->update($data);
 	}
 }

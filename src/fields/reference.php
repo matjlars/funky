@@ -49,4 +49,21 @@ class reference extends \funky\fields\field{
 	public function dbtype(){
 		return 'int unsigned';
 	}
+
+	public function label(){
+		if(empty($this->label)){
+			$label = $this->name;
+
+			// if the name ends with "_id" then strip that out of the auto label
+			$needle = '_id';
+			$id_pos = strrpos($label, '_id');
+			if($id_pos !== false){
+				$label = substr($label, 0, -3);
+			}
+
+			return ucwords(str_replace('_', ' ', $label));
+		}else{
+			return $this->label;
+		}
+	}
 }

@@ -19,21 +19,6 @@ td,th{
 	<p>File: <?=$file?></p>
 	<p>Line: <?=$line?></p>
 	<table>
-		<caption>Context</caption>
-		<?php foreach($context as $key=>$val){?>
-			<tr>
-				<th><?=$key?></th>
-				<td>
-					<?php if(is_string($val)){
-						echo $val;
-					}else{
-						var_dump($val);
-					}?>
-				</td>
-			</tr>
-		<?php }?>
-	</table>
-	<table>
 		<caption>Session</caption>
 		<?php foreach($_SESSION as $key=>$val){?>
 			<tr>

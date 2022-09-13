@@ -1,8 +1,7 @@
 <?php
 namespace funky;
 
-class model
-{
+class model{
 	private $id = 0;
 	private $fields = [];
 	
@@ -99,6 +98,25 @@ class model
 		$classname = substr($fullclass, strrpos($fullclass, '\\') + 1);
 		return $classname.'s';
 	}
+
+	// returns a user-readable string which is the name of this model class, singular
+	// override this to label the model as something else to the user
+	public static function label_singular(){
+		$fullclass = get_called_class();
+		$label = substr($fullclass, strrpos($fullclass, '\\') + 1);
+		$label = str_replace('_', ' ', $label);
+		$label = ucwords($label);
+		return $label;
+	}
+
+	// see label_singular
+	// override this to label this model as something else to the user
+	public static function label_plural(){
+		$label = static::table();
+		$label = str_replace('_', ' ', $label);
+		$label = ucwords($label);
+		return $label;
+	}
 	
 	// takes an id and returns a single model object
 	public static function fromid($id){
@@ -173,9 +191,10 @@ class model
 		return implode($delim, $this->errors());
 	}
 
-	// returns the label to display this record as on bridge table tags.
-	// override this if it's not returning what you want for your model.
-	public function bridge_label(){
+	// returns an HTML string that represents this model record.
+	// this default implementation just checks for a field called name, title, or label.
+	// override this to have custom logic for your model.
+	public function label(){
 		foreach(['name', 'title', 'label'] as $f){
 			if(isset($this->fields[$f])){
 				return $this->fields[$f]->get();

@@ -1,8 +1,8 @@
 <header>
-	<h2>Editing <?=$modelname?></h2>
+	<h2><?=$modelobj->exists() ? 'Edi' : 'Crea'?>ting <?=$modelclass::label_singular()?></h2>
 	<div>
-		<a class="button" href="/<?=$url_path?>/edit/0">New <?=$modelname?></a>
-		<a class="button" href="/<?=$url_path?>">Back to <?=$modelname_plural?></a>
+		<a class="button" href="/<?=$url_path?>/edit/0">New <?=$modelclass::label_singular()?></a>
+		<a class="button" href="/<?=$url_path?>">Back to <?=$modelclass::label_plural()?></a>
 		<input type="submit" value="Save" class="green" form="edit-form">
 	</div>
 </header>
