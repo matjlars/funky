@@ -29,7 +29,7 @@ register_shutdown_function(function(){
 	if(is_null($error)) exit(1);
 	
 	// display the error
-	f()->debug->error($error['type'], $error['message'], $error['file'], $error['line'], array());
+	f()->debug->error($error['type'], $error['message'], $error['file'], $error['line']);
 });
 
 
