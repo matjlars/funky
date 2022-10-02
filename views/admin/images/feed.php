@@ -5,11 +5,7 @@
 		<?php foreach($images as $i){?>
 			<li data-id="<?=$i->id?>">
 				<a href="/admin/images/edit/<?=$i->id?>">
-					<?php if(empty($i->alt->get())){?>
-						<em>No alt text. Please add alt text to this image.</em>
-					<?php }else{?>
-						<?=$i->name?>
-					<?php }?>
+					<?=$i->name?>
 				</a>
 				<a class="delete icon" title="Delete this image" onclick="feedpage.delete('<?=$i->id?>');return false;" href="#"></a>
 			</li>

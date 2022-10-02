@@ -1,8 +1,10 @@
 <header>
 	<h2>Editing Image</h2>
-	<a class="new button" href="/admin/images/new">New Image</a>
-	<a class="back button" href="/admin/images">Back to Images</a>
-	<button class="save" form="edit-form">Save</button>
+	<div>
+		<a class="new button" href="/admin/images/new">New Image</a>
+		<a class="back button" href="/admin/images">Back to Images</a>
+		<button class="save" form="edit-form">Save</button>
+	</div>
 </header>
 
 <form method="post" action="" enctype="multipart/form-data" id="edit-form">
