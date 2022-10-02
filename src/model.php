@@ -29,6 +29,13 @@ class model{
 
 	public function delete(){
 		if(empty($this->id)) throw new \exception('You cannot delete that which does not exist.');
+
+		// call before_delete on all fields
+		foreach($this->fields as $f){
+			$f->before_delete();
+		}
+
+		// actually delete it
 		f()->db->query('DELETE FROM `'.static::table().'` WHERE id='.$this->id);
 	}
 
@@ -54,6 +61,11 @@ class model{
 	// This function is a shortcut for stripping out all relevant fields passed in the $data, and calling $this->save()
 	// it will also insert a new one if this one doesn't exist already
 	public function update($data){
+		// call before_update on all fields
+		foreach($this->fields as $f){
+			$f->before_update();
+		}
+
 		$this->setdata($data);
 		if($this->isvalid()){
 			$this->save();
@@ -184,6 +196,19 @@ class model{
 		// default to show id because there is always that.
 		// but you probably want to override this function in this case.
 		return $this->id;
+	}
+
+	// returns a string that is a user-readable label for this model class
+	// for example, if the model is "user", this function returns "User"
+	// if $plural is false, that means it's singular, AKA "User"
+	// if $plural is true, that means this will return something like "Users"
+	// you can override this if the auto-generation fails on your model.
+	public static function model_label($plural=false){
+		$class = get_called_class();
+		$lastslash = strrpos($class, '\\');
+		$name = substr($class, $lastslash+1);
+		if($plural) $name .= 's';
+		return ucwords($name);
 	}
 
 	// override this to return an array of export headers

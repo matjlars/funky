@@ -279,6 +279,7 @@ class admintool{
 	}
 
 	// returns a singular noun version of the model name
+	// this is all lowercase.
 	protected function modelname(){
 		$class = get_called_class();
 		$lastslash = strrpos($class, '\\');

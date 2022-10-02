@@ -22,6 +22,16 @@ class image extends \funky\model{
 		return f()->uploads->url($this->filename);
 	}
 
+	public function delete(){
+		// delete the image file
+		if(!empty($this->filename->get())){
+			f()->uploads->delete($this->filename->get());
+		}
+
+		// then continue with deleting it normally
+		parent::delete();
+	}
+
 	// create new image model(s) from the $_FILES array.
 	// handles uploading single or multiple image files.
 	// returns an array of new image models.

@@ -26,9 +26,16 @@ abstract class field{
 	// this is called *after* init()
 	public function init_model($model){}
 
+	// the model calls this before everything else in update()
+	// so you can do weird stuff here like handle file uploads
+	public function before_update(){}
+
 	// the model calls this after everything else in update()
 	// so you can do additional db stuff here if you want.
 	public function after_update(){}
+
+	// the model calls this before deleting a record
+	public function before_delete(){}
 
 	// returns the sql needed to make this field exist in the db schema
 	abstract public function dbtype();
