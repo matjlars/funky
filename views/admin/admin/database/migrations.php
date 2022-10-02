@@ -1,5 +1,5 @@
 <?php if(empty($migrations)){?>
-	<h3>Migrations are up to date! <a class="button" onclick="getmigrations();">refresh</a></h3>
+	<h3>Migrations are up to date!</h3>
 <?php }else{?>
 	<h3>Migrations</h3>
 	<table>

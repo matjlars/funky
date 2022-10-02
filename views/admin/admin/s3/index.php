@@ -1,7 +1,11 @@
 <?php
 $c = f()->config;
 ?>
-<h2>S3 Config</h2>
+<header>
+	<h2>S3 Config</h2>
+	<button class="save" form="edit-form">Save</button>
+</header>
+
 <p>This form helps guide you through configuring S3 for file uploads.</p>
 
 <h3>How to do this whole process</h3>
@@ -14,7 +18,7 @@ $c = f()->config;
 	<li>Copy the bucket name and region into the Bucket Config fields below.</li>
 </ol>
 
-<form action="" method="post">
+<form action="" method="post" id="edit-form">
 	<h3>IAM Role Config</h3>
 	<p>This can be root account credentials, but I recommend setting up an IAM Role for each site.</p>
 	<div class="field">
@@ -62,6 +66,4 @@ $c = f()->config;
     ]
 }</pre>
 <?php }?>
-
-	<input type="submit" value="Save">
 </form>

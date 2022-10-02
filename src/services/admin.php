@@ -13,7 +13,14 @@ class admin{
 		if(!f()->access->hasrole('admin')) return [];
 
 		// get links from the site and funky
-		return array_merge($this->get_site_links(), $this->get_funky_links());
+		$links = array_merge($this->get_site_links(), $this->get_funky_links());
+
+		// add some links for dev users
+		if(f()->access->hasrole('dev')){
+			$links = array_merge($links, $this->get_dev_links());
+		}
+
+		return $links;
 	}
 
 	protected function get_site_links(){
@@ -29,6 +36,16 @@ class admin{
 		unset($paths['/admin/logout']);
 
 		return $paths;
+	}
+
+	protected function get_dev_links(){
+		return [
+			'/admin/admin/users'=>'Users',
+			'/admin/admin/config'=>'Config',
+			'/admin/admin/smtp'=>'SMTP',
+			'/admin/admin/s3'=>'S3',
+			'/admin/admin/database'=>'Database',
+		];
 	}
 
 	protected function glob_links($pattern){

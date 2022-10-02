@@ -1,11 +1,14 @@
-<h2>Database</h2>
+<header>
+	<h2>Database</h2>
+	<button type="button" onclick="getmigrations()">Refresh Migrations</button>
+</header>
 
 <section id="migrations"></section>
 
 <section>
 	<h3>SQL Runner</h3>
 	<textarea id="sql" rows="5" cols="50"></textarea>
-	<a class="button" onclick="runsql()">Query</a>
+	<button type="button" onclick="runsql()">Run SQL</button>
 	<div id="sql-results"></div>
 </section>
 

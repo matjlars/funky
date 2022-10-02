@@ -619,3 +619,16 @@ bridge_field.deselect = function(tag_ele){
 	$tag.remove();
 }
 $(bridge_field.init);
+
+
+// Mobile Navigation
+document.addEventListener("DOMContentLoaded", function(){
+	document.querySelector('.hamburger').addEventListener('click', function(){
+		document.querySelector('body>nav').classList.toggle('show');
+		document.querySelector('.overlay').classList.toggle('show');
+	});
+	document.querySelector('.overlay').addEventListener('click', function(){
+		document.querySelector('body>nav').classList.toggle('show');
+		document.querySelector('.overlay').classList.toggle('show');
+	});
+});
