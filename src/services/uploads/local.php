@@ -32,7 +32,11 @@ class local extends base{
 	}
 
 	public function url($filename){
-		return f()->url->get($this->dir.$filename);
+		// get the dir starting at "public/uploads/"
+		// +7 to cut off "public/" so it starts at "uploads/"
+		$startPos = strpos($this->dir, 'public/uploads/')+7;
+		$docroot = substr($this->dir, $startPos);
+		return f()->url->get($docroot.$filename);
 	}
 
 	public function delete($filename){

@@ -44,14 +44,7 @@ class images{
 	public function delete(){
 		if(empty($_POST['id'])) return 'no id given.';
 		$image = image::fromid($_POST['id']);
-		$filename = $image->filename->get();
 		$image->delete();
-
-		// also attempt to delete the file from uploads
-		if(!empty($filename)){
-			f()->uploads->delete($filename);
-		}
-
 		return 'ok';
 	}
 
