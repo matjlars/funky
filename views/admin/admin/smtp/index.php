@@ -7,27 +7,27 @@ $c = f()->config;
 <form action="" method="post">
 	<div class="field">
 		<label for="smtp">Host</label>
-		<input type="text" id="host" name="smtp_host"<?=isset($c->smtp_host) ? ' value="'.$c->smtp_host.'"' : ''?>>
+		<input type="text" id="host" name="smtp_host" value="<?=$c->smtp_host?>">
 	</div>
 	<div class="field">
 		<label for="username">Username</label>
-		<input type="text" id="username" name="smtp_username"<?=isset($c->smtp_username) ? ' value="'.$c->smtp_username.'"' : ''?>>
+		<input type="text" id="username" name="smtp_username" value="<?=$c->smtp_username?>">
 	</div>
 	<div class="field">
 		<label for="password">Password</label>
-		<input type="password" id="password" name="smtp_password"<?=isset($c->smtp_password) ? ' value="'.$c->smtp_password.'"' : ''?>>
+		<input type="password" id="password" name="smtp_password" value="<?=$c->smtp_password?>">
 	</div>
 	<div class="field">
 		<label for="port">Port</label>
-		<input type="text" id="port" name="smtp_port"<?=isset($c->smtp_port) ? ' value="'.$c->smtp_port.'"' : ''?>>
+		<input type="text" id="port" name="smtp_port" value="<?=$c->smtp_port?>">
 	</div>
 	<div class="field">
 		<label for="from_email">From Email</label>
-		<input type="text" id="from_email" name="smtp_from_email"<?=isset($c->smtp_from_email) ? ' value="'.$c->smtp_from_email.'"' : ''?>>
+		<input type="text" id="from_email" name="smtp_from_email" value="<?=$c->smtp_from_email?>">
 	</div>
 	<div class="field">
 		<label for="from_name">From Name</label>
-		<input type="text" id="from_name" name="smtp_from_name"<?=isset($c->smtp_from_name) ? ' value="'.$c->smtp_from_name.'"' : ''?>>
+		<input type="text" id="from_name" name="smtp_from_name" value="<?=$c->smtp_from_name?>">
 	</div>
 	<input type="submit" value="Save">
 </form>

@@ -1,12 +1,10 @@
 <?php
 namespace funky\fields;
 
-class integer extends \funky\fields\field
-{
+class integer extends \funky\fields\field{
 	protected $signed = true;
 	
-	public function init($args)
-	{
+	public function init($args){
 		// set the default:
 		if(isset($args['default'])){
 			$this->val = $args['default'];
@@ -27,8 +25,7 @@ class integer extends \funky\fields\field
 		}
 	}
 
-	public function dbtype()
-	{
+	public function dbtype(){
 		$sql = 'int';
 		if(!$this->signed) $sql .= ' unsigned';
 		return $sql;

@@ -2,22 +2,18 @@
 namespace funky\controllers\admin;
 use models\image;
 
-class images
-{
-	public function __construct()
-	{
+class images{
+	public function __construct(){
 		f()->access->enforce('admin');
 		f()->template->view = 'admin';
 	}
 
-	public function index()
-	{
+	public function index(){
 		return f()->view->load('admin/images/index');
 	}
 
-	public function feed()
-	{
-		$images = image::query()->orderby('alt');
+	public function feed(){
+		$images = image::query()->order('alt');
 		return f()->view->load('admin/images/feed', [
 			'images'=>$images,
 		]);
@@ -27,6 +23,12 @@ class images
 		$image = image::fromid($id);
 
 		if(!empty($_POST)){
+			// handle file upload or re-upload
+			$newFilenames = f()->uploads->handle('file');
+			if(!empty($newFilenames)){
+				$_POST['filename'] = $newFilenames[0];
+			}
+
 			$image->update($_POST);
 			if($image->isvalid()){
 				f()->flash->success('Saved!');
@@ -39,27 +41,40 @@ class images
 		]);
 	}
 
-	public function delete()
-	{
+	public function delete(){
 		if(empty($_POST['id'])) return 'no id given.';
 		$image = image::fromid($_POST['id']);
+		$filename = $image->filename->get();
 		$image->delete();
+
+		// also attempt to delete the file from uploads
+		if(!empty($filename)){
+			f()->uploads->delete($filename);
+		}
+
 		return 'ok';
 	}
 
 	// upload ajax endpoint (see admin.js/imagefield)
-	public function upload()
-	{
+	public function upload(){
+		$image = false;
 		// attempt an image upload
 		try{
-			$data = [];
-			$data['filename'] = image::upload('image');
-			if(!empty($_POST['alt'])) $data['alt'] = $_POST['alt'];
-
-			$image = image::insert($data);
+			foreach(f()->uploads->handle('image') as $filename){
+				$data = [
+					'filename'=>$filename,
+				];
+				if(!empty($_POST['alt'])) $data['alt'] = $_POST['alt'];
+				$image = image::insert($data);
+			}
 		}catch(\exception $e){
 			http_response_code(400);
 			die($e->getMessage());
+		}
+
+		if($image === false){
+			http_response_code(400);
+			die('Failed to upload image file.');
 		}
 		
 		// return the new image id and url in the response
@@ -70,8 +85,7 @@ class images
 	}
 
 	// used for the "images" field
-	public function imagesfield_modal($image_id=0)
-	{
+	public function imagesfield_modal($image_id=0){
 		// create/update
 		if(!empty($_POST)){
 			if(!empty($image_id)){
@@ -79,7 +93,7 @@ class images
 				$image->update($_POST);
 				return $image->id;
 			}else{
-				$images = image::create_from_upload('files', $_POST['alt']);
+				$images = image::upload('files', $_POST['alt']);
 
 				$ids = [];
 				foreach($images as $image){
@@ -97,8 +111,7 @@ class images
 		]);
 	}
 
-	public function imagesfield_thumbnails()
-	{
+	public function imagesfield_thumbnails(){
 		if(!empty($_POST['image_ids'])){
 			$images = image::query()->where('id IN ('.$_POST['image_ids'].')');
 		}else{

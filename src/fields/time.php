@@ -1,8 +1,7 @@
 <?php
 namespace funky\fields;
 
-class time extends \funky\fields\field
-{
+class time extends \funky\fields\field{
 	protected $format;
 	protected $allow_seconds = false;
 

@@ -16,8 +16,10 @@ class admintool{
 			return f()->view->load($this->view_path().'/index');
 		}
 
+		$modelclass = $this->modelclass();
 		return f()->view->load('basecontrollers/admintool/index', [
-			'modelclass'=>$this->modelclass(),
+			'modelname'=>$this->modelname(),
+			'modelname_plural'=>$modelclass::table(),
 			'url_path'=>$this->url_path(),
 		]);
 	}
@@ -36,7 +38,7 @@ class admintool{
 		return f()->view->load('basecontrollers/admintool/feed', [
 			'modelobjs'=>$modelobjs,
 			'url_path'=>$this->url_path(),
-			'modelclass'=>$this->modelclass(),
+			'modelname'=>$this->modelname(),
 		]);
 	}
 
@@ -66,10 +68,11 @@ class admintool{
 
 		// default to the basecontrollers view
 		return f()->view->load('basecontrollers/admintool/edit', [
+			'modelname'=>$this->modelname(),
+			'modelname_plural'=>$modelclass::table(),
 			'url_path'=>$this->url_path(),
 			'fields'=>$this->get_edit_fields(),
 			'modelobj'=>$modelobj,
-			'modelclass'=>$modelclass,
 		]);
 	}
 
@@ -159,7 +162,7 @@ class admintool{
 		// generate map from id to label
 		$data = [];
 		foreach($records as $r){
-			$data[$r->id] = $r->label();
+			$data[$r->id] = $r->bridge_label();
 		}
 
 		f()->response->json($data);
@@ -296,7 +299,7 @@ class admintool{
 
 		// order by sort_id if there is a sort_id
 		if($modelclass::has_field('sort_id')){
-			$modelobjs->orderby('sort_id');
+			$modelobjs->order('sort_id');
 		}
 
 		return $modelobjs;

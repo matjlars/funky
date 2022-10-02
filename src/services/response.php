@@ -1,9 +1,8 @@
 <?php
 namespace funky\services;
 
-class response
-{
-	protected $headers = array();
+class response{
+	protected $headers = [];
 	
 	// call this function to set a header value
 	// subsequent calls with the same key will overwrite the previous value
@@ -19,7 +18,7 @@ class response
 	// sends the request and exits php
 	// this function uses the headers set with addHeader()
 	// it also uses the public $content property as the content body
-	public function send($code=200, $content){
+	public function send($code=200, $content=''){
 		$this->sendHeaders($code);
 		echo $content;
 		exit(0);

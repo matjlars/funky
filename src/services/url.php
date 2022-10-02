@@ -1,13 +1,11 @@
 <?php
 namespace funky\services;
 
-class url
-{
+class url{
 	protected $baseurl;
 	protected $current_path;
 	
-	public function __construct()
-	{
+	public function __construct(){
 		// figure out the base url 
 		if(isset(f()->config->baseurl)){
 			$this->baseurl = f()->config->baseurl;
@@ -32,8 +30,7 @@ class url
 		}
 	}
 
-	public function get($path='')
-	{
+	public function get($path=''){
 		// strip start slashes because the baseurl already has one
 		$path = ltrim($path, '/');
 		
@@ -41,8 +38,7 @@ class url
 		return $this->baseurl.$path;
 	}
 
-	public function current()
-	{
+	public function current(){
 		return $this->get($this->current_path);
 	}
 
@@ -61,8 +57,7 @@ class url
 
 	// returns the canonical URL if baseurl is in config
 	// returns FALSE if there is no baseurl in the config
-	public function canonical($path)
-	{
+	public function canonical($path){
 		// only do this on an env with an explicit baseurl and path set
 		if(!isset(f()->config->baseurl) || empty($path)) return '';
 

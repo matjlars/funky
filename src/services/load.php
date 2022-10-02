@@ -1,16 +1,14 @@
 <?php
 namespace funky\services;
 
-class load
-{
-	public function field($name, $typename, $args=array())
-	{
+class load{
+	public function field($name, $typename, $args=[]){
 		$class = '\\funky\\fields\\'.$typename;
 		$field = new $class($name, $args);
 		return $field;
 	}
-	public function fields($arr)
-	{
+
+	public function fields($arr){
 		$f = array();
 		foreach($arr as $a){
 			$name = $a[0];

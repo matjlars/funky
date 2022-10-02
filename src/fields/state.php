@@ -1,8 +1,7 @@
 <?php
 namespace funky\fields;
 
-class state extends \funky\fields\field
-{
+class state extends \funky\fields\field{
 	const ALL = array(
 		'AL'=>'Alabama',
 		'AK'=>'Alaska',
@@ -56,16 +55,16 @@ class state extends \funky\fields\field
 		'WI'=>'Wisconsin',
 		'WY'=>'Wyoming',
 	);
-	public static function keys()
-	{
+
+	public static function keys(){
 		return array_keys($this->states);
 	}
-	public static function names()
-	{
+
+	public static function names(){
 		return array_values($this->states);
 	}
-	public function validate()
-	{
+
+	public function validate(){
 		// make sure the value is in the list of states:
 		if(!empty($this->val)){
 			if(!array_key_exists($this->val, $this->states)){
@@ -74,14 +73,13 @@ class state extends \funky\fields\field
 		}
 		return parent::validate();
 	}
-	public function get()
-	{
+
+	public function get(){
 		if(empty($this->val)) return '';
 		return $this->states[$this->val];
 	}
 
-	public function dbtype()
-	{
+	public function dbtype(){
 		return 'char(2)';
 	}
 }

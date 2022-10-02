@@ -2,20 +2,17 @@
 namespace funky\services;
 use models\user;
 
-class access
-{
+class access{
 	protected $user = null;
 	
-	public function isloggedin()
-	{
+	public function isloggedin(){
 		// load the user so it tests to make sure we're logged in as a valid user
 		$user_id = $this->user()->id;
 		if(empty($user_id)) return false;
 		return true;
 	}
 
-	public function login($email, $password)
-	{
+	public function login($email, $password){
 		// see if this user is in the database:
 		$user_id = f()->db->query('select id from users where email = "'.f()->db->escape($email).'" AND password = "'.md5($password).'"')->val('id');
 
@@ -37,16 +34,14 @@ class access
 		return true;
 	}
 
-	public function logout()
-	{
+	public function logout(){
 		unset(f()->session->user_id);
 		$this->user = null;
 	}
 
 	// automatically redirects you to the login path if you are not logged in
 	// additionally, if any roles are specified (a single string or an array of strings), it makes sure the user has at least one of the given roles
-	public function enforce($roles=array(), $loginpath='/admin/login')
-	{
+	public function enforce($roles=array(), $loginpath='/admin/login'){
 		// if we're not logged in at all, redirect to path:
 		$user_id = $this->user_id();
 		if(empty($user_id)){
@@ -65,8 +60,7 @@ class access
 		}
 	}
 
-	public function user()
-	{
+	public function user(){
 		$user_id = $this->user_id();
 		if(empty($user_id)) return new user();
 		if($this->user === null) $this->user = user::fromid($this->user_id());
@@ -78,13 +72,11 @@ class access
 		return $this->user;
 	}
 
-	public function hasrole($role)
-	{
+	public function hasrole($role){
 		return $this->user()->hasrole($role);
 	}
 
-	public function user_id()
-	{
+	public function user_id(){
 		if(isset(f()->session->user_id)) return f()->session->user_id;
 		return 0;
 	}

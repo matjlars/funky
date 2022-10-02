@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Web Site</title>
-	<link rel="stylesheet" href="/css/styles.css"/>
+	<link rel="stylesheet" href="/css/styles.css">
 	<script src="/js/scripts.js"></script>
 	<?=f()->template->headtags()?>
 </head>

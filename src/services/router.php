@@ -10,10 +10,8 @@ class photos extends f_photos{}
 this creates the *photos* controller for your site, thereby granting access to all the public functions in f_photos as route endpoints
 
 */
-class router
-{
-	public function route()
-	{
+class router{
+	public function route(){
 		// try to get content from something.
 		foreach(['page','controller'] as $func){
 			$content = $this->$func();
@@ -26,8 +24,7 @@ class router
 	}
 	
 	// this function tests for pages that exist at files (like index.php for the homepage or any other page)
-	public function page()
-	{
+	public function page(){
 		$path = f()->path->docroot($this->path());
 
 		// try a few different paths
@@ -50,8 +47,7 @@ class router
 	// this function tests for if this site has a controller, and if it does, it makes sure a method is also specified.
 	// if both a controller and method are given, it calls those.
 	// keep in mind, you must override the controller per site to use funky controllers (see note at the top of this file)
-	public function controller()
-	{
+	public function controller(){
 		// if it's a controller we have on this site, load that, with the method and parameters.
 		$uriparts = explode('/', $this->path());
 
@@ -148,8 +144,7 @@ class router
 	// returns the path this request is for
 	// without GET params
 	// and without slashes.
-	protected function path()
-	{
+	protected function path(){
 		$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 		$path = trim($path, '/');
 		return $path;

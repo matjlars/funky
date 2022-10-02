@@ -19,5 +19,5 @@ $selected_ids = implode(',', $selected_ids);
 	<ul class="tags"></ul>
 </fieldset>
 <?php foreach($records as $record){?>
-	<script>bridge_field.select($('#<?=$field->name()?>').closest('.bridge_field'), '<?=$record->id?>', "<?=htmlspecialchars($record->label())?>");</script>
+	<script>bridge_field.select($('#<?=$field->name()?>').closest('.bridge_field'), '<?=$record->id?>', "<?=htmlspecialchars($record->bridge_label())?>");</script>
 <?php }?>

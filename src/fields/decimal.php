@@ -1,8 +1,7 @@
 <?php
 namespace funky\fields;
 
-class decimal extends \funky\fields\field
-{
+class decimal extends \funky\fields\field{
 	// how many digits are to the left of the decimal
 	protected $left = 6;
 	
@@ -12,8 +11,7 @@ class decimal extends \funky\fields\field
 	// the max value
 	protected $max;
 	
-	public function init($args)
-	{
+	public function init($args){
 		if(isset($args['left'])) $this->left = $args['left'];
 		if(isset($args['right'])) $this->right = $args['right'];
 		if(isset($args['max'])){
@@ -38,21 +36,18 @@ class decimal extends \funky\fields\field
 		};
 	}
 
-	public function set($val)
-	{
+	public function set($val){
 		$val = static::sanitize($val);
 		parent::set($val);
 	}
 
-	public function __toString()
-	{
+	public function __toString(){
 		return $this->val;
 	}
 
 	// accepts anything that can be converted to a string
 	// outputs a string that is sanitized as a decimal string
-	public static function sanitize($val)
-	{
+	public static function sanitize($val){
 		// make sure it's a string
 		$val = strval($val);
 		// get location of period
@@ -73,8 +68,7 @@ class decimal extends \funky\fields\field
 		return $left.'.'.$right;
 	}
 
-	public function dbtype()
-	{
+	public function dbtype(){
 		$total = $this->left + $this->right;
 		return 'decimal('.$total.','.$this->right.')';
 	}

@@ -1,13 +1,11 @@
 <?php
 namespace funky\services;
 
-class admin
-{
+class admin{
 	// returns an array for the admin nav links
 	// keys are paths (i.e. "/admin/testimonials")
 	// values are labels (i.e. "Testimonials")
-	public function nav_links()
-	{
+	public function nav_links(){
 		// no links if not logged in
 		if(!f()->access->isloggedin()) return [];
 
@@ -18,13 +16,11 @@ class admin
 		return array_merge($this->get_site_links(), $this->get_funky_links());
 	}
 
-	protected function get_site_links()
-	{
+	protected function get_site_links(){
 		return $this->glob_links(f()->path->php('src/controllers/admin/*.php'));
 	}
 	
-	protected function get_funky_links()
-	{
+	protected function get_funky_links(){
 		$paths = $this->glob_links(f()->path->funky('src/controllers/admin/*.php'));
 
 		// exclude some ones we don't want to link to:

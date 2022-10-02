@@ -328,7 +328,17 @@ imagesfield.refresh_thumbnails = function($imagesfield){
 		$thumbnails.html(response);
 	});
 };
+imagesfield.delete = function(image_id){
+	var $hidden = imagesfield.$current_field.find('input[type=hidden]');
 
+	// remove the image_id from the list of selected images
+	var ids = $hidden.val().split(',').filter(function(val){return val!='';});
+	var idx = ids.indexOf(image_id);
+	if(idx >= 0) ids.splice(idx, 1);
+	$hidden.val(ids.join(','));
+	imagesfield.refresh_thumbnails(imagesfield.$current_field);
+	modal.close();
+};
 
 var tabs = {};
 tabs.ajax = null;

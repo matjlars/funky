@@ -2,12 +2,10 @@
 namespace funky\services;
 use funky\dbresult;
 
-class db
-{
+class db{
 	protected $mysqli;
 	
-	public function __construct()
-	{
+	public function __construct(){
 		$server = 'localhost';
 		if(isset(f()->config->db_server)) $server = f()->config->db_server;
 		$this->mysqli = new \mysqli($server, f()->config->db_user, f()->config->db_password, f()->config->db_name);
@@ -19,8 +17,7 @@ class db
 	}
 	
 	// Runs the $sql query and returns a dbresult
-	public function query($sql)
-	{
+	public function query($sql){
 		$resource = $this->mysqli->query($sql);
 		if($resource === true) return true;
 		if($resource == false){
@@ -30,8 +27,7 @@ class db
 	}
 	
 	// Inserts $data into $table, and returns the inserted PK
-	public function insert($table,$data)
-	{
+	public function insert($table, $data){
 		// validate inputs:
 		if(empty($table)) throw new \exception('An error occured while inserting: no table specified in f()->db->insert()');
 		if(empty($data)) throw new \exception('An error occured while inserting: no data given in f()->db->insert()');
@@ -57,8 +53,7 @@ class db
 	}
 	
 	// Updates a $table with $data given $key = $value
-	public function update($table,$data,$condkey,$condvalue)
-	{
+	public function update($table,$data,$condkey,$condvalue){
 		// validate inputs:
 		if(empty($table)) throw new \exception('no $table passed to f()->db->update()');
 		if(empty($data)) throw new \exception('no $data passed to f()->db->update()');
@@ -81,33 +76,31 @@ class db
 	}
 	
 	// Determine if a table exists in the current database:
-	public function table_exists($table)
-	{
+	public function table_exists($table){
 		if($this->query('SHOW TABLES LIKE "'.$table.'"')->count()) return true;
 		return false;
 	}
 	
 	// Safely escapes a value:
-	public function escape($value)
-	{
+	public function escape($value){
 		return $this->mysqli->real_escape_string($value);
 	}
+
 	// returns an array of all options for the given SET or ENUM field in the given table.
-	public function set_options($table, $field)
-	{
+	public function set_options($table, $field){
 		$sql = 'DESCRIBE '.$this->escape($table).' '.$this->escape($field);
 		$row = $this->mysqli->query($sql)->fetch_assoc();
 		return str_getcsv(trim(substr($row['Type'], 3), '()'), ',', "'");
 	}
+
 	// this function is because I won't remember which one to use later
 	// also in case they ever differ
-	public function enum_options($table, $field)
-	{
+	public function enum_options($table, $field){
 		return $this->set_options($table, $field);
 	}
+
 	// this function returns all table names as an array
-	public function tables()
-	{
+	public function tables(){
 		$tables = array();
 		$res = $this->mysqli->query('SHOW TABLES');
 		while($row = $res->fetch_array(MYSQLI_NUM)){

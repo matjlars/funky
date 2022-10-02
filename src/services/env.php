@@ -1,12 +1,10 @@
 <?php
 namespace funky\services;
 
-class env
-{
+class env{
 	// returns true or false depending on if this is running on a local server
 	// feel free to overwrite this function with your own conditions
-	public function islocal()
-	{
+	public function islocal(){
 		// if the server name is "localhost", we're certainly on local
 		if($_SERVER['SERVER_NAME'] == 'localhost') return true;
 		

@@ -2,11 +2,9 @@
 namespace funky\services;
 
 // This service provides useful information about the site
-class info
-{
+class info{
 	// returns an array of all controllers on this site
-	public function controllers()
-	{
+	public function controllers(){
 		$files = scandir(f()->path->php('controllers'));
 		
 		$controllers = array();
@@ -20,25 +18,25 @@ class info
 		
 		return $controllers;
 	}
+
 	// returns an array of all model class names (without the namespace)
-	public function models()
-	{
+	public function models(){
 		return array_unique($this->files('src/models', 'php'));
 	}
+
 	// turns a path into an array of paths that can include stuff in the framework
 	// override this with additional paths if you want to add more paths for some reason
-	public function paths($path='')
-	{
+	public function paths($path=''){
 		return array(
 			f()->path->php($path),
 			f()->path->php('funky/'.$path),
 		);
 	}
+
 	// returns an array of filenames that are in the given path, in the framework or in the site.
 	// optionally only get files with the given extensions.
 	// i.e. pass ['php'] to only get files that have the ".php" extension
-	public function files($path, $extensions=array())
-	{
+	public function files($path, $extensions=array()){
 		if(is_string($extensions)) $extensions = [$extensions];
 		$files = array();
 		foreach($this->paths($path) as $p){

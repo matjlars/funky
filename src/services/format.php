@@ -1,10 +1,8 @@
 <?php
 namespace funky\services;
 
-class format
-{
-	public function numeric($string)
-	{
+class format{
+	public function numeric($string){
 		$number = '';
 		foreach(str_split($string) as $char)
 		{
@@ -14,8 +12,7 @@ class format
 	}
 	
 	// Formats a phone number for output:
-	public function phone($phone)
-	{
+	public function phone($phone){
 		$phone = $this->numeric($phone); // just in case it isn't already
 		if(strlen($phone)==7)
 		{
@@ -29,8 +26,7 @@ class format
 	}
 
 	// sanitize it perfectly to be a slug (only containing [a-zA-Z0-9\-])
-	public function slug($str)
-	{
+	public function slug($str){
 		$str = strtolower($str);
 		$str = str_replace(' ', '-', $str);
 		$str = str_replace('\'', '', $str);
@@ -41,8 +37,7 @@ class format
 	}
 
 	// sanitize the filename to be sane
-	public function filename($filename)
-	{
+	public function filename($filename){
 		$filename = strtolower($filename);
 		$filename = preg_replace('/[^a-z0-9\-\.]/', '-', $filename);
 		$filename = preg_replace('/-+/', '-', $filename);

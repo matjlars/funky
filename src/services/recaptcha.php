@@ -1,16 +1,13 @@
 <?php
 namespace funky\services;
 
-class recaptcha
-{
-	public function __construct()
-	{
-		f()->template->add_head_tag('<script src="https://www.google.com/recaptcha/api.js" async defer></script>');
+class recaptcha{
+	public function __construct(){
+		f()->template->addHeadTag('<script src="https://www.google.com/recaptcha/api.js" async defer></script>');
 	}
 
 	// returns an html string containing all you need to put it on the page
-	public function tag()
-	{
+	public function tag(){
 		return '<div class="g-recaptcha" data-sitekey="'.$this->get_site_key().'"></div>';
 	}
 
@@ -19,8 +16,7 @@ class recaptcha
 	// otherwise, returns a string which is a user-readable error message.
 	// so you can do something like this:
 	// if($error = f()->recaptcha->error()) return $error;
-	public function error()
-	{
+	public function error(){
 		// no token = no verification
 		if(empty($_POST['g-recaptcha-response'])) return 'No recaptcha token.';
 
@@ -63,18 +59,15 @@ class recaptcha
 		}
 	}
 	*/
-	protected function get_site_key()
-	{
+	protected function get_site_key(){
 		return f()->config->recaptcha_site_key;
 	}
 
-	protected function get_secret_key()
-	{
+	protected function get_secret_key(){
 		return f()->config->recaptcha_secret_key;
 	}
 
-	private function get_error($error_codes)
-	{
+	private function get_error($error_codes){
 		$errors = [
 			'missing-input-secret'=>'The secret parameter is missing. The site admin needs to add a "recaptcha_site_key" entry into the funky config.',
 			'invalid-input-secret'=>'The secret parameter is invalid or malformed. The site admin needs to get a new site secret from Google and update it in the funky config.',

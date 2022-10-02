@@ -2,13 +2,11 @@
 namespace funky\services;
 
 // provides some handy methods for getting unique things
-class unique
-{
+class unique{
 	// given a full filepath (including the filename), this function returns a new unique value
 	// for example, use this when uploading a file to ensure the filename is unique
 	// returns false if it cannot find a unique name
-	public function filename($filepath)
-	{
+	public function filename($filepath){
 		// try to add "2" etc. to the end of the filename
 		$pathinfo = pathinfo($filepath);
 		$num = 2;
@@ -23,8 +21,7 @@ class unique
 	// given a db table, db col name, and a value, this function returns a new value
 	// the value it returns could be different than the one given
 	// and it is guaranteed to be unique for that column
-	public function dbval($table, $col, $val)
-	{
+	public function dbval($table, $col, $val){
 		// escape input
 		$table = f()->db->escape($table);
 		$col = f()->db->escape($col);

@@ -1,33 +1,28 @@
 <?php
 namespace funky\controllers\admin;
 
-class login
-{
-	public function __construct()
-	{
+class login{
+	public function __construct(){
 		f()->template->view = 'admin';
 	}
-	public function index()
-	{
+
+	public function index(){
 		$error = '';
-		
-		if(isset($_POST['email']) && isset($_POST['password'])) // handle normal log in requests
-		{
+
+		// handle normal log in requests
+		if(isset($_POST['email']) && isset($_POST['password'])){
 			f()->access->login($_POST['email'], $_POST['password']);
 			
-			if(f()->access->isloggedin())
-			{
+			if(f()->access->isloggedin()){
 				f()->response->redirect('/admin');
-			}
-			else
-			{
+			}else{
 				$error = 'Unable to authenticate. Please try again.';
 			}
 		}
 		
 		// show the log in form:
-		return f()->view->load('admin/login/index',array(
+		return f()->view->load('admin/login/index', [
 			'error'=>$error,
-		));
+		]);
 	}
 }

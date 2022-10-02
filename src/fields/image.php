@@ -3,55 +3,43 @@ namespace funky\fields;
 use models\image as imagemodel;
 
 // $this->val is the image_id
-class image extends \funky\fields\field
-{
-	private $image = null;
+class image extends \funky\fields\field{
+	protected $image = null;
 	
-	public function init($args)
-	{
-		// default to 0
+	public function init($args){
 		$this->val = 0;
 	}
 
 	// returns an image model that this field references
 	// if it doesn't reference any, it returns null
-	public function get()
-	{
+	public function get(){
 		if(is_null($this->image)) $this->image = imagemodel::fromid($this->val);
 		return $this->image;
 	}
 
 	// returns true or false, depending on if an image exists
 	// if the image does not exist, calling get() will not give you anything useful.
-	public function exists()
-	{
+	public function exists(){
 		return $this->val > 0;
 	}
 
 	// returns the url for this image
-	public function url()
-	{
-		$image = $this->get();
-		return $image->url();
+	public function url(){
+		$this->get()->url();
 	}
 
 	// returns the alt text for this image
-	public function alt()
-	{
-		$image = $this->get();
-		return $image->alt->get();
+	public function alt(){
+		$image = $this->get()->alt->get();
 	}
 
 	// returns a simple img tag for this image.
-	public function tag()
-	{
-		$img = $this->get();
-		return '<img src="'.$img->url().'" alt="'.$img->alt->get().'">';
+	public function tag(){
+		return $this->get()->tag();
 	}
 
 	// takes an image model and sets the val to the image model id
-	public function set($val)
-	{
+	public function set($val){
 		// any empty val will be set to reference 0
 		if(empty($val)){
 			$this->val = 0;
@@ -94,8 +82,7 @@ class image extends \funky\fields\field
 		throw new \exception('\\fields\\image::set() takes either an image_id int or an image model object but you gave it a '.gettype($val));
 	}
 
-	public function dbtype()
-	{
+	public function dbtype(){
 		return 'int unsigned';
 	}
 }

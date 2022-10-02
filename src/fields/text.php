@@ -1,18 +1,16 @@
 <?php
 namespace funky\fields;
 
-class text extends \funky\fields\field
-{
+class text extends \funky\fields\field{
 	protected $minlength = 0;
 	protected $length = 255;
 	
-	public function set($val)
-	{
+	public function set($val){
 		$val = trim($val);
 		parent::set($val);
 	}
-	public function init($args)
-	{
+
+	public function init($args){
 		// set length
 		if(!empty($args['length'])){
 			if(is_numeric($args['length'])){
@@ -37,8 +35,7 @@ class text extends \funky\fields\field
 		};
 	}
 
-	public function dbtype()
-	{
+	public function dbtype(){
 		$sqltype = 'varchar';
 		if($this->length == $this->minlength){
 			$sqltype = 'char('.$this->length.')';

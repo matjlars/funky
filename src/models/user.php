@@ -1,8 +1,7 @@
 <?php
 namespace funky\models;
 
-class user extends \funky\model
-{
+class user extends \funky\model{
 	public function hasrole($role){
 		return $this->roles->in($role);
 	}
@@ -21,6 +20,10 @@ class user extends \funky\model
 			['password', 'password'],
 			['roles', 'set', ['values'=>$roles]],
 		]);
+	}
+
+	public function bridge_label(){
+		return $this->email->get();
 	}
 
 	// override this if you want more roles

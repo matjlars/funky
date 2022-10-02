@@ -1,16 +1,14 @@
 <?php
 namespace funky\controllers\admin\admin;
 
-class config
-{
-	public function __construct()
-	{
+class config{
+	public function __construct(){
 		f()->access->enforce('dev');
 		f()->template->view = 'admin';
 		f()->template->premainview = 'admin/admin/subnav';
 	}
-	public function index()
-	{
+
+	public function index(){
 		// handle saving
 		if(isset($_POST['saveconfig'])){
 			unset($_POST['saveconfig']);
@@ -23,6 +21,7 @@ class config
 				f()->config->$key = $val;
 			}
 		}
+
 		$vars = f()->config->all();
 		return f()->view->load('admin/admin/config/index', array(
 			'vars'=>$vars,

@@ -21,9 +21,9 @@
 </section>
 
 <footer>
-	<a class="button" onclick="modal.close();">Cancel</a>
+	<button type="button" onclick="modal.close();">Cancel</button>
 	<?php if($image->exists()){?>
-		<a class="red button" onclick="imagesfield.delete('<?=$image->id?>');">Delete</a>
+		<button type="button" class="delete" onclick="imagesfield.delete('<?=$image->id?>');">Delete</button>
 	<?php }?>
-	<a class="green button" onclick="imagesfield.save_modal('<?=($image->exists()) ? $image->id : 0?>');">Save</a>
+	<button type="button" class="save" onclick="imagesfield.save_modal('<?=($image->exists()) ? $image->id : 0?>');">Save</button>
 </footer>

@@ -1,12 +1,10 @@
 <?php
 namespace funky\fields;
 
-class slug extends \funky\fields\field
-{
-	private $slugify = false;
+class slug extends \funky\fields\field{
+	protected $slugify = false;
 
-	public function set($val)
-	{
+	public function set($val){
 		$val = static::sanitize($val);
 		parent::set($val);
 	}
@@ -22,8 +20,7 @@ class slug extends \funky\fields\field
 
 	// accepts anything that can be converted to a string
 	// returns a slug-ified version of that string
-	public static function sanitize($val)
-	{
+	public static function sanitize($val){
 		// make sure it's a string
 		$val = strval($val);
 		
@@ -36,8 +33,7 @@ class slug extends \funky\fields\field
 		return $val;
 	}
 
-	public function dbtype()
-	{
+	public function dbtype(){
 		return 'varchar(255)';
 	}
 }

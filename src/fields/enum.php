@@ -1,14 +1,12 @@
 <?php
 namespace funky\fields;
 
-class enum extends \funky\fields\field
-{
+class enum extends \funky\fields\field{
 	private $values = [];
 	private $option_labels = [];
 	private $isnullable = true;
 	
-	public function init($args)
-	{
+	public function init($args){
 		if(empty($args['values'])) throw new \exception('enum field '.$this->name.' requires a "values" arg. this should contain strings that are the enum keys in the database');
 		if(!is_array($args['values'])) throw new \exception('enum field '.$this->name.' has a "values" arg, but it is not an array. It should be an array of strings for the enum keys');
 		$this->values = $args['values'];
@@ -31,16 +29,14 @@ class enum extends \funky\fields\field
 		};
 	}
 
-	public function set($val)
-	{
+	public function set($val){
 		if(empty($val) && $this->isnullable){
 			$val = null;
 		}
 		parent::set($val);
 	}
 
-	public function values()
-	{
+	public function values(){
 		return $this->values;
 	}
 
@@ -48,8 +44,7 @@ class enum extends \funky\fields\field
 	// tries to figure it out, but you can override them by specifying them in 'labels' arg
 	// for example, 'labels'=>['aux_life'=>'Auxiliary Life Membership'], (where "aux" is the value)
 	// defaults to the currently selected value's option_label
-	public function option_label($val=false)
-	{
+	public function option_label($val=false){
 		// default to current val
 		if($val === false) $val = $this->val;
 
@@ -64,8 +59,7 @@ class enum extends \funky\fields\field
 		return $this->isnullable;
 	}
 
-	public function dbtype()
-	{
+	public function dbtype(){
 		return 'enum(\''.implode('\',\'',$this->values).'\')';
 	}
 }

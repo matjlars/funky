@@ -1,8 +1,7 @@
 <?php
 namespace funky\fields;
 
-class datetime extends \funky\fields\field
-{
+class datetime extends \funky\fields\field{
 	protected $nullable = false;
 
 	public function init($args=[]){

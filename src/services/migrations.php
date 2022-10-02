@@ -1,10 +1,8 @@
 <?php
 namespace funky\services;
 
-class migrations
-{
-	public function getall()
-	{
+class migrations{
+	public function getall(){
 		$migrations = [];
 		$migrations += $this->mysql_getcreatetables();
 		$migrations += $this->mysql_getmodelfields();
@@ -12,7 +10,7 @@ class migrations
 		return $migrations;
 	}
 
-	private function mysql_getcreatetables(){
+	protected function mysql_getcreatetables(){
 		$migrations = array();
 		foreach($this->model_classes() as $modelclass){
 			$table = $modelclass::table();
@@ -45,8 +43,7 @@ class migrations
 		return $migrations;
 	}
 
-	private function mysql_getmodelfields()
-	{
+	private function mysql_getmodelfields(){
 		$migrations = array();
 		// run through every field of every table
 		foreach($this->model_classes() as $modelclass){

@@ -1,10 +1,8 @@
 <?php
 namespace funky\services;
 
-class random
-{
-	public function string($length=32, $characters='')
-	{
+class random{
+	public function string($length=32, $characters=''){
 		// default to [a-zA-Z0-9]
 		if(empty($characters)){
 			$characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

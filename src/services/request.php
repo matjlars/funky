@@ -1,10 +1,8 @@
 <?php
 namespace funky\services;
 
-class request
-{
-	public function perform()
-	{
+class request{
+	public function perform(){
 		try{
 			// get page content
 			$content = f()->router->route();
@@ -21,8 +19,7 @@ class request
 		}
 	}
 
-	public function isxhr()
-	{
+	public function isxhr(){
 		if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
 		{
 			return true;
@@ -32,16 +29,14 @@ class request
 
 	// returns which type of HTTP method the current request is using.
 	// this will probably be either '', 'GET', or 'POST'
-	public function method()
-	{
+	public function method(){
 		return $_SERVER['REQUEST_METHOD'];
 	}
 
 	// returns the format for the requested "file"
 	// so if the request path is "/sitemap.xml", this will return "xml"
 	// defaults to "php" if there is nothing.
-	public function format()
-	{
+	public function format(){
 		if(!empty($_SERVER['REQUEST_URI'])){
 			return pathinfo($_SERVER['REQUEST_URI'], PATHINFO_EXTENSION);
 		}
@@ -49,8 +44,7 @@ class request
 	}
 
 	// returns TRUE if this request is using https, FALSE otherwise
-	public function issecure()
-	{
+	public function issecure(){
 		if(!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])){
 			// this request has a load balancer in front of it.
 			if(strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') return true;

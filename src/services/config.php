@@ -6,19 +6,17 @@ namespace funky\services;
 // it will store it in a file in the project root
 // NOTE: the database uses this service to store database credentials, which means you should NOT commit the config file to your git repo
 // ... also, that means you should not deploy the config file in your deploy process
-class config
-{
-	private $data;
-	private $filepath;
+class config{
+	protected $data;
+	protected $filepath;
 	
-	public function __construct()
-	{
+	public function __construct(){
 		$this->filepath = f()->path->php('config.txt');
 		$this->load();
 	}
+
 	// sets the config value and saves it to the config file
-	public function __set($key,$value)
-	{
+	public function __set($key, $value){
 		// don't update it if the value won't change
 		if(isset($this->data[$key]) && $this->data[$key] == $value) return;
 		// an empty string will actually delete this config value:
@@ -34,23 +32,25 @@ class config
 		}
 		$this->save();
 	}
-	public function __get($key)
-	{
+
+	// returns the value for the given key
+	// returns an empty string if it doesn't exist.
+	public function __get($key){
 		if(isset($this->data[$key])) return $this->data[$key];
-		else throw new \exception('config value for key "'.$key.'" not found.');
+		return '';
 	}
-	public function __isset($key)
-	{
+
+	public function __isset($key){
 		return isset($this->data[$key]);
 	}
+
 	// returns an array of all config values
-	public function all()
-	{
+	public function all(){
 		return $this->data;
 	}
+
 	// loads the file and fills $this->data with the data from the file
-	private function load()
-	{
+	protected function load(){
 		$this->data = array();
 		
 		// first see if the file exists
@@ -76,8 +76,8 @@ class config
 		}
 		fclose($file);
 	}
-	private function save()
-	{
+
+	protected function save(){
 		// open the file for writing.
 		// this also creates the file if it doesn't exist
 		$file = fopen($this->filepath, 'w');

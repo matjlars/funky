@@ -6,13 +6,6 @@
 // turn on error reporting:
 error_reporting(E_ALL);
 
-// pass all php errors along to the debug->error() function
-set_error_handler(function($level, $message, $file, $line){
-	f()->debug->error($level, $message, $file, $line);
-});
-
-
-
 // use composer autoloader:
 $loader = require(dirname(dirname(__DIR__)).'/autoload.php');
 
@@ -22,6 +15,10 @@ $loader = require(dirname(dirname(__DIR__)).'/autoload.php');
 $loader->addPsr4('', dirname($_SERVER['DOCUMENT_ROOT']).'/src');
 
 
+// pass all php errors along to the debug->error() function
+set_error_handler(function($level, $message, $file, $line){
+	f()->debug->error($level, $message, $file, $line);
+});
 
 // catch E_FATAL errors, too:
 register_shutdown_function(function(){
@@ -42,16 +39,13 @@ session_start();
 
 // this is a little class just to make the call to f() nicer.
 // this way, you can just say f()->db for the "db" singleton service.
-class funky_servicecontainer
-{
+class funky_servicecontainer{
 	private $services = array();
 	
 	// auto-load and access services:
-	public function __get($key)
-	{
+	public function __get($key){
 		// instantiate this service if we haven't already:
-		if(!isset($this->services[$key]))
-		{
+		if(!isset($this->services[$key])){
 			$serviceclass = '\\services\\'.$key;
 
 			// see if this project has a class for this service:
@@ -77,8 +71,7 @@ class funky_servicecontainer
 
 
 // define the global function that allows you to easily access any of the service singletons
-function f()
-{
+function f(){
 	static $container = null;
 	if(is_null($container)) $container = new funky_servicecontainer();
 	return $container;

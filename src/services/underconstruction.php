@@ -1,18 +1,14 @@
 <?php
 namespace funky\services;
 
-class underconstruction
-{
-	public function restrict()
-	{
+class underconstruction{
+	public function restrict(){
 		// If we're logged in, yay!
 		if($this->isloggedin()) return;
 		
 		// If we're trying to log in, go for it:
-		if(!empty($_POST['underconstructionlogin']))
-		{
-			if($_POST['password'] == j()->config->underconstructionpassword)
-			{
+		if(!empty($_POST['underconstructionlogin'])){
+			if($_POST['password'] == j()->config->underconstructionpassword){
 				j()->session->underconstruction_loggedin = 1;
 				return;
 			}
@@ -31,8 +27,7 @@ class underconstruction
 		exit(0);
 	}
 	
-	public function isloggedin()
-	{
+	public function isloggedin(){
 		if(empty(j()->session->underconstruction_loggedin)) return false;
 		return true;
 	}

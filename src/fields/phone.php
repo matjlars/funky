@@ -1,26 +1,17 @@
 <?php
 namespace funky\fields;
 
-class phone extends \funky\fields\field
-{
-	public function init($args)
-	{
-		// nothing yet...
-	}
-
-	public function set($val)
-	{
+class phone extends \funky\fields\field{
+	public function set($val){
 		$val = static::sanitize($val);
 		parent::set($val);
 	}
 
-	public function tel()
-	{
+	public function tel(){
 		return '+'.$this->val;
 	}
 
-	public function formatted()
-	{
+	public function formatted(){
 		$len = strlen($this->val);
 		if($len == 7){
 			$first = substr($this->val, 0, 3);
@@ -35,14 +26,12 @@ class phone extends \funky\fields\field
 		return $this->val;
 	}
 
-	public static function sanitize($val)
-	{
+	public static function sanitize($val){
 		// strip all non-numeric characters out:
 		return preg_replace('/[^0-9]/', '', $val);
 	}
 
-	public function dbtype()
-	{
+	public function dbtype(){
 		return 'varchar(255)';
 	}
 }

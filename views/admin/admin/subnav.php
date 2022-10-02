@@ -3,6 +3,7 @@ $links = [
 	'admin/admin/users'=>'Users',
 	'admin/admin/config'=>'Config',
 	'admin/admin/smtp'=>'SMTP',
+	'admin/admin/s3'=>'S3',
 	'admin/admin/database'=>'Database',
 ];
 ?>

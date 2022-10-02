@@ -1,15 +1,13 @@
 <?php
 namespace funky\fields;
 
-class url extends \funky\fields\field
-{
-	public function set($val)
-	{
+class url extends \funky\fields\field{
+	public function set($val){
 		$val = static::sanitize($val);
 		parent::set($val);
 	}
-	public static function sanitize($val)
-	{
+
+	public static function sanitize($val){
 		if(empty($val)) return '';
 		
 		// if there is no http: or https: add https:
@@ -18,8 +16,8 @@ class url extends \funky\fields\field
 		}
 		return $val;
 	}
-	public function dbtype()
-	{
+
+	public function dbtype(){
 		return 'text';
 	}
 }

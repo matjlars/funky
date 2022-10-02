@@ -2,8 +2,7 @@
 namespace funky;
 
 // provides a really nice interface for getting 1 or many models objects with 1 db query
-class modelquery implements \Iterator
-{
+class modelquery implements \Iterator{
 	private $modelclass = '';
 	private $where = array();
 	private $order = NULL;
@@ -14,21 +13,18 @@ class modelquery implements \Iterator
 	
 	// $modelclass is the name of a class of a model.
 	// for example, 'user'
-	public function __construct($modelclass)
-	{
+	public function __construct($modelclass){
 		$this->modelclass = $modelclass;
 	}
 	
-	public function islocked()
-	{
+	public function islocked(){
 		return !is_null($this->models);
 	}
 	
 	// accepts either a string or an array.
 	// if $cond is a string, it simply adds that as a WHERE condition that is ANDed with the others
 	// if $cond is an array, each array element is added as a "key = value" with the value auto-escaped
-	public function where($cond)
-	{
+	public function where($cond){
 		if($this->islocked()) throw new \exception('you cannot add any more where clauses to this modelquery because the query has already ran.');
 		if(is_array($cond)){
 			foreach($cond as $key=>$value){
@@ -39,14 +35,6 @@ class modelquery implements \Iterator
 		}else{
 			throw new \exception('modelquery->where() must be given an array or string. You gave it a "'.gettype($cond).'"');
 		}
-		return $this;
-	}
-	
-	// DEPRECATED. Use order() instead.
-	public function orderby($orderby)
-	{
-		if($this->islocked()) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
-		$this->order = [$orderby];
 		return $this;
 	}
 
@@ -101,8 +89,7 @@ class modelquery implements \Iterator
 	}
 	
 	// returns the sql needed to run this query
-	public function sql()
-	{
+	public function sql(){
 		// SELECT
 		$sql = 'SELECT ';
 		if(!empty($this->limit)){
@@ -140,41 +127,38 @@ class modelquery implements \Iterator
 	
 	// returns the first model in the array of models.
 	// returns false if there are none.
-	public function first()
-	{
+	public function first(){
 		$this->run();
 		if(empty($this->models)) return false;
 		return array_shift($this->models);
 	}
-	public function count()
-	{
+
+	public function count(): int{
 		$this->run();
 		return count($this->models);
 	}
 	
 	// Iterator functions
-	public function rewind()
-	{
+	public function rewind(): void{
 		$this->it = 0;
 	}
-	public function valid()
-	{
+
+	public function valid(): bool{
 		return $this->it < $this->count();
 	}
-	public function current()
-	{
+
+	public function current(): mixed{
 		return $this->models[$this->it];
 	}
-	public function key()
-	{
+
+	public function key(): mixed{
 		return $this->it;
 	}
-	public function next()
-	{
+	public function next(): void{
 		$this->it += 1;
 	}
-	private function run()
-	{
+
+	private function run(){
 		if(is_null($this->models)){
 			$this->models = array();
 			$modelclass = $this->modelclass;
