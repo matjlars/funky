@@ -18,8 +18,8 @@ class admintool{
 
 		$modelclass = $this->modelclass();
 		return f()->view->load('basecontrollers/admintool/index', [
-			'modelname'=>$this->modelname(),
-			'modelname_plural'=>$modelclass::table(),
+			'model_label'=>$modelclass::model_label(),
+			'model_label_plural'=>$modelclass::model_label(true),
 			'url_path'=>$this->url_path(),
 		]);
 	}
@@ -27,6 +27,7 @@ class admintool{
 	public function feed(){
 		$modelname = $this->modelname().'s';
 		$modelobjs = $this->get_feed_objects();
+		$modelclass = $this->modelclass();
 
 		$view = $this->view_path().'/feed';
 		if(f()->view->exists($view)){
@@ -38,7 +39,7 @@ class admintool{
 		return f()->view->load('basecontrollers/admintool/feed', [
 			'modelobjs'=>$modelobjs,
 			'url_path'=>$this->url_path(),
-			'modelname'=>$this->modelname(),
+			'model_label'=>$modelclass::model_label(),
 		]);
 	}
 
@@ -68,8 +69,8 @@ class admintool{
 
 		// default to the basecontrollers view
 		return f()->view->load('basecontrollers/admintool/edit', [
-			'modelname'=>$this->modelname(),
-			'modelname_plural'=>$modelclass::table(),
+			'model_label'=>$modelclass::model_label(),
+			'model_label_plural'=>$modelclass::model_label(true),
 			'url_path'=>$this->url_path(),
 			'fields'=>$this->get_edit_fields(),
 			'modelobj'=>$modelobj,
@@ -232,7 +233,8 @@ class admintool{
 		// display the import page
 		return f()->view->load('basecontrollers/admintool/import', [
 			'headers'=>$headers,
-			'modelname'=>$modelname,
+			'model_label'=>$modelclass::model_label(),
+			'model_label_plural'=>$modelclass::model_label(true),
 			'path'=>$this->url_path(),
 		]);
 	}

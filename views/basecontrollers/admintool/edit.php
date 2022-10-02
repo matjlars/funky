@@ -1,10 +1,7 @@
 <header>
-	<h2>Editing <?=$modelname?></h2>
-	<div>
-		<a class="new button" href="/<?=$url_path?>/edit/0">New <?=$modelname?></a>
-		<a class="back button" href="/<?=$url_path?>">Back to <?=$modelname_plural?></a>
-		<button class="save" form="edit-form">Save</button>
-	</div>
+	<h2><a href="/<?=$url_path?>"><?=$model_label_plural?></a> / <?=($modelobj->exists()) ? 'Edit' : 'New'?></h2>
+	<a class="new button" href="/<?=$url_path?>/edit/0">New <?=$model_label?></a>
+	<button class="save" form="edit-form">Save</button>
 </header>
 
 <form method="post" action="<?=f()->url->current()?>" id="edit-form">

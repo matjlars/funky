@@ -1,9 +1,6 @@
 <header>
-	<h2>Import</h2>
-	<div>
-		<a href="/<?=$path?>" class="back button">Back</a>
-		<a href="/<?=$path?>/import/?download_template=1" class="export button">Download Template</a>
-	</div>
+	<h2><a href="/<?=$path?>"><?=$model_label_plural?></a> / Import</h2>
+	<a href="/<?=$path?>/import/?download_template=1" class="export button">Download Template</a>
 </header>
 
 <h3>Column Headers</h3>
@@ -20,6 +17,6 @@
 		<label for="file">CSV File</label>
 		<input type="file" id="file" name="file" accept=".csv" required>
 	</div>
-	<p>A new <?=$modelname?> will be created for every row in the CSV file.</p>
+	<p>A new <?=$model_label?> will be created for every row in the CSV file.</p>
 	<input type="submit" value="Upload">
 </form>

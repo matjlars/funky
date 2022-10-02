@@ -7,7 +7,7 @@
 			<?php if($o->has_field('sort_id')){?>
 				<a class="sort icon"></a>
 			<?php }?>
-			<a class="delete icon" title="Delete this <?=$modelname?>" onclick="feedpage.delete('<?=$o->id?>');return false;" href="#"></a>
+			<a class="delete icon" title="Delete this <?=$model_label?>" onclick="feedpage.delete('<?=$o->id?>');return false;" href="#"></a>
 		</li>
 	<?php }?>
 </ul>
