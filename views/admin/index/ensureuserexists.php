@@ -1,9 +1,12 @@
-<h2>Create First User</h2>
-<p>It is highly recommended you make this first user be a "dev" so you can use that user to manage other users.</p>
+<header>
+	<h2>Create First User</h2>
+	<button type="save" form="edit-form">Save</button>
+</header>
 
-<form method="post" action="/admin/index">
+<p>You should make this first user have the "dev" role, so you can use that user to manage other users.</p>
+
+<form method="post" action="/admin/index" id="edit-form">
 	<div class="field"><?=f()->view->load('fields/text/view', ['field'=>$user->email])?></div>
 	<div class="field"><?=f()->view->load('fields/password/view', ['field'=>$user->password])?></div>
 	<div class="field"><?=f()->view->load('fields/set/view', ['field'=>$user->roles])?></div>
-	<button type="save">Set up first user</button>
 </form>

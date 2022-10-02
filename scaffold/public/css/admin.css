@@ -92,7 +92,7 @@ h1,h2,h3,h4,h5,h6{
 /* forms */
 .field{
 	margin:.5rem 0;
-	padding:.5rem;
+	padding:.5rem 0;
 	flex:1;
 }
 .field input[type=text],
