@@ -14,7 +14,7 @@
 	<p class="error"><?=$error?></p>
 <?php }?>
 
-<form action="<?=f()->url->current()?>" method="post" id="admin-login">
+<form action="" method="post" id="admin-login">
 	<div class="field">
 		<label for="email">Email Address</label>
 		<input type="text" id="email" name="email" autofocus required>
