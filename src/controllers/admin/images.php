@@ -55,6 +55,7 @@ class images{
 		try{
 			foreach(f()->uploads->handle('image') as $filename){
 				$data = [
+					'name'=>pathinfo($filename, PATHINFO_FILENAME),
 					'filename'=>$filename,
 				];
 				if(!empty($_POST['alt'])) $data['alt'] = $_POST['alt'];

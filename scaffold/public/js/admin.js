@@ -599,7 +599,7 @@ bridge_field.select = function($bf, id, label){
 		$tags.append(li);
 
 		$bf.find('.search-results').hide();
-		$bf.find('input[type=search]').val('');
+		$bf.find('input[type=search]').val('').focus();
 	}
 };
 bridge_field.deselect = function(tag_ele){
