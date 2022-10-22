@@ -4,7 +4,7 @@
 	<button class="save" form="edit-form">Save</button>
 </header>
 
-<form method="post" action="" id="edit-form">
+<form method="post" action="" enctype="multipart/form-data" id="edit-form">
 	<?php foreach($fields as $field){?>
 		<div class="field"><?=$modelobj->$field->view()?></div>
 	<?php }?>
