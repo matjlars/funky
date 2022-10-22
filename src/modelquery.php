@@ -64,6 +64,17 @@ class modelquery implements \Iterator{
 		return $this;
 	}
 
+	// adds a ORDER BY RAND() clause to the SQL
+	public function order_random(){
+		if($this->islocked()) throw new \exception('you cannot order this modelquery anymore because the query has already ran.');
+
+		// it doesn't make sense to order by random AND something else,
+		// so let's just take over the order clause array:
+		$this->order = ['RAND()'];
+
+		return $this;
+	}
+
 	// accepts an int to limit the result set to a given size
 	// use the number 0 to remove the limit
 	public function limit($limit){
