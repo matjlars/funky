@@ -266,6 +266,10 @@ class admintool{
 		foreach($modelclass::fields() as $f){
 			$fields[] = $f->name();
 		}
+
+		// hide sort_id by default, since that is automatically handled on the index page
+		$fields = array_diff($fields, ['sort_id']);
+
 		return $fields;
 	}
 
