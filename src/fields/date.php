@@ -11,7 +11,11 @@ class date extends \funky\fields\field{
 
 	// Accepts any date format that can be parsed by strtotime()
 	public function set($val){
-		parent::set(strtotime($val));
+		if($this->isnullable && empty($val)){
+			parent::set(null);
+		}else{
+			parent::set(strtotime($val));
+		}
 	}
 
 	public function get(){
