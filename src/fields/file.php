@@ -30,7 +30,8 @@ class file extends \funky\fields\field{
 	// sets $this->val to the new filename if successful.
 	// returns false on success
 	// returns an error message on fail
-	protected function upload(){
+	// if you call this, make sure to save the model afterwards.
+	public function upload(){
 		// don't do anything if no file was uploaded
 		if(empty($_FILES[$this->name()]) || empty($_FILES[$this->name()]['name'])){
 			return false;
