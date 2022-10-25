@@ -25,12 +25,12 @@ class image extends \funky\fields\field{
 
 	// returns the url for this image
 	public function url(){
-		$this->get()->url();
+		return $this->get()->url();
 	}
 
 	// returns the alt text for this image
 	public function alt(){
-		$image = $this->get()->alt->get();
+		return $this->get()->alt->get();
 	}
 
 	// returns a simple img tag for this image.
@@ -84,5 +84,10 @@ class image extends \funky\fields\field{
 
 	public function dbtype(){
 		return 'int unsigned';
+	}
+
+	// shortcut for getting the img tag
+	public function __toString(){
+		return $this->tag();
 	}
 }
