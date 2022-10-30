@@ -66,24 +66,27 @@ class router{
 		$controllerfilepath = f()->path->php('src/controllers/');
 		$globalfilepath = f()->path->funky('src/controllers/');
 		$controllername = '';
-		while(isset($uriparts[$i]) && (is_dir($controllerfilepath.$controllername.$uriparts[$i]) || is_dir($globalfilepath.$controllername.$uriparts[$i])))
-		{
+		while(isset($uriparts[$i]) && (is_dir($controllerfilepath.$controllername.$uriparts[$i]) || is_dir($globalfilepath.$controllername.$uriparts[$i]))){
 			$controllername .= $uriparts[$i].'/';
 			$i++;
 		}
 		
 		// get the controller name
-		if(empty($uriparts[$i]))
-		{
+		if(empty($uriparts[$i])){
 			$controllername .= 'index';
-		}
-		else // we have a name for a controller!
-		{
+		}else {
 			$controllername .= $uriparts[$i];
 		}
 		
-		// include the controller file
+		// try to guess the controller class name
 		$controllerclass = '\\controllers\\'.str_replace('/', '\\', $controllername);
+
+		// try converting dashes to underscores
+		// this is necessary in order to support URLs with dashes
+		// since a dash cannot be in the PHP class name
+		if(!class_exists($controllerclass)){
+			$controllerclass = str_replace('-', '_', $controllerclass);
+		}
 		
 		// see if funky has a controller for this if the project doesn't:
 		if(!class_exists($controllerclass)){
@@ -100,27 +103,21 @@ class router{
 		$i++; // moving on to the method..
 		
 		// get method name:
-		if(empty($uriparts[$i]))
-		{
-			$methodname = 'index'; // default method name
-		}
-		else
-		{
+		if(empty($uriparts[$i])){
+			// default method name
+			$methodname = 'index';
+		}else{
 			$methodname = $uriparts[$i];
 		}
 		
 		// validate the method name
-		if(method_exists($controller, $methodname))
-		{
+		if(method_exists($controller, $methodname)){
 			$r = new \ReflectionMethod($controller, $methodname);
 			if(!$r->isPublic()) return false;
-		}
-		else
-		{
+		}else{
 			// in this context, there is no explicit function for this methodname.
 			// therefore, if there is no __call function, then this is not a valid controller request
-			if(!method_exists($controller, '__call'))
-			{
+			if(!method_exists($controller, '__call')){
 				// there is no function to call in this controller
 				return false;
 			}
@@ -128,10 +125,9 @@ class router{
 		$i++; // moving on to parameters
 		
 		// get all parameters:
-		$params = array();
+		$params = [];
 		$parami = 0;
-		while(isset($uriparts[$i]))
-		{
+		while(isset($uriparts[$i])){
 			$params[$parami] = $uriparts[$i];
 			$i++; // move to next param in uri
 			$parami++; // move to next param in $params array
