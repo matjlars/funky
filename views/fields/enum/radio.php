@@ -3,7 +3,7 @@
 <?php if($field->isnullable()){?>
 	<span class="checkbox">
 		<input type="radio" name="<?=$field->name()?>" value="" id="<?=$field->name()?>_"<?=empty($field->dbval()) ? ' checked' : ''?>>
-		<label for="<?=$field->name()?>_">N/A</label>
+		<label for="<?=$field->name()?>_"><?=$field->null_label()?></label>
 	</span>
 <?php }?>
 

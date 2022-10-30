@@ -5,6 +5,7 @@ class enum extends \funky\fields\field{
 	private $values = [];
 	private $option_labels = [];
 	private $isnullable = true;
+	private $null_label;
 	
 	public function init($args){
 		if(empty($args['values'])) throw new \exception('enum field '.$this->name.' requires a "values" arg. this should contain strings that are the enum keys in the database');
@@ -61,5 +62,13 @@ class enum extends \funky\fields\field{
 
 	public function dbtype(){
 		return 'enum(\''.implode('\',\'',$this->values).'\')';
+	}
+
+	public function null_label(){
+		if($this->null_label){
+			return $this->null_label;
+		}else{
+			return 'N/A';
+		}
 	}
 }
