@@ -48,6 +48,7 @@ class enum extends \funky\fields\field{
 	public function option_label($val=false){
 		// default to current val
 		if($val === false) $val = $this->val;
+		if($val === null) return 'N/A';
 
 		if(isset($this->option_labels[$val])){
 			return $this->option_labels[$val];
