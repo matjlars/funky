@@ -1,6 +1,6 @@
 <header>
 	<h2><a href="/admin/images">Images</a> / <?=($image->exists()) ? 'Edit' : 'New'?></h2>
-	<a class="new button" href="/admin/images/new">New Image</a>
+	<a class="new button" href="/admin/images/edit/0">New Image</a>
 	<button class="save" form="edit-form">Save</button>
 </header>
 
