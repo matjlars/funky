@@ -3,24 +3,31 @@ namespace funky\services;
 
 /*
 this class is responsible for routing URL requests to controllers.
-for example, if you want to use the *photos* controller on a new site, simply make this file at DOC_ROOT/../controllers/photos.php:
+for example, if you want to use the *photos* controller on a new site, simply make this file at src/controllers/photos.php:
 
-class photos extends f_photos{}
+class photos{}
 
-this creates the *photos* controller for your site, thereby granting access to all the public functions in f_photos as route endpoints
-
+this creates the *photos* controller for your site, thereby granting access to all the public functions in photos as route endpoints
 */
 class router{
 	public function route(){
-		// try to get content from something.
-		foreach(['page','controller'] as $func){
+		// try each function until one is not false
+		foreach($this->functions() as $func){
 			$content = $this->$func();
 			if(!empty($content)){
 				return $content;
 			}
 		}
+
 		// nothing had content, so 404:
 		f()->response->send404();
+	}
+
+	// determines which functions to call when routing, and in which order.
+	// override this to add your own custom functions or change the order.
+	// the values of this array simply refer to a function in this class.
+	protected function functions(){
+		return ['page','controller'];
 	}
 	
 	// this function tests for pages that exist at files (like index.php for the homepage or any other page)
